@@ -1,0 +1,338 @@
+{
+  "Ply table": {
+    "prefix": "ply-table",
+    "scope": "html",
+    "body": [
+      "<div class=\"relative w-full overflow-auto\">",
+      "  <table ply-table>",
+      "    <caption ply-table-caption>${1:A list of recent invoices.}</caption>",
+      "    <thead ply-table-header>",
+      "      <tr ply-table-row>",
+      "        <th ply-table-head>${2:Invoice}</th>",
+      "        <th ply-table-head>${3:Status}</th>",
+      "      </tr>",
+      "    </thead>",
+      "    <tbody ply-table-body>",
+      "      <tr ply-table-row>",
+      "        <td ply-table-cell>$0</td>",
+      "        <td ply-table-cell></td>",
+      "      </tr>",
+      "    </tbody>",
+      "  </table>",
+      "</div>"
+    ],
+    "description": "Ply free HTML table. Install: npx ply-ui-cli add table --yes"
+  },
+  "Ply card": {
+    "prefix": "ply-card",
+    "scope": "html",
+    "body": [
+      "<ply-card>",
+      "  <ply-card-header class=\"flex items-center justify-between gap-[8px]\">",
+      "    <h2 class=\"m-0! text-base font-semibold text-slate-900 dark:text-white\">${1:Title}</h2>",
+      "  </ply-card-header>",
+      "  <ply-card-body class=\"p-[16px]\">",
+      "    $0",
+      "  </ply-card-body>",
+      "</ply-card>"
+    ],
+    "description": "Ply card usage. Install: npx ply-ui-cli add card --yes"
+  },
+  "Ply button": {
+    "prefix": "ply-button",
+    "scope": "html",
+    "body": [
+      "<button type=\"button\" ply-button color=\"${1:primary}\">${2:Save}</button>"
+    ],
+    "description": "Ply filled button directive. Install: npx ply-ui-cli add button --yes"
+  },
+  "Ply stroked button": {
+    "prefix": "ply-stroked-button",
+    "scope": "html",
+    "body": [
+      "<button type=\"button\" ply-stroked-button color=\"${1:default}\">${2:Cancel}</button>"
+    ],
+    "description": "Ply stroked button directive. Install: npx ply-ui-cli add button --yes"
+  },
+  "Ply dialog open": {
+    "prefix": "ply-dialog",
+    "scope": "typescript",
+    "body": [
+      "this.dialog.open(${1:MyDialogComponent}).subscribe((result) => {",
+      "  if (!result) return;",
+      "  $0",
+      "});"
+    ],
+    "description": "Open a Base UI dialog. Install: npx ply-ui-cli add dialog --yes"
+  },
+  "Ply dialog confirm": {
+    "prefix": "ply-confirm",
+    "scope": "typescript",
+    "body": [
+      "this.dialog.confirm({",
+      "  title: '${1:Delete this item?}',",
+      "  description: '${2:This cannot be undone.}',",
+      "  destructive: true",
+      "}).subscribe((ok) => {",
+      "  if (!ok) return;",
+      "  $0",
+      "});"
+    ],
+    "description": "Confirm dialog. Install: npx ply-ui-cli add dialog --yes"
+  },
+  "Ply password input": {
+    "prefix": "ply-password",
+    "scope": "html",
+    "body": [
+      "<ply-password-input label=\"${1:Password}\" [(ngModel)]=\"${2:password}\" [showStrength]=\"true\">",
+      "  <ply-error>${3:Password is required}</ply-error>",
+      "</ply-password-input>"
+    ],
+    "description": "Password field with show/hide. Install: npx ply-ui-cli add password-input --yes"
+  },
+  "Ply input group": {
+    "prefix": "ply-input",
+    "scope": "html",
+    "body": [
+      "<ply-input-group>",
+      "  <ply-label>${1:Label}</ply-label>",
+      "  <input ply-input [(ngModel)]=\"${2:value}\" autocomplete=\"off\" />",
+      "</ply-input-group>"
+    ],
+    "description": "Native input with ply-input. Install: npx ply-ui-cli add input --yes"
+  },
+  "Ply textarea": {
+    "prefix": "ply-textarea",
+    "scope": "html",
+    "body": [
+      "<ply-input-group>",
+      "  <ply-label>${1:Notes}</ply-label>",
+      "  <textarea ply-textarea rows=\"4\" [(ngModel)]=\"${2:notes}\"></textarea>",
+      "</ply-input-group>"
+    ],
+    "description": "Native textarea with ply-textarea. Install: npx ply-ui-cli add input --yes"
+  },
+  "Ply combobox": {
+    "prefix": "ply-combobox",
+    "scope": "html",
+    "body": [
+      "<ply-combobox",
+      "  label=\"${1:Choice}\"",
+      "  [options]=\"${2:options}\"",
+      "  [(ngModel)]=\"${3:value}\">",
+      "  <ng-template plyComboboxOption let-option>",
+      "    $0",
+      "  </ng-template>",
+      "</ply-combobox>"
+    ],
+    "description": "Searchable select with optional option template. Bind ngModel on the host. Install: npx ply-ui-cli add combobox --yes"
+  },
+  "Ply select": {
+    "prefix": "ply-select",
+    "scope": "html",
+    "body": [
+      "<ply-custom-select",
+      "  label=\"${1:Choice}\"",
+      "  [options]=\"${2:options}\"",
+      "  [(ngModel)]=\"${3:value}\">",
+      "  <ng-template plySelectOption let-label=\"label\">",
+      "    $0",
+      "  </ng-template>",
+      "</ply-custom-select>"
+    ],
+    "description": "Custom select CVA host with optional option template. Install: npx ply-ui-cli add custom-select --yes"
+  },
+  "Ply toggle": {
+    "prefix": "ply-toggle",
+    "scope": "html",
+    "body": [
+      "<div class=\"flex items-center justify-between gap-[12px] rounded-lg border border-slate-200 px-[16px] py-[12px] dark:border-slate-700\">",
+      "  <div>",
+      "    <p class=\"m-0! text-sm font-medium text-slate-900 dark:text-white\">${1:Product emails}</p>",
+      "    <p class=\"mb-0! mt-[2px] text-xs text-slate-500\">${2:Occasional tips.}</p>",
+      "  </div>",
+      "  <ply-toggle [(ngModel)]=\"${3:enabled}\"></ply-toggle>",
+      "</div>"
+    ],
+    "description": "Toggle CVA host. Install: npx ply-ui-cli add toggle --yes"
+  },
+  "Ply tags input": {
+    "prefix": "ply-tags-input",
+    "scope": "html",
+    "body": [
+      "<ply-label>${1:Tags}</ply-label>",
+      "<ply-tags-input class=\"mt-[4px]\" [(ngModel)]=\"${2:tags}\" placeholder=\"${3:Add a tag…}\"></ply-tags-input>"
+    ],
+    "description": "Chip tags CVA host. Install: npx ply-ui-cli add tags-input --yes"
+  },
+  "Ply checkbox": {
+    "prefix": "ply-checkbox",
+    "scope": "html",
+    "body": [
+      "<ply-checkbox [(ngModel)]=\"${1:checked}\">${2:Remember me}</ply-checkbox>"
+    ],
+    "description": "Checkbox. Install: npx ply-ui-cli add checkbox --yes"
+  },
+  "Ply chat": {
+    "prefix": "ply-chat",
+    "scope": "html",
+    "body": [
+      "<ply-chat",
+      "  [messages]=\"${1:messages}()\"",
+      "  [streaming]=\"${2:streaming}()\"",
+      "  placeholder=\"${3:Ask…}\"",
+      "  (send)=\"${4:onSend}($event)\"",
+      "  (stop)=\"${5:stop}()\">",
+      "</ply-chat>"
+    ],
+    "description": "AI chat kit. Install: npx ply-ui-cli add chat --yes"
+  },
+  "Ply data table": {
+    "prefix": "ply-data-table",
+    "scope": "html",
+    "body": [
+      "<ply-data-table",
+      "  [columns]=\"${1:columns}\"",
+      "  [data]=\"${2:rows}\"",
+      "  [loading]=\"${3:loading}()\"",
+      "  serverSide",
+      "  sortable",
+      "  pageable",
+      "  selectable",
+      "  bordered",
+      "  hoverable",
+      "  [pageSize]=\"${4:10}\"",
+      "  [totalItems]=\"${5:total}\"",
+      "  [(selected)]=\"${6:selected}\"",
+      "  (pageChange)=\"${7:fetch}($event)\"",
+      "  (sortChange)=\"${8:onSort}($event)\">",
+      "  <ng-template plyTableCell=\"${9:status}\" let-value=\"value\">",
+      "    $0",
+      "  </ng-template>",
+      "</ply-data-table>"
+    ],
+    "description": "Pro data table with optional cell templates. Install: npx ply-ui-cli add data-table --yes"
+  },
+  "Ply tabs": {
+    "prefix": "ply-tabs",
+    "scope": "html",
+    "body": [
+      "<ply-tabs [defaultTab]=\"${1:0}\">",
+      "  <ply-tab label=\"${2:Overview}\"><ply-tab-body>$0</ply-tab-body></ply-tab>",
+      "  <ply-tab label=\"${3:Activity}\"><ply-tab-body></ply-tab-body></ply-tab>",
+      "</ply-tabs>"
+    ],
+    "description": "Tabs. Install: npx ply-ui-cli add tabs --yes"
+  },
+  "Ply alert": {
+    "prefix": "ply-alert",
+    "scope": "html",
+    "body": [
+      "<ply-alert color=\"${1:info}\">${2:Saved.}</ply-alert>"
+    ],
+    "description": "Alert. Install: npx ply-ui-cli add alert --yes"
+  },
+  "Ply badge": {
+    "prefix": "ply-badge",
+    "scope": "html",
+    "body": [
+      "<ply-badge color=\"${1:primary-light}\" size=\"sm\">${2:New}</ply-badge>"
+    ],
+    "description": "Badge. Install: npx ply-ui-cli add badge --yes"
+  },
+  "Ply skeleton": {
+    "prefix": "ply-skeleton",
+    "scope": "html",
+    "body": [
+      "<ply-skeleton variant=\"${1:rectangular}\" width=\"${2:100%}\" height=\"${3:16rem}\"></ply-skeleton>"
+    ],
+    "description": "Skeleton placeholder. Install: npx ply-ui-cli add skeleton --yes"
+  },
+  "Ply empty state": {
+    "prefix": "ply-empty-state",
+    "scope": "html",
+    "body": [
+      "<ply-empty-state title=\"${1:Nothing here}\" description=\"${2:Try a different filter.}\"></ply-empty-state>"
+    ],
+    "description": "Empty state. Install: npx ply-ui-cli add empty-state --yes"
+  },
+  "Ply toast": {
+    "prefix": "ply-toast",
+    "scope": "typescript",
+    "body": [
+      "this.toast.success('${1:Saved}', { duration: ${2:2500} });"
+    ],
+    "description": "Toast via ToastService. Install: npx ply-ui-cli add toast --yes. Do not add ply-toast-container to templates."
+  },
+  "Ply icon": {
+    "prefix": "ply-icon",
+    "scope": "html",
+    "body": [
+      "<ply-icon name=\"${1:chevron-right}\" class=\"h-4 w-4 stroke-slate-500 dark:stroke-slate-300\"></ply-icon>"
+    ],
+    "description": "Outline icon (stroke-*). Filled: [filled]=\"true\" + text-*. Install: npx ply-ui-cli add icon --yes"
+  },
+  "Ply standalone component": {
+    "prefix": "ply-standalone",
+    "scope": "typescript",
+    "body": [
+      "import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';",
+      "",
+      "@Component({",
+      "  selector: 'app-${1:feature}',",
+      "  changeDetection: ChangeDetectionStrategy.OnPush,",
+      "  template: `",
+      "    <ply-card>",
+      "      <ply-card-body class=\"p-[16px]\">$0</ply-card-body>",
+      "    </ply-card>",
+      "  `,",
+      "})",
+      "export class ${2:Feature}Component {",
+      "  readonly title = input('${3:Title}');",
+      "  readonly saved = output<void>();",
+      "}"
+    ],
+    "description": "Standalone OnPush component with signal input/output and a Ply card"
+  },
+  "Ply i18n": {
+    "prefix": "ply-i18n",
+    "scope": "typescript",
+    "body": [
+      "provideBaseUiI18n({",
+      "  close: '${1:Fermer}',",
+      "  noDataAvailable: '${2:Aucune donnée}',",
+      "  noResults: '${3:Aucun résultat}'",
+      "})"
+    ],
+    "description": "Chrome-string dictionary for empty states, paginator, and dialog close. Install: npx ply-ui-cli add i18n --yes"
+  },
+  "Ply config": {
+    "prefix": "ply-config",
+    "scope": "typescript",
+    "body": [
+      "provideBaseUI({",
+      "  iconPath: '${1:assets/icons.svg}',",
+      "  filledIconPath: '${2:assets/icons-filled.svg}',",
+      "  defaultSize: ${3:20}",
+      "})"
+    ],
+    "description": "Library defaults for icon sprites and default icon size. Install: npx ply-ui-cli add config --yes"
+  },
+  "Ply harness": {
+    "prefix": "ply-harness",
+    "scope": "typescript",
+    "body": [
+      "import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';",
+      "import { DataTableHarness } from './components/data-table/data-table.harness';",
+      "import { DialogHarness } from './components/dialog/dialog.harness';",
+      "",
+      "const loader = TestbedHarnessEnvironment.loader(fixture);",
+      "const table = await loader.getHarness(DataTableHarness);",
+      "expect(await table.getRowCount()).toBe(${1:3});",
+      "",
+      "const dialogs = TestbedHarnessEnvironment.documentRootLoader(fixture);",
+      "const dialog = await dialogs.getHarness(DialogHarness);"
+    ],
+    "description": "CDK ComponentHarness for copied Base UI data-table. Dialog overlays use documentRootLoader. Copied with the component — not a separate registry item."
+  }
+}

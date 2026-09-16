@@ -1,10 +1,10 @@
-> **Community hub.** Star this repository, open issues, and follow the changelog. Component source is **not** stored here — install with `npx ply-ui-cli add button` from [base-ui.net](https://base-ui.net).
+> **Community hub.** Star this repository, open issues, and follow the changelog. Component source is **not** stored here — install with `npx ply-ui-cli add button` from [ply-ui.com](https://ply-ui.com).
 
 # Ply — Angular + Tailwind Component Library
 
 [![npm](https://img.shields.io/npm/v/ply-ui-cli.svg)](https://www.npmjs.com/package/ply-ui-cli)
 [![npm downloads](https://img.shields.io/npm/dw/ply-ui-cli.svg)](https://www.npmjs.com/package/ply-ui-cli)
-[![GitHub stars](https://img.shields.io/github/stars/ply-ui-ng/base-ui?style=social)](https://github.com/ply-ui-ng/ply)
+[![GitHub stars](https://img.shields.io/github/stars/ply-ui-ng/ply?style=social)](https://github.com/ply-ui-ng/ply)
 
 **Ply** — [ply-ui.com](https://ply-ui.com) — is a CLI-first Angular + Tailwind CSS component library: **215 components and blocks** (125 free, 90 Pro), **390 icons**, and 18 full page layouts — standalone, zoneless, signal-based and **SSR-safe**, delivered shadcn-style: `npx ply-ui-cli add` copies the source into your project and it's yours. Not [MUI Base UI](https://base-ui.com) (React).
 
@@ -14,7 +14,7 @@
 🖥️ **SSR-safe**: the docs site prerenders every catalog route, enforced by a blocking CI job · [how we verify it](https://ply-ui.com/learn/angular-ssr-safe-component-library/)  
 🤖 **AI agents (MCP)**: [ply-ui.com/getting-started#ai-agents-mcp](https://ply-ui.com/getting-started#ai-agents-mcp) · `ply-ui-mcp` · [why copy-in UI works better with LLMs](https://ply-ui.com/learn/why-llms-write-better-code-with-copy-in-ui/)  
 🎨 **Figma Design System**: [Figma Community File](https://www.figma.com/community/file/1662825988518656661)  
-✨ **See what you can build for free**: [Live Admin Dashboard Demo](https://base-ui-free-dashboard-demo.pages.dev/app/dashboard) (Source code: [base-ui-free-dashboard](https://github.com/lussos/base-ui-free-dashboard))
+✨ **See what you can build for free**: [Live Admin Dashboard Demo](https://demo.ply-ui.com/app/dashboard) (Source code: [ply-free-dashboard](https://github.com/ply-ui-ng/ply-free-dashboard))
 
 ---
 
@@ -28,7 +28,7 @@ The free tier is production-ready with no account or license: **all primitives**
 npx ply-ui-cli init
 ```
 
-This writes `base-ui.json`, creates `base-ui.css` (CDK overlay styles, keyframes, autofill fixes) imported from your global stylesheet, and downloads the icon sprites into your assets folder. Use `--yes` to accept defaults non-interactively.
+This writes `ply-ui.json`, creates `ply-ui.css` (CDK overlay styles, keyframes, autofill fixes) imported from your global stylesheet, and downloads the icon sprites into your assets folder. Use `--yes` to accept defaults non-interactively.
 
 ### 2. Configure Tailwind CSS
 
@@ -65,7 +65,7 @@ Omit the name (`npx ply-ui-cli add`) in a terminal to pick from the catalog. Pas
 
 Component dependencies are resolved recursively, and missing npm packages are installed with your package manager automatically. Run `npx ply-ui-cli list` to see everything that's available.
 
-If a component looks unstyled or icons are missing, `npx ply-ui-cli doctor` checks `base-ui.json`, Tailwind, CDK, and the icon sprites (read-only). Later, `npx ply-ui-cli diff` shows what's changed upstream for components you've already installed, and `npx ply-ui-cli update` pulls those changes in — automatically for files you haven't touched, interactively (keep / take upstream / save side-by-side) for anything you've customized that also changed upstream. See [`ply-ui-cli`](https://www.npmjs.com/package/ply-ui-cli) for details.
+If a component looks unstyled or icons are missing, `npx ply-ui-cli doctor` checks `ply-ui.json`, Tailwind, CDK, and the icon sprites (read-only). Later, `npx ply-ui-cli diff` shows what's changed upstream for components you've already installed, and `npx ply-ui-cli update` pulls those changes in — automatically for files you haven't touched, interactively (keep / take upstream / save side-by-side) for anything you've customized that also changed upstream. See [`ply-ui-cli`](https://www.npmjs.com/package/ply-ui-cli) for details.
 
 ### 4. Import in your Angular app
 
@@ -152,9 +152,9 @@ no-ops outside a server render.
 
 For AI agents and LLM-assisted development:
 
-- **MCP server** — [`ply-ui-mcp`](packages/mcp): catalog tools `list_components`, `search_components`, `get_component`. Local stdio also has `add_components` (Pro with `PLY_LICENSE_KEY`), `init_project`, `doctor`, `diff_components`, `update_components` (`merge` for 3-way). Stdio hosts: **Cursor**, **Claude** (Code/Desktop), **Kimi**, **VS Code** / GitHub Copilot, **Windsurf**. ChatGPT/Gemini chat catalog: [mcp.ply-ui.com/mcp](https://mcp.ply-ui.com/mcp) (read-only; install with `npx ply-ui-cli add <name>`). Run `npx -y ply-ui-mcp` locally to install. Setup: [Getting started — AI agents (MCP)](https://ply-ui.com/getting-started#ai-agents-mcp). The CLI remains the canonical installer; MCP wraps it.
+- **MCP server** — [`ply-ui-mcp`](https://www.npmjs.com/package/ply-ui-mcp): catalog tools `list_components`, `search_components`, `get_component`. Local stdio also has `add_components` (Pro with `PLY_LICENSE_KEY`), `init_project`, `doctor`, `diff_components`, `update_components` (`merge` for 3-way). Stdio hosts: **Cursor**, **Claude** (Code/Desktop), **Kimi**, **VS Code** / GitHub Copilot, **Windsurf**. ChatGPT/Gemini chat catalog: [mcp.ply-ui.com/mcp](https://mcp.ply-ui.com/mcp) (read-only; install with `npx ply-ui-cli add <name>`). Run `npx -y ply-ui-mcp` locally to install. Setup: [Getting started — AI agents (MCP)](https://ply-ui.com/getting-started#ai-agents-mcp). The CLI remains the canonical installer; MCP wraps it.
 - **Component catalog** — [`docs/ai/components.md`](docs/ai/components.md): selectors, inputs, outputs, and descriptions in one file. Published at [ply-ui.com/docs/ai/components.md](https://ply-ui.com/docs/ai/components.md) and inlined in [llms-full.txt](https://ply-ui.com/llms-full.txt).
-- **Cursor rules & snippets** — [`docs/ai/base-ui.mdc`](docs/ai/base-ui.mdc) and [`docs/ai/base-ui.code-snippets`](docs/ai/base-ui.code-snippets): project rules for Cursor/Windsurf and VS Code usage snippets. Copy from [Getting started — editor rules](https://ply-ui.com/getting-started/#editor-rules), or `npx ply-ui-cli init` writes them when missing.
+- **Cursor rules & snippets** — [`docs/ai/ply-ui.mdc`](docs/ai/ply-ui.mdc) and [`docs/ai/ply-ui.code-snippets`](docs/ai/ply-ui.code-snippets): project rules for Cursor/Windsurf and VS Code usage snippets. Copy from [Getting started — editor rules](https://ply-ui.com/getting-started/#editor-rules), or `npx ply-ui-cli init` writes them when missing.
 - **Cookbooks** — [ply-ui.com/cookbooks](https://ply-ui.com/cookbooks): assembled screens (settings form, dialog + CVA, invoice table, AI chat, signal forms, httpResource, @defer, view transitions).
 - **Non-interactive CLI** — `npx ply-ui-cli init --yes` and `add <name> --yes` for agent use. Bare `add` (no names) is an interactive catalog picker. `npx ply-ui-cli doctor` is the read-only setup check. Agent index: [llms.txt](https://ply-ui.com/llms.txt).
 
@@ -195,10 +195,10 @@ A one-time Pro license is $99. The Relay workspace, Motif storefront, and Motif 
 npx ply-ui-cli init once per project, then npx ply-ui-cli add <name>. Omit the name in a terminal to pick from the catalog (filter, then type to select). --yes and CI need explicit names. Components land in src/app/components/<name>/ by default and are yours.
 
 **How do I verify my Ply setup?**  
-Run npx ply-ui-cli doctor. It checks base-ui.json, the Angular workspace, @angular/cdk, Tailwind v4 @source paths, the base-ui.css import, icon sprites, and the components directory — read-only, nothing is written.
+Run npx ply-ui-cli doctor. It checks ply-ui.json, the Angular workspace, @angular/cdk, Tailwind v4 @source paths, the ply-ui.css import, icon sprites, and the components directory — read-only, nothing is written.
 
 **Can AI agents install Ply?**  
-Yes. npx -y ply-ui-mcp is stdio for Cursor, Claude (Code/Desktop), Kimi, VS Code, Windsurf, and other local hosts. ChatGPT and Gemini chat apps use Streamable HTTP: npx -y ply-ui-mcp --http --read-only (catalog tools) or local --http without --read-only so add/init/update can see the project. Pro add uses PLY_LICENSE_KEY on the MCP process. Editors that skip MCP can copy the Cursor rule and snippet pack from https://ply-ui.com/getting-started/#editor-rules.
+Yes. npx -y ply-ui-mcp is stdio for Cursor, Claude (Code/Desktop), Kimi, VS Code, Windsurf, and other local hosts. ChatGPT and Gemini chat apps use the Streamable HTTP connector at https://mcp.ply-ui.com/mcp (catalog tools) or a local npx -y ply-ui-mcp --http without --read-only so add/init/update can see the project. Pro add uses PLY_LICENSE_KEY on the MCP process. Editors that skip MCP can copy the Cursor rule and snippet pack from https://ply-ui.com/getting-started/#editor-rules.
 
 **What is the risk if Ply disappears?**  
 Near zero. Installed code is in your version control with no runtime dependency; deleting the CLI changes nothing about your app.

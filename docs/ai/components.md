@@ -17,7 +17,7 @@ Button directives (`ply-button`, `ply-stroked-button`, `ply-icon-button`, `ply-s
 <button ply-icon-button color="white" class="absolute right-3 top-3 rounded-full">…</button>
 ```
 
-`color="primary"` / `"danger"` read `--base-primary` and `--base-destructive` from `base-ui.css`. Buttons use `FOCUS_RING`. Field chrome uses `FOCUS_RING_WITHIN` on `ply-input-group` so addons stay inside the halo.
+`color="primary"` / `"danger"` read `--ply-primary` and `--ply-destructive` from `ply-ui.css`. Buttons use `FOCUS_RING`. Field chrome uses `FOCUS_RING_WITHIN` on `ply-input-group` so addons stay inside the halo.
 
 The same `cn()` merge applies to any component whose host binding includes `extraClass`. Existing `utility!` overrides still work.
 
@@ -3425,7 +3425,7 @@ Lightweight WYSIWYG editor with a themed toolbar (`ply-stroked-icon-button`, too
 **Selector:** `[ply-button]`
 **Standalone:** true
 
-A standard button directive. Extra `class` values merge via `cn()`. Primary/danger colors and radius read `--base-*` tokens. Includes a `focus-visible` ring.
+A standard button directive. Extra `class` values merge via `cn()`. Primary/danger colors and radius read `--ply-*` tokens. Includes a `focus-visible` ring.
 
 **Inputs:**
 | Name | Type | Default | Description |

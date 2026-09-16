@@ -49,8 +49,9 @@ The environment variables read are `PLY_LICENSE_KEY`,
 `PLY_CLI_PATH`, and `PLY_CWD`. The matching `BASE_UI_*` names still work.
 
 Files written on your machine: components under your configured alias,
-`base-ui.json`, `base-ui-lock.json`, `base-ui.css` next to your global
-stylesheet, the icon sprites, and an `assets` entry in `angular.json`.
+`ply-ui.json`, `ply-ui-lock.json`, `ply-ui.css` next to your global
+stylesheet (legacy `base-ui.json` / `base-ui-lock.json` / `base-ui.css` still
+resolve), the icon sprites, and an `assets` entry in `angular.json`.
 
 ### Opting out and locking down
 

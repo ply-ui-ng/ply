@@ -1,6 +1,6 @@
 # Contributing to Ply
 
-This repository ([ply-ui-ng/base-ui](https://github.com/ply-ui-ng/ply)) is the **public community hub**: README, changelog, license, security policy, issues, and discussions.
+This repository ([ply-ui-ng/ply](https://github.com/ply-ui-ng/ply)) is the **public community hub**: README, changelog, license, security policy, issues, and discussions.
 
 Component source is **not** in this repository. Install with:
 
@@ -35,6 +35,6 @@ Please file an issue (or a discussion for questions) instead.
 ## Related
 
 - Live catalog: [ply-ui.com](https://ply-ui.com)
-- Free admin dashboard (source): [lussos/base-ui-free-dashboard](https://github.com/lussos/base-ui-free-dashboard)
+- Free admin dashboard (source): [ply-ui-ng/ply-free-dashboard](https://github.com/ply-ui-ng/ply-free-dashboard)
 - CLI: [`ply-ui-cli`](https://www.npmjs.com/package/ply-ui-cli)
 - MCP: [`ply-ui-mcp`](https://www.npmjs.com/package/ply-ui-mcp)
