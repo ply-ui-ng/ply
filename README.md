@@ -12,7 +12,7 @@
 📝 **Changelog**: [ply-ui.com/changelog](https://ply-ui.com/changelog) · [CHANGELOG.md](CHANGELOG.md) · [Issues](https://github.com/ply-ui-ng/ply/issues)  
 ♿ **Accessibility (ACR)**: [ply-ui.com/accessibility](https://ply-ui.com/accessibility) · `npm run test:a11y`  
 🖥️ **SSR-safe**: the docs site prerenders every catalog route, enforced by a blocking CI job · [how we verify it](https://ply-ui.com/learn/angular-ssr-safe-component-library/)  
-🤖 **AI agents (MCP)**: [ply-ui.com/getting-started#ai-agents-mcp](https://ply-ui.com/getting-started#ai-agents-mcp) · `ply-ui-mcp` · [why copy-in UI works better with LLMs](https://ply-ui.com/learn/why-llms-write-better-code-with-copy-in-ui/)  
+🤖 **AI agents (MCP)**: [ply-ui.com/getting-started#ai-agents-mcp](https://ply-ui.com/getting-started#ai-agents-mcp) · `ply-ui-mcp` · [why copy-in UI works better with LLMs](https://ply-ui.com/learn/why-llms-write-better-code-with-copy-in-ui/) · [token walkthrough: rich text editor](https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/)  
 🎨 **Figma Design System**: [Figma Community File](https://www.figma.com/community/file/1662825988518656661)  
 ✨ **See what you can build for free**: [Live Admin Dashboard Demo](https://demo.ply-ui.com/app/dashboard) (Source code: [ply-free-dashboard](https://github.com/ply-ui-ng/ply-free-dashboard))
 
@@ -199,6 +199,9 @@ Run npx ply-ui-cli doctor. It checks ply-ui.json, the Angular workspace, @angula
 
 **Can AI agents install Ply?**  
 Yes. npx -y ply-ui-mcp is stdio for Cursor, Claude (Code/Desktop), Kimi, VS Code, Windsurf, and other local hosts. ChatGPT and Gemini chat apps use the Streamable HTTP connector at https://mcp.ply-ui.com/mcp (catalog tools) or a local npx -y ply-ui-mcp --http without --read-only so add/init/update can see the project. Pro add uses PLY_LICENSE_KEY on the MCP process. Editors that skip MCP can copy the Cursor rule and snippet pack from https://ply-ui.com/getting-started/#editor-rules.
+
+**Do AI agents use fewer tokens with Ply?**  
+Usually, yes. With Ply the agent copies a finished component (CLI or MCP) and wires it, instead of generating a toolbar, selection model, sanitizer, and SSR guards from a blank file. Token use still depends on the prompt and the model. A reconstructed Claude/Grok session for the rich text editor is at https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/ — that is a teaching simulation, not a lab benchmark.
 
 **What is the risk if Ply disappears?**  
 Near zero. Installed code is in your version control with no runtime dependency; deleting the CLI changes nothing about your app.
