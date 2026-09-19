@@ -76,7 +76,7 @@ What that risk does *and does not* mean here:
 | Vendor disappears and your build breaks | **No.** Components are source in your repo with no runtime dependency. |
 | Vendor disappears and you cannot get security fixes from them | **Yes.** You would maintain the copied source yourself — which you can, because you have it. |
 | A dependency you cannot patch goes unmaintained | **No.** You own the files and can edit them like any other code in your repository. |
-| Slow response to bug reports or feature requests | **Yes.** Support is best-effort; see LICENSE.md §5. |
+| Slow response to bug reports or feature requests | **Yes.** Support is best-effort; see LICENSE-PRO.md §5. |
 
 The copy-in architecture is what bounds the blast radius. The worst realistic
 case is that you stop receiving updates and inherit maintenance of code you
@@ -85,7 +85,7 @@ materially different failure mode from an abandoned runtime dependency.
 
 ## What happens if the project shuts down or the registry goes offline?
 
-[LICENSE.md §5](../LICENSE.md) makes this contractual rather than a promise:
+[LICENSE-PRO.md §5](../LICENSE-PRO.md) makes this contractual rather than a promise:
 
 - Every version delivered to you is yours **in perpetuity** — the right does not
   expire and does not depend on the registry, the CLI, or Lussos continuing to
@@ -99,7 +99,7 @@ materially different failure mode from an abandoned runtime dependency.
 
 ## Does a license dispute put my shipped software at risk?
 
-No. [LICENSE.md §7](../LICENSE.md) explicitly carves this out: termination ends
+No. [LICENSE-PRO.md §7](../LICENSE-PRO.md) explicitly carves this out: termination ends
 your right to download new components and receive updates, and never revokes
 your right to keep using, modifying, distributing, and supporting components
 already incorporated into products you have shipped. You will never have to
@@ -109,13 +109,12 @@ recall, re-license, or rewrite a released product over a licensing dispute.
 
 | Layer | License |
 |---|---|
-| `ply-ui-cli` (the tool) | MIT |
-| Free-tier components | Free for unlimited commercial use; may not be redistributed *as a component library* |
-| Pro components | Paid license; same product freedom, same redistribution limit |
+| `ply-ui-cli` and `ply-ui-mcp` | MIT ([LICENSE.md](../LICENSE.md)) |
+| Free-tier components | MIT — use, modify, and redistribute |
+| Pro components | Paid license ([LICENSE-PRO.md](../LICENSE-PRO.md)); may not be redistributed as a library or kit |
 
-The restriction in every tier is on reselling the components themselves as a
-competing UI kit, template collection, or design kit. Building and selling
-products with them is unrestricted, including client work.
+Building and selling products with either tier is unrestricted, including
+client work. The redistribution limit applies to **Pro** source only.
 
 ## What is not offered?
 

@@ -191,6 +191,12 @@ Effectively yes: the same copy-in philosophy — real source in your repo, owned
 **How much does Ply Pro cost?**  
 A one-time Pro license is $99. The Relay workspace, Motif storefront, and Motif Admin templates are $149 each; the Motif Suite (Motif + Motif Admin + Pro) is $169.
 
+**Can I use free components commercially?**  
+Yes. Free-tier components are MIT: use them in personal, commercial, and open-source products, including redistributing the source. No account or license key.
+
+**Is Ply open source?**  
+The 125 free components, ply-ui-cli, and ply-ui-mcp are MIT. You may use, modify, and redistribute them. Pro components are a separate paid license — see LICENSE-PRO.md.
+
 **How do I install a component?**  
 npx ply-ui-cli init once per project, then npx ply-ui-cli add <name>. Omit the name in a terminal to pick from the catalog (filter, then type to select). --yes and CI need explicit names. Components land in src/app/components/<name>/ by default and are yours.
 
@@ -211,14 +217,12 @@ More: [https://ply-ui.com/faq/](https://ply-ui.com/faq/) · [https://ply-ui.com/
 
 ## 📄 License
 
-See [LICENSE.md](LICENSE.md). In short: free-tier components are free to use in unlimited projects; pro components require a paid license (one developer, unlimited end products, lifetime updates); redistributing components as a library/kit is not permitted for either tier. Every component file the CLI installs carries a header naming its license.
+See [LICENSE.md](LICENSE.md) and [LICENSE-PRO.md](LICENSE-PRO.md). Free-tier components, `ply-ui-cli`, and `ply-ui-mcp` are MIT. Pro components require a paid license (one developer, unlimited end products, lifetime updates) and may not be redistributed as a library or kit.
 
-Two guarantees worth calling out, because they are the usual objections to a commercial component library:
+Two Pro guarantees worth calling out:
 
-- **Perpetual use** (§5) — every version delivered to you stays usable forever, with no registry, CLI, or vendor dependency at build or run time. Each release also attaches an offline Pro source archive.
-- **Termination does not reach shipped code** (§7) — a licensing dispute can stop future downloads, but never revokes your right to keep shipping products that already include the components.
-
-The CLI *tool itself* ([`ply-ui-cli`](https://www.npmjs.com/package/ply-ui-cli)) is separately MIT-licensed — that covers only the tool's own code, not the components it fetches.
+- **Perpetual use** ([LICENSE-PRO.md](LICENSE-PRO.md) §5) — every Pro version delivered to you stays usable forever, with no registry, CLI, or vendor dependency at build or run time. Each release also attaches an offline Pro source archive.
+- **Termination does not reach shipped code** ([LICENSE-PRO.md](LICENSE-PRO.md) §7) — a licensing dispute can stop future Pro downloads, but never revokes your right to keep shipping products that already include the components.
 
 ## 🆘 Support
 
