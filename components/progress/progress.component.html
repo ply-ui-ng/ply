@@ -1,0 +1,13 @@
+<div [class]="trackClass()" tabindex="0">
+  <div [class]="fillClass()" [style.width.%]="clamped()"></div>
+  @if (showTip()) {
+    <div
+      [class]="tipClass()"
+      [style.left.%]="clamped()"
+      aria-hidden="true"
+    >
+      <span [class]="tipBubbleClass()">{{ displayValue() }}</span>
+      <span [class]="tipCaretClass()"></span>
+    </div>
+  }
+</div>

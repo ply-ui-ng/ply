@@ -1,0 +1,18 @@
+@if (!isClosed()) {
+<div [class]="alertClasses()">
+  <div class="flex gap-4 items-start">
+    @if (icon()) {
+    <ply-icon [name]="icon()" [class]="iconClasses()"></ply-icon>
+    }
+    <div class="flex-1 mt-0.5">
+      <ng-content></ng-content>
+    </div>
+    @if (close()) {
+    <button type="button" [class]="closeButtonClasses()" (click)="handleClose()" aria-label="Close alert">
+      <ply-icon name="close" [class]="closeIconClasses()"></ply-icon>
+    </button>
+    }
+  </div>
+  <ng-content select="ply-alert-actions"></ng-content>
+</div>
+}

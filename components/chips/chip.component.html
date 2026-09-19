@@ -1,0 +1,18 @@
+<span [class]="chipClasses()"
+  [attr.role]="disabled() ? null : 'button'"
+  [attr.tabindex]="disabled() ? null : 0"
+  [attr.aria-pressed]="active()"
+  (click)="handleClick()"
+  (keydown.enter)="handleClick(); $event.preventDefault()"
+  (keydown.space)="handleClick(); $event.preventDefault()">
+  @if (icon()) {
+  <ply-icon [name]="icon()!" [class]="iconClasses()" aria-hidden="true"></ply-icon>
+  }
+  <ng-content></ng-content>
+  @if (removable()) {
+  <button type="button" class="flex items-center justify-center focus:outline-none" (click)="handleRemove($event)"
+    [attr.aria-label]="removeLabel()">
+    <ply-icon name="close" [class]="closeIconClasses()" aria-hidden="true"></ply-icon>
+  </button>
+  }
+</span>

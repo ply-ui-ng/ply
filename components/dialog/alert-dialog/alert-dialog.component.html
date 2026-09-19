@@ -1,0 +1,23 @@
+<ply-dialog width="400">
+  <ply-dialog-header>
+    <span [id]="titleId">{{ data.title }}</span>
+    <button type="button" ply-icon-button color="transparent" ply-dialog-close>
+      <ply-icon name="close"></ply-icon>
+    </button>
+  </ply-dialog-header>
+  <ply-dialog-body>
+    @if (data.description) {
+      <p [id]="messageId" class="text-sm text-slate-500 dark:text-slate-400 m-0!">{{ data.description }}</p>
+    }
+  </ply-dialog-body>
+  <ply-dialog-footer>
+    <button type="button" ply-stroked-button ply-dialog-close>{{ cancelLabel() }}</button>
+    <button
+      type="button"
+      ply-button
+      [color]="data.destructive ? 'danger' : 'primary'"
+      (click)="confirm()">
+      {{ confirmLabel() }}
+    </button>
+  </ply-dialog-footer>
+</ply-dialog>

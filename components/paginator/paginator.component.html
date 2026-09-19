@@ -1,0 +1,67 @@
+@if (plyPaginator()) {
+<div class="flex justify-start sm:justify-between items-center gap-4">
+  <ply-select class="w-20" [ngModel]="itemsPerPage() !== null ? itemsPerPage() : pageSizeOptions()[0]">
+    @for (option of pageSizeOptions(); track option) {
+    <option [value]="option">{{ option }}</option>
+    }
+  </ply-select>
+
+  <div class="flex items-center gap-4">
+    <div class="flex items-center gap-2">
+      <p class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">{{ i18n.goToPage }}</p>
+      <ply-input-spinner class="w-24"></ply-input-spinner>
+    </div>
+    <div class="flex items-center gap-2">
+      <button ply-icon-button color="transparent" size="sm" (click)="decrease()" [attr.title]="i18n.previous">
+        <ply-icon name="chevron-left" class="stroke-blue-600"></ply-icon>
+      </button>
+      <p class="text-xs font-medium dark:text-slate-300">{{ i18n.pageOf(start(), end()) }}</p>
+      <button ply-icon-button color="transparent" size="sm" (click)="increase()" [attr.title]="i18n.next">
+        <ply-icon name="chevron-right" class="stroke-blue-600"></ply-icon>
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+<div class="flex justify-center not-prose">
+  @if (!plyPaginator()) {
+  <nav [attr.aria-label]="i18n.pageNavigation">
+    <ul class="flex items-center">
+      @if (!arrows()) {
+      <li>
+        <button type="button"
+          class="h-9 px-3 flex items-center justify-center border border-slate-300 dark:border-slate-600 text-sm rounded-l-xl hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-300 transition-colors"
+          [attr.aria-label]="i18n.previousPage">{{ i18n.previous }}</button>
+      </li>
+      } @else {
+      <li>
+        <button type="button"
+          class="h-9 w-9 flex items-center justify-center border border-slate-300 dark:border-slate-600 rounded-l-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          [attr.aria-label]="i18n.previousPage">
+          <ply-icon name="chevron-left" class="stroke-slate-800 dark:stroke-slate-100 w-4 h-4" aria-hidden="true"></ply-icon>
+        </button>
+      </li>
+      }
+
+      <ng-content select="ply-p-page"></ng-content>
+
+      @if (arrows()) {
+      <li>
+        <button type="button"
+          class="h-9 w-9 flex items-center justify-center border border-slate-300 dark:border-slate-600 rounded-r-xl -ml-px hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          [attr.aria-label]="i18n.nextPage">
+          <ply-icon name="chevron-right" class="stroke-slate-800 dark:stroke-slate-100 w-4 h-4" aria-hidden="true"></ply-icon>
+        </button>
+      </li>
+      } @else {
+      <li>
+        <button type="button"
+          class="h-9 px-3 flex items-center justify-center border border-slate-300 dark:border-slate-600 text-sm rounded-r-xl -ml-px hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-300 transition-colors"
+          [attr.aria-label]="i18n.nextPage">{{ i18n.next }}</button>
+      </li>
+      }
+    </ul>
+  </nav>
+  }
+</div>

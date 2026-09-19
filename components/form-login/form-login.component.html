@@ -1,0 +1,25 @@
+<ply-card>
+  <form class="p-8 flex flex-col h-full" (submit)="onSubmit($event)">
+    <h3
+      class="font-bold text-sm text-slate-900 dark:text-white mb-6 uppercase tracking-widest text-center">
+      {{ heading() }}</h3>
+    <ply-input-group class="mb-4">
+      <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Email address</ply-label>
+      <input ply-input type="email" name="email" placeholder="Email address" [(ngModel)]="email" />
+    </ply-input-group>
+    <ply-input-group class="mb-4">
+      <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Password</ply-label>
+      <input ply-input type="password" name="password" placeholder="Password" [(ngModel)]="password" />
+    </ply-input-group>
+    <div class="flex items-center justify-between mb-6">
+      <ply-checkbox class="text-xs text-slate-500" name="remember" [(ngModel)]="remember">Keep me logged in</ply-checkbox>
+      <a [routerLink]="forgotLink()"
+        class="text-[10px]! uppercase font-light! tracking-[2px]! text-slate-400 hover:text-slate-600 transition-colors">Forgot
+        password?</a>
+    </div>
+    <button ply-button color="primary" type="submit" class="w-full py-3 mb-6 mt-auto">{{ submitLabel() }}</button>
+    <p class="text-center text-[10px] uppercase font-light text-slate-400 tracking-widest">{{ footerHint() }}
+      <a [routerLink]="footerLink()" class="text-slate-900 dark:text-white">{{ footerLabel() }}</a>
+    </p>
+  </form>
+</ply-card>

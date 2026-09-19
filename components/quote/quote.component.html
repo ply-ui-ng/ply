@@ -1,0 +1,45 @@
+<div [class]="containerClass()">
+
+  <!-- Background Icon for icon-top -->
+  @if (variant() === 'icon-top') {
+  <ply-icon name="quote"
+    class="w-16 h-16 opacity-30 text-slate-300 dark:text-slate-700 stroke-current absolute top-0 left-0 -z-10"></ply-icon>
+  }
+
+  <!-- Avatar Left Section -->
+  @if (variant() === 'avatar-left' && (avatarUrl() || authorName())) {
+  <div class="text-center shrink-0 flex items-center gap-2">
+    @if (avatarUrl()) {
+    <ply-avatar size="md" shape="circle" [avatarUrl]="avatarUrl()"></ply-avatar>
+    }
+    <div>
+      @if (authorName()) {
+      <div class="text-xs font-bold mt-2 dark:text-white">{{ authorName() }}</div>
+      }
+      @if (authorRole()) {
+      <div class="text-xs text-slate-500 text-left">{{ authorRole() }}</div>
+      }
+    </div>
+  </div>
+  }
+
+  <!-- Main Content Area -->
+  <div class="flex-1 z-10 relative">
+
+    <!-- The actual quote text -->
+    <div [class]="contentClass()">
+      <ng-content></ng-content>
+    </div>
+
+    <!-- Author details for default and icon-top -->
+    @if (variant() !== 'avatar-left' && authorName()) {
+    <div [class]="authorClass()">
+      <div class="font-bold text-slate-900 dark:text-white">{{ authorName() }}</div>
+      @if (authorRole()) {
+      <div class="text-slate-500 text-left">{{ authorRole() }}</div>
+      }
+    </div>
+    }
+
+  </div>
+</div>

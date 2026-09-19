@@ -1,0 +1,29 @@
+@if (showMobileBar()) {
+  <div [class]="mobileBarClass()">
+    <button
+      ply-icon-button
+      color="transparent"
+      (click)="openNavBar()"
+      size="sm"
+      aria-label="Toggle Navigation"
+      class="mr-3"
+      >
+      <ply-icon [name]="navBarOpen() ? 'close' : 'more'"></ply-icon>
+    </button>
+    <ply-breadcrumb>
+      @if (parentLabel()) {
+        <ply-breadcrumb-item [label]="parentLabel()!"></ply-breadcrumb-item>
+      }
+      <ply-breadcrumb-item [label]="selectedLabel()"></ply-breadcrumb-item>
+    </ply-breadcrumb>
+  </div>
+}
+<div class="relative flex h-full w-full flex-1 overflow-hidden">
+  <div tabindex="0" [class]="navRailClass()" (click)="onNavClick()" (keydown.enter)="onNavClick()">
+    <ng-content select="ply-sidenav-nav"></ng-content>
+  </div>
+
+  <div [class]="bodyClass()">
+    <ng-content select="ply-sidenav-body"></ng-content>
+  </div>
+</div>

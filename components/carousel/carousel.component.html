@@ -1,0 +1,30 @@
+<div class="flex flex-col w-full relative px-4">
+  <!-- Header -->
+  <div class="flex justify-between items-center py-4">
+    @if (title()) {
+    <h3 class="m-0! text-xl font-bold text-slate-900 dark:text-white">{{ title() }}</h3>
+    } @else {
+    <div class="flex-1"></div>
+    }
+    <!-- Navigation arrows -->
+    <div class="flex gap-2">
+      <button [disabled]="!canScrollPrev()" ply-icon-button (click)="scrollPrev()" aria-label="Previous items"
+        class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700">
+        <ply-icon name="chevron-left"></ply-icon>
+      </button>
+      <button [disabled]="!canScrollNext()" ply-icon-button (click)="scrollNext()" aria-label="Next items"
+        class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700">
+        <ply-icon name="chevron-right"></ply-icon>
+      </button>
+    </div>
+  </div>
+
+  <div
+    role="region" aria-roledescription="carousel" [attr.aria-label]="title() || 'Carousel'"
+    [class]="trackCls()"
+    #track (scroll)="onScroll()"
+    (mousedown)="onMouseDown($event)" (mouseleave)="onMouseLeave()" (mouseup)="onMouseUp()"
+    (mousemove)="onMouseMove($event)" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+    <ng-content></ng-content>
+  </div>
+</div>

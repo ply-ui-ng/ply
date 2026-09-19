@@ -1,0 +1,44 @@
+<div class="flex min-w-0 items-center gap-1 overflow-hidden">
+  <ng-content></ng-content>
+</div>
+
+@if (overflowItems().length) {
+<button
+  ply-icon-button
+  color="transparent"
+  size="sm"
+  type="button"
+  class="shrink-0"
+  [ply-dropdown-menu-trigger]="moreMenu"
+  [attr.aria-label]="moreLabel()">
+  <ply-icon name="chevron-down" class="h-4 w-4 stroke-slate-600 dark:stroke-slate-300"></ply-icon>
+</button>
+<ply-dropdown-menu #moreMenu>
+  @for (item of overflowItems(); track $index) {
+  @if (item.routerLink() !== undefined) {
+  <a ply-dropdown-menu-item [routerLink]="item.routerLink()">{{ item.menuText() }}</a>
+  } @else if (item.href()) {
+  <a
+    ply-dropdown-menu-item
+    [href]="item.href()"
+    [attr.target]="item.target() || null"
+    [attr.rel]="item.target() === '_blank' ? 'noopener noreferrer' : null">{{ item.menuText() }}</a>
+  } @else {
+  <span ply-dropdown-menu-item>{{ item.menuText() }}</span>
+  }
+  }
+</ply-dropdown-menu>
+}
+
+<!-- Offscreen More button used only for width measurement -->
+<button
+  ply-icon-button
+  color="transparent"
+  size="sm"
+  type="button"
+  tabindex="-1"
+  aria-hidden="true"
+  class="pointer-events-none absolute left-[-9999px] top-0 opacity-0"
+  #moreMeasure>
+  <ply-icon name="chevron-down" class="h-4 w-4"></ply-icon>
+</button>

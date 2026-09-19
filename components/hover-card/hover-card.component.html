@@ -1,0 +1,25 @@
+<span
+  #triggerSlot
+  class="inline-block"
+  (pointerenter)="onTriggerEnter()"
+  (pointerleave)="onTriggerLeave()"
+  (focusin)="onTriggerEnter()"
+  (focusout)="onTriggerFocusOut($event)"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-controls]="panelId">
+  <ng-content select="[hover-card-trigger]"></ng-content>
+</span>
+
+<ng-template #panelTemplate>
+  <div
+    [id]="panelId"
+    role="dialog"
+    [attr.aria-hidden]="!isOpen()"
+    class="not-prose rounded-xl border border-slate-200 bg-white p-4 shadow-2xl dark:border-slate-700 dark:bg-slate-800"
+    [style.min-width]="minWidth()"
+    (pointerenter)="onPanelEnter()"
+    (pointerdown)="onPanelEnter()"
+    (pointerleave)="onPanelLeave()">
+    <ng-content></ng-content>
+  </div>
+</ng-template>

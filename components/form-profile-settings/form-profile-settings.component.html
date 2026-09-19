@@ -1,0 +1,92 @@
+<ply-card class="mb-8">
+        <div class="h-35 bg-slate-100 relative shrink-0">
+          <img src="assets/images/breathtaking_nature_mountain_1776362688676.png"
+            class="w-full h-full object-cover z-0" alt="mountain">
+          <div class="absolute inset-0 bg-slate-900/30"></div>
+          <h3 class="absolute top-4 left-6 font-bold text-white uppercase tracking-widest text-sm">Profile
+            Settings</h3>
+          <button type="button" ply-icon-button size="sm" color="inverted" class="absolute! top-4 right-4 rounded-full!">
+            <ply-icon name="more"></ply-icon>
+          </button>
+          <div class="absolute bottom-4 left-6 flex items-start gap-4 -mt-8 mb-8 z-10">
+            <ply-avatar size="full" shape="circle"
+              class="w-20 h-20 rounded-full border-4 border-white dark:border-slate-900"
+              avatarUrl="assets/images/avatar1.jpeg" ariaLabel="Edit profile"></ply-avatar>
+            <div class="flex-1 flex justify-between items-center mt-3">
+              <div class="flex gap-2">
+                <button type="button" ply-stroked-icon-button size="sm" color="white" class="rounded-full!">
+                  <ply-icon name="edit"></ply-icon>
+                </button>
+                <button type="button" ply-stroked-icon-button size="sm" color="white" class="rounded-full!">
+                  <ply-icon name="trash"></ply-icon>
+                </button>
+              </div>
+              <button type="button" ply-icon-button size="sm" color="inverted" aria-label="User" class="rounded-full! mr-10">
+                <ply-icon name="user"></ply-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <ply-card-body class="p-6 pt-0 flex flex-col flex-1">
+          <form class="contents" (submit)="onSubmit($event)">
+          <div class="flex gap-4 mb-4">
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">First Name</ply-label>
+              <input ply-input name="firstName" [(ngModel)]="firstName" />
+            </ply-input-group>
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Last Name</ply-label>
+              <input ply-input name="lastName" [(ngModel)]="lastName" />
+            </ply-input-group>
+          </div>
+          <div class="flex gap-4 mb-4">
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Phone</ply-label>
+              <input ply-input name="phone" [(ngModel)]="phone" />
+            </ply-input-group>
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Email</ply-label>
+              <input ply-input type="email" name="email" [(ngModel)]="email" />
+              <ply-icon ply-addon-end name="check-circle" class="w-4 h-4 stroke-green-500"></ply-icon>
+            </ply-input-group>
+          </div>
+          <div class="flex gap-4 mb-4">
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Country</ply-label>
+              <select ply-input class="appearance-none" name="country" [(ngModel)]="country">
+                <option>United States</option>
+              </select>
+              <ply-icon ply-addon-end name="chevron-down"
+                class="w-4 h-4 text-slate-400 mr-3 pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"></ply-icon>
+            </ply-input-group>
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">State</ply-label>
+              <select ply-input class="appearance-none" name="state" [(ngModel)]="state">
+                <option>California</option>
+              </select>
+              <ply-icon ply-addon-end name="chevron-down"
+                class="w-4 h-4 text-slate-400 mr-3 pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"></ply-icon>
+            </ply-input-group>
+          </div>
+          <div class="flex gap-4 mb-4">
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Zipcode</ply-label>
+              <input ply-input name="zipcode" [(ngModel)]="zipcode" />
+            </ply-input-group>
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Area</ply-label>
+              <input ply-input name="area" [(ngModel)]="area" />
+            </ply-input-group>
+          </div>
+          <ply-input-group class="mb-8 flex-1">
+            <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Bio</ply-label>
+            <textarea ply-textarea name="bio" rows="3" [(ngModel)]="bio"></textarea>
+          </ply-input-group>
+
+          <div class="md:flex gap-4 mt-auto space-y-3 md:space-y-0">
+            <button ply-button color="primary" type="submit" class="md:flex-1 w-full">Save</button>
+            <button type="button" ply-button class="md:flex-1 w-full">Cancel</button>
+          </div>
+          </form>
+        </ply-card-body>
+      </ply-card>

@@ -1,0 +1,65 @@
+{
+  "name": "ply-ui-cli",
+  "version": "1.1.126",
+  "description": "Ply CLI — add Angular + Tailwind CSS components to your project (shadcn-style, code is copied in and owned by you). Not MUI Base UI.",
+  "main": "dist/index.js",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ply-ui-ng/ply.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://ply-ui.com",
+  "bugs": {
+    "url": "https://github.com/ply-ui-ng/ply/issues",
+    "email": "security@ply-ui.com"
+  },
+  "bin": {
+    "ply-ui-cli": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "angular",
+    "tailwindcss",
+    "components",
+    "ui",
+    "cli",
+    "ply",
+    "ply-ui",
+    "ply-ui-cli",
+    "shadcn",
+    "angular-ui"
+  ],
+  "author": "Lussos <support@ply-ui.com> (https://ply-ui.com)",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^26.5.1",
+    "@types/prompts": "^2.4.9",
+    "diff": "^9.0.0",
+    "ora": "~5.4.1",
+    "prompts": "^2.4.2",
+    "tsup": "^8.5.1",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.0",
+    "zod": "^4.6.2"
+  },
+  "overrides": {
+    "esbuild": "0.28.2"
+  }
+}

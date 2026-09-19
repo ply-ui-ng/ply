@@ -1,0 +1,126 @@
+<div #inputContainer>
+  @if (!inline()) {
+    <ply-input-group>
+      @if (label()) {
+        <ply-label>{{ label() }}</ply-label>
+      }
+      <input
+        ply-input
+        type="text"
+        readonly
+        [placeholder]="placeholder()"
+        [value]="displayText()"
+        [disabled]="isDisabled()"
+        role="combobox"
+        [attr.aria-haspopup]="'dialog'"
+        [attr.aria-expanded]="isOpen()"
+        [attr.aria-controls]="listboxId"
+        [attr.aria-label]="label() || placeholder()"
+        (click)="toggle($event)"
+        (keydown.enter)="toggle($event); $event.preventDefault()"
+        (keydown.space)="toggle($event); $event.preventDefault()"
+        (keydown.escape)="close(); $event.preventDefault()"
+        class="cursor-pointer border-transparent! bg-transparent! focus:border-transparent! focus:ring-transparent! focus:ring-offset-transparent! focus:outline-none read-only:pointer-events-auto! read-only:cursor-pointer!" />
+      <button
+        type="button"
+        ply-addon-end
+        class="block h-5 w-5 cursor-pointer"
+        [attr.aria-label]="'Open time picker' + (label() ? ' for ' + label() : '')"
+        [attr.aria-expanded]="isOpen()"
+        [attr.aria-controls]="listboxId"
+        (click)="toggle($event)">
+        <ply-icon name="clock" class="h-5 w-5 stroke-slate-500"></ply-icon>
+      </button>
+    </ply-input-group>
+  }
+
+  @if (inline()) {
+    <ng-container [ngTemplateOutlet]="panelTemplate" />
+  }
+</div>
+
+<ng-template #panelTemplate>
+  <div
+    [id]="listboxId"
+    [attr.role]="inline() ? 'group' : 'dialog'"
+    tabindex="-1"
+    aria-label="Time picker"
+    class="not-prose flex w-max flex-col items-center gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-lg dark:border-slate-700 dark:bg-slate-900"
+    [class.w-full]="inline()"
+    [class.border-0]="inline()"
+    [class.shadow-none]="inline()"
+    [class.p-0]="inline()"
+    (keydown.escape)="close(); $event.preventDefault()">
+
+    <!-- Selected time readout -->
+    <div
+      class="tabular-nums text-2xl font-semibold tracking-tight text-slate-900 dark:text-white"
+      aria-live="polite"
+      aria-atomic="true"
+      [attr.aria-label]="'Selected time ' + displayClock()">
+      {{ displayClock() }}
+    </div>
+
+    <div class="flex items-center gap-2">
+      <!-- Hours stepper -->
+      <div class="flex flex-col items-center gap-1" role="group" aria-label="Hours">
+        <button
+          type="button"
+          class="flex h-8 w-12 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none dark:hover:bg-slate-800 dark:hover:text-slate-200"
+          aria-label="Increase hour"
+          (click)="stepHour(1)">
+          <ply-icon name="chevron-up" class="h-4 w-4 stroke-current"></ply-icon>
+        </button>
+        <div
+          class="flex h-10 w-14 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-lg font-semibold tabular-nums text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+          {{ pad(displayHour()) }}
+        </div>
+        <button
+          type="button"
+          class="flex h-8 w-12 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none dark:hover:bg-slate-800 dark:hover:text-slate-200"
+          aria-label="Decrease hour"
+          (click)="stepHour(-1)">
+          <ply-icon name="chevron-down" class="h-4 w-4 stroke-current"></ply-icon>
+        </button>
+      </div>
+
+      <!-- Colon separator -->
+      <div class="flex h-10 select-none items-center text-lg font-semibold text-slate-300 dark:text-slate-600">:</div>
+
+      <!-- Minutes stepper -->
+      <div class="flex flex-col items-center gap-1" role="group" aria-label="Minutes">
+        <button
+          type="button"
+          class="flex h-8 w-12 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none dark:hover:bg-slate-800 dark:hover:text-slate-200"
+          aria-label="Increase minutes"
+          (click)="stepMinute(1)">
+          <ply-icon name="chevron-up" class="h-4 w-4 stroke-current"></ply-icon>
+        </button>
+        <div
+          class="flex h-10 w-14 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-lg font-semibold tabular-nums text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+          {{ pad(minutes()) }}
+        </div>
+        <button
+          type="button"
+          class="flex h-8 w-12 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none dark:hover:bg-slate-800 dark:hover:text-slate-200"
+          aria-label="Decrease minutes"
+          (click)="stepMinute(-1)">
+          <ply-icon name="chevron-down" class="h-4 w-4 stroke-current"></ply-icon>
+        </button>
+      </div>
+
+      <!-- AM/PM group switch (12h cycle only) -->
+      @if (hourCycle() === '12') {
+        <div class="flex items-center" role="group" aria-label="AM or PM">
+          <ply-button-group
+            size="sm"
+            [ngModel]="isPm() ? 'pm' : 'am'"
+            (ngModelChange)="onPeriodChange($event)">
+            <ply-group-button-item value="am">AM</ply-group-button-item>
+            <ply-group-button-item value="pm">PM</ply-group-button-item>
+          </ply-button-group>
+        </div>
+      }
+    </div>
+  </div>
+</ng-template>

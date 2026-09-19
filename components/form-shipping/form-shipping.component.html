@@ -1,0 +1,115 @@
+<ply-card class="mb-8">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+          <h3 class="font-bold text-sm text-slate-900 dark:text-white">Shipping Info</h3>
+          <div class="flex gap-2 items-center">
+            <ply-icon name="check-circle" class="w-4 h-4 stroke-green-500"></ply-icon>
+            <div
+              class="w-4 h-4 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-bold text-slate-400">
+              2</div>
+            <ply-icon name="x" class="w-4 h-4 stroke-slate-400"></ply-icon>
+          </div>
+        </div>
+        <ply-card-body class="p-6 flex flex-col flex-1">
+          <form class="contents" (submit)="onSubmit($event)">
+          <div class="flex gap-4 mb-6">
+            <button type="button" (click)="delivery = 'free'"
+              class="flex-1 py-3 px-4 rounded-xl border text-[10px] font-bold uppercase tracking-widest"
+              [class.border-slate-900]="delivery === 'free'"
+              [class.dark:border-white]="delivery === 'free'"
+              [class.text-slate-900]="delivery === 'free'"
+              [class.dark:text-white]="delivery === 'free'"
+              [class.border-slate-200]="delivery !== 'free'"
+              [class.dark:border-slate-700]="delivery !== 'free'"
+              [class.text-slate-400]="delivery !== 'free'">Free
+              Delivery</button>
+            <button type="button" (click)="delivery = 'express'"
+              class="flex-1 py-3 px-4 rounded-xl border text-[10px] font-bold uppercase tracking-widest"
+              [class.border-slate-900]="delivery === 'express'"
+              [class.dark:border-white]="delivery === 'express'"
+              [class.text-slate-900]="delivery === 'express'"
+              [class.dark:text-white]="delivery === 'express'"
+              [class.border-slate-200]="delivery !== 'express'"
+              [class.dark:border-slate-700]="delivery !== 'express'"
+              [class.text-slate-400]="delivery !== 'express'">Express
+              Delivery ($12.00)</button>
+          </div>
+
+          <ply-input-group class="mb-4">
+            <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Shipping
+              Address</ply-label>
+            <input ply-input name="address" placeholder="Street address or P.O. box" [(ngModel)]="address" />
+          </ply-input-group>
+
+          <div class="flex gap-4 mb-4">
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">First Name</ply-label>
+              <input ply-input name="firstName" placeholder="First Name" [(ngModel)]="firstName" />
+            </ply-input-group>
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Last Name</ply-label>
+              <input ply-input name="lastName" placeholder="Last Name" [(ngModel)]="lastName" />
+            </ply-input-group>
+          </div>
+
+          <div class="flex gap-4 mb-4">
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Phone</ply-label>
+              <input ply-input name="phone" placeholder="Phone" [(ngModel)]="phone" />
+            </ply-input-group>
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Email</ply-label>
+              <input ply-input type="email" name="email" placeholder="Email" [(ngModel)]="email" />
+            </ply-input-group>
+          </div>
+
+          <div class="flex gap-4 mb-4">
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Country</ply-label>
+              <select ply-input class="appearance-none" name="country" [(ngModel)]="country">
+                <option>United States</option>
+              </select>
+              <ply-icon ply-addon-end name="chevron-down"
+                class="w-4 h-4 text-slate-400 mr-3 pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"></ply-icon>
+            </ply-input-group>
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">State</ply-label>
+              <select ply-input class="appearance-none" name="state" [(ngModel)]="state">
+                <option>California</option>
+              </select>
+              <ply-icon ply-addon-end name="chevron-down"
+                class="w-4 h-4 text-slate-400 mr-3 pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"></ply-icon>
+            </ply-input-group>
+          </div>
+
+          <div class="flex gap-4 mb-4">
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">City</ply-label>
+              <select ply-input class="appearance-none" name="city" [(ngModel)]="city">
+                <option>Palo Alto</option>
+              </select>
+              <ply-icon ply-addon-end name="chevron-down"
+                class="w-4 h-4 text-slate-400 mr-3 pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"></ply-icon>
+            </ply-input-group>
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Zipcode</ply-label>
+              <input ply-input name="zipcode" placeholder="Zipcode" [(ngModel)]="zipcode" />
+            </ply-input-group>
+          </div>
+
+          <ply-input-group class="mb-6 flex-1">
+            <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Area</ply-label>
+            <textarea ply-textarea rows="3" name="area" placeholder="Area" [(ngModel)]="area"></textarea>
+          </ply-input-group>
+
+          <div class="flex gap-4 mt-auto justify-between">
+            <button type="button" ply-stroked-button color="primary" class=" py-3">
+              <ply-icon name="arrow-left" class="-ml-2"></ply-icon>
+              Back
+            </button>
+            <button type="submit" ply-stroked-button color="primary" class=" py-3">Next Step
+              <ply-icon name="arrow-right" class="-mr-2"></ply-icon>
+            </button>
+          </div>
+          </form>
+        </ply-card-body>
+      </ply-card>

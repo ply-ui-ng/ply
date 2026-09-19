@@ -1,0 +1,172 @@
+<ply-card>
+  <form class="p-8 flex flex-col gap-7" (submit)="onSubmit($event)">
+
+    <!-- Step Header -->
+    <div>
+      <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1 uppercase tracking-widest">Create Account</h3>
+      <p class="text-[11px] text-slate-400 uppercase tracking-widest">Step {{ currentStep() + 1 }} of {{ steps.length }}</p>
+    </div>
+
+    <!-- Progress Stepper -->
+    <div class="flex items-center gap-0">
+      @for (step of steps; track step.label; let i = $index; let last = $last) {
+        <div class="flex items-center gap-2.5">
+          <div class="flex items-center gap-2.5">
+            <div
+              [class.bg-blue-600]="i <= currentStep()"
+              [class.text-white]="i <= currentStep()"
+              [class.bg-slate-100]="i > currentStep()"
+              [class.dark:bg-slate-700]="i > currentStep()"
+              [class.text-slate-400]="i > currentStep()"
+              class="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+              @if (i < currentStep()) {
+                <ply-icon name="check" class="w-3.5 h-3.5 stroke-white stroke-2"></ply-icon>
+              } @else {
+                <span class="text-[11px] font-bold">{{ i + 1 }}</span>
+              }
+            </div>
+            <span
+              [class.text-slate-900]="i === currentStep()"
+              [class.dark:text-white]="i === currentStep()"
+              [class.font-semibold]="i === currentStep()"
+              [class.text-slate-400]="i !== currentStep()"
+              class="text-[11px] uppercase tracking-wider transition-colors">{{ step.label }}</span>
+          </div>
+        </div>
+        @if (!last) {
+          <div class="flex-1 h-px bg-slate-200 dark:bg-slate-700 mx-3 min-w-6"></div>
+        }
+      }
+    </div>
+
+    <!-- Step 1: Account Details -->
+    @if (currentStep() === 0) {
+    <div class="flex flex-col gap-4 animate-in fade-in duration-200">
+      <div class="flex gap-4">
+        <ply-input-group class="flex-1">
+          <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">First Name</ply-label>
+          <input ply-input name="firstName" placeholder="Jane" [(ngModel)]="firstName" />
+        </ply-input-group>
+        <ply-input-group class="flex-1">
+          <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Last Name</ply-label>
+          <input ply-input name="lastName" placeholder="Doe" [(ngModel)]="lastName" />
+        </ply-input-group>
+      </div>
+      <ply-input-group>
+        <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Work Email</ply-label>
+        <input ply-input type="email" name="email" placeholder="jane@company.com" [(ngModel)]="email" />
+      </ply-input-group>
+      <ply-input-group>
+        <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Password</ply-label>
+        <input ply-input type="password" name="password" placeholder="Min. 8 characters" [(ngModel)]="password" />
+      </ply-input-group>
+    </div>
+    }
+
+    <!-- Step 2: Plan -->
+    @if (currentStep() === 1) {
+    <div class="flex flex-col gap-3 animate-in fade-in duration-200">
+      <button
+        type="button"
+        (click)="selectPlan('starter')"
+        [class.ring-2]="selectedPlan() === 'starter'"
+        [class.ring-blue-500]="selectedPlan() === 'starter'"
+        class="flex items-center gap-4 p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-left transition-all hover:border-slate-300 cursor-pointer">
+        <div class="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center shrink-0">
+          <ply-icon name="zap" class="w-4.5 h-4.5 stroke-slate-500"></ply-icon>
+        </div>
+        <div class="flex-1">
+          <p class="text-[13px] font-semibold text-slate-800 dark:text-slate-100">Starter</p>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider">Up to 5 seats · $9/mo</p>
+        </div>
+        @if (selectedPlan() === 'starter') {
+        <div class="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center">
+          <ply-icon name="check" class="w-2.75 h-2.75 stroke-white stroke-2"></ply-icon>
+        </div>
+        }
+      </button>
+
+      <button
+        type="button"
+        (click)="selectPlan('pro')"
+        [class.ring-2]="selectedPlan() === 'pro'"
+        [class.ring-blue-500]="selectedPlan() === 'pro'"
+        class="flex items-center gap-4 p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-left transition-all hover:border-slate-300 cursor-pointer">
+        <div class="w-9 h-9 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center shrink-0">
+          <ply-icon name="layers" class="w-4.5 h-4.5 stroke-blue-600 dark:stroke-blue-400"></ply-icon>
+        </div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-0.5">
+            <p class="text-[13px] font-semibold text-slate-800 dark:text-slate-100">Pro</p>
+            <ply-badge color="primary" size="sm" shape="rectangular">Popular</ply-badge>
+          </div>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider">Up to 25 seats · $29/mo</p>
+        </div>
+        @if (selectedPlan() === 'pro') {
+        <div class="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center">
+          <ply-icon name="check" class="w-2.75 h-2.75 stroke-white stroke-2"></ply-icon>
+        </div>
+        }
+      </button>
+    </div>
+    }
+
+    <!-- Step 3: Confirm -->
+    @if (currentStep() === 2) {
+    <div class="flex flex-col gap-4 animate-in fade-in duration-200">
+      <div class="p-5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 flex flex-col gap-3">
+        <div class="flex justify-between items-center">
+          <span class="text-[11px] text-slate-400 uppercase tracking-wider">Plan</span>
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-200 capitalize">{{ selectedPlan() }} · {{ planPrice() }}</span>
+        </div>
+        <div class="h-px bg-slate-200 dark:bg-slate-700"></div>
+        <div class="flex justify-between items-center">
+          <span class="text-[11px] text-slate-400 uppercase tracking-wider">Email</span>
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-200">{{ email }}</span>
+        </div>
+        <div class="h-px bg-slate-200 dark:bg-slate-700"></div>
+        <div class="flex justify-between items-center">
+          <span class="text-[11px] text-slate-400 uppercase tracking-wider">Billing starts</span>
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-200">Today</span>
+        </div>
+      </div>
+      <ply-checkbox class="text-[11px] text-slate-500" name="acceptTerms" [(ngModel)]="acceptTerms">
+        I agree to the <a [routerLink]="termsLink()" class="text-blue-600 underline">Terms of Service</a> and <a [routerLink]="privacyLink()" class="text-blue-600 underline">Privacy Policy</a>
+      </ply-checkbox>
+    </div>
+    }
+
+    <!-- Navigation -->
+    <div class="flex justify-between items-center pt-1">
+      @if (currentStep() > 0) {
+      <button
+        type="button"
+        (click)="back()"
+        ply-button color="secondary"
+        class="min-w-20">
+        Back
+      </button>
+      } @else {
+      <div></div>
+      }
+      @if (currentStep() < 2) {
+      <button
+        type="button"
+        (click)="next()"
+        ply-button color="primary"
+        class="min-w-20">
+        Continue
+      </button>
+      }
+      @if (currentStep() === 2) {
+      <button
+        type="submit"
+        ply-button color="primary"
+        class="min-w-30">
+        Create Account
+      </button>
+      }
+    </div>
+
+  </form>
+</ply-card>

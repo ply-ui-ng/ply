@@ -1,0 +1,20 @@
+<div class="relative inline-flex shrink-0" [class]="containerClasses()" role="img"
+  [attr.aria-label]="initials() ? initials() + ' avatar' : 'User avatar'">
+  <div class="overflow-hidden w-full h-full bg-slate-200 dark:bg-slate-700 flex justify-center items-center"
+    style="container-type: inline-size;" [class]="innerClasses()">
+    @if (avatarUrl()) {
+    <img [src]="avatarUrl()" [alt]="initials() || 'User profile image'" class="w-full h-full object-cover" />
+    } @else if (initials()) {
+    <span class="uppercase text-[40cqw] font-medium text-slate-700 dark:text-slate-200">
+      {{ initials() }}
+    </span>
+    } @else {
+    <ply-icon name="user" class="w-1/2 h-1/2 stroke-slate-500 dark:stroke-slate-400"></ply-icon>
+    }
+  </div>
+
+  @if (status()) {
+  <span class="absolute w-3/12 h-3/12 min-w-2 min-h-2 rounded-full border-2 border-white dark:border-slate-900"
+    [class]="statusClasses()" [attr.title]="status()"></span>
+  }
+</div>

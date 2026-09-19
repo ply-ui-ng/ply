@@ -1,0 +1,66 @@
+{
+  "name": "ply-ui-mcp",
+  "version": "0.1.14",
+  "description": "Ply MCP server — stdio or Streamable HTTP (--http). List, search, init, doctor, diff, update, and add Angular + Tailwind components (Pro with PLY_LICENSE_KEY). Not MUI Base UI.",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "bin": {
+    "ply-ui-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "angular",
+    "tailwindcss",
+    "ply",
+    "ply-ui",
+    "ply-ui-mcp",
+    "cli"
+  ],
+  "author": "Lussos",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ply-ui-ng/ply.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://ply-ui.com",
+  "bugs": {
+    "url": "https://github.com/ply-ui-ng/ply/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.1",
+    "tsup": "^8.5.1",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.0"
+  },
+  "overrides": {
+    "esbuild": "0.28.2",
+    "fast-uri": "3.1.7",
+    "hono": "4.13.7",
+    "qs": "6.16.0"
+  }
+}

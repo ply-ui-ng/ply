@@ -1,0 +1,52 @@
+<div class="flex items-center w-full border border-slate-300 dark:border-slate-700 rounded-lg relative bg-white dark:bg-slate-800 focus-within:border-slate-500! transition-colors" [class.opacity-50]="isDisabled()" [class.pointer-events-none]="isDisabled()">
+  
+  <!-- Country Dropdown Trigger -->
+  <div class="relative flex items-center">
+    <button 
+      #buttonSlot
+      type="button" 
+      (click)="toggleDropdown()"
+      class="flex items-center gap-2 pl-3 pr-2 py-2.5 border-r border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors rounded-l-lg focus:outline-none"
+    >
+      <span class="text-lg leading-none">{{ selectedCountry().flag }}</span>
+      <span class="text-sm font-medium text-slate-600 dark:text-slate-300">{{ selectedCountry().dialCode }}</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+
+    <!-- Dropdown Menu -->
+    @if (dropdownOpen()) {
+      <div 
+        #panel
+        [style]="panelStyle()"
+        class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-xl z-50 py-1 overflow-y-auto"
+      >
+        @for (country of countries; track country.code) {
+          <button 
+            type="button"
+            (click)="selectCountry(country)"
+            class="flex w-full items-center justify-between px-3 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 focus:bg-slate-100 dark:focus:bg-slate-700 focus:outline-none transition-colors"
+          >
+            <div class="flex items-center gap-2">
+              <span class="text-lg leading-none">{{ country.flag }}</span>
+              <span class="text-sm text-slate-700 dark:text-slate-200">{{ country.name }}</span>
+            </div>
+            <span class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ country.dialCode }}</span>
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Phone Number Input -->
+  <input 
+    type="tel" 
+    [value]="phoneNumber()"
+    (input)="onInput($event)"
+    (blur)="onTouched()"
+    [disabled]="isDisabled()"
+    placeholder="Phone number"
+    class="h-9 min-h-9 flex-1 min-w-0 appearance-none bg-transparent px-3 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
+  />
+</div>

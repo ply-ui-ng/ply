@@ -1,11 +1,11 @@
-Thanks for wanting to help.
+Thanks for the PR.
 
-This repository is a **docs and issues hub**. Component source is not stored here, and pull requests are not merged (the next docs sync would overwrite them).
+This repository accepts changes to **MIT free-tier** components (`components/`), the CLI (`packages/cli`), and the MCP server (`packages/mcp`).
 
 Please:
 
-1. Close this PR.
-2. Open an [issue](https://github.com/ply-ui-ng/ply/issues/new/choose) for a bug or feature, or a [discussion](https://github.com/ply-ui-ng/ply/discussions) for a question.
-3. Install components with `npx ply-ui-cli add <name>` from [ply-ui.com](https://ply-ui.com).
+1. Keep Pro source, license keys, and authenticated registry URLs out of the diff.
+2. Include or update a spec next to the code you changed.
+3. Note what you ran locally (`npm test`, `npm run lint`, CLI/MCP tests if relevant).
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+Maintainer merges go through the private upstream first; this repo is synced after. See [CONTRIBUTING.md](CONTRIBUTING.md).

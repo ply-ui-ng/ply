@@ -1,0 +1,58 @@
+@if (label()) {
+  <label [id]="labelId" [attr.for]="inputId" class="mb-px block text-sm font-medium text-slate-700 dark:text-slate-300">
+    {{ label() }}
+  </label>
+}
+
+<div tabindex="0"
+  class="relative flex min-h-9 w-full cursor-text flex-wrap items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-2.5 py-1 dark:border-slate-700 dark:bg-slate-800"
+  [class.opacity-50]="isDisabled()"
+  [class.ring-1]="isOpen()"
+  [class.ring-blue-500]="isOpen()"
+  [class.border-blue-500]="isOpen()"
+  (click)="focusInput()" (keydown.enter)="focusInput()">
+  @for (tag of tags(); track tag; let i = $index) {
+    <ply-chip color="primary" size="sm" [removable]="!isDisabled()" (removed)="removeAt(i)">{{ tag }}</ply-chip>
+  }
+  <input
+    #tagInput
+    [id]="inputId"
+    type="text"
+    class="h-6 min-h-6 min-w-24 flex-1 appearance-none bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400 dark:text-slate-100"
+    [placeholder]="tags().length === 0 ? placeholder() : ''"
+    [disabled]="isDisabled() || atMax()"
+    [ngModel]="query()"
+    (ngModelChange)="onQueryInput($event)"
+    (keydown)="onKeydown($event)"
+    (focus)="isOpen.set(true)"
+    role="combobox"
+    aria-autocomplete="list"
+    [attr.aria-expanded]="showSuggestions()"
+    [attr.aria-controls]="listboxId"
+    [attr.aria-labelledby]="label() ? labelId : null"
+    [attr.aria-label]="!label() ? placeholder() : null"
+    autocomplete="off" />
+</div>
+
+@if (showSuggestions()) {
+  <ul
+    [id]="listboxId"
+    role="listbox"
+    class="absolute z-50 mt-1 max-h-48 w-full overflow-auto rounded-lg border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+    @for (suggestion of filteredSuggestions(); track suggestion; let i = $index) {
+      <li
+        role="option"
+        [attr.aria-selected]="i === activeIndex()"
+        class="cursor-pointer px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700"
+        [class.bg-blue-50]="i === activeIndex()"
+        [class.dark:bg-blue-900/30]="i === activeIndex()"
+        (mousedown)="$event.preventDefault(); addTag(suggestion)">
+        {{ suggestion }}
+      </li>
+    }
+  </ul>
+}
+
+@if (atMax()) {
+  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Maximum of {{ max() }} tags.</p>
+}

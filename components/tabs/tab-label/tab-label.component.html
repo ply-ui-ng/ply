@@ -1,0 +1,14 @@
+<ng-template>
+  <div class="flex items-center whitespace-nowrap
+    {{ icon_position() === 'top' ? 'flex-col justify-center gap-px' : 'gap-2' }} 
+    {{ icon_position() === 'end' ? 'gap-2 flex-row-reverse' : '' }} 
+    ">
+    @if (icon()) {
+    <ply-icon [name]="icon()!" class="w-4 h-4 min-w-4  
+      {{ isActive() ? 'stroke-blue-500' : 'stroke-slate-700' }}
+      {{ isActive() && type() === 'pills' ? 'stroke-white!' : '' }}
+      "></ply-icon>
+    }
+    <ng-content></ng-content>
+  </div>
+</ng-template>

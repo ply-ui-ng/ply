@@ -1,0 +1,37 @@
+<div class="relative overflow-hidden group rounded-3xl p-2 transition-all duration-500 hover:shadow-2xl hover:shadow-slate-500/10 border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/50 backdrop-blur-xl">
+  
+  <!-- Background Decorative Elements -->
+  <div class="absolute -top-6 -right-6 w-12 h-12 bg-slate-200/50 dark:bg-slate-800/50 rounded-full blur-2xl group-hover:bg-slate-300/50 dark:group-hover:bg-slate-700/50 transition-colors duration-500"></div>
+  <div class="absolute -bottom-6 -left-6 w-12 h-12 bg-slate-200/50 dark:bg-slate-800/50 rounded-full blur-2xl group-hover:bg-slate-300/50 dark:group-hover:bg-slate-700/50 transition-colors duration-500"></div>
+
+  <div class="relative flex flex-col items-center text-center py-6">
+    
+    @if (iconName()) {
+      <div class="relative mb-6">
+        <div class="absolute inset-0 bg-slate-200/50 dark:bg-slate-800/50 rounded-2xl blur-xl group-hover:bg-slate-300/50 dark:group-hover:bg-slate-700/50 transition-colors duration-500"></div>
+        <div class="relative w-16 h-16 flex items-center justify-center bg-slate-100 dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500 text-slate-400 dark:text-slate-500">
+          <ply-icon [name]="iconName()" class="w-8 h-8 stroke-current"></ply-icon>
+        </div>
+      </div>
+    }
+    
+    <div class="space-y-1 px-1 mb-6">
+      @if (title()) {
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">
+          {{ title() }}
+        </h3>
+      }
+      
+      @if (description()) {
+        <p class="max-w-80 mx-auto text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          {{ description() }}
+        </p>
+      }
+    </div>
+    
+    <div class="relative z-10">
+      <ng-content></ng-content>
+    </div>
+    
+  </div>
+</div>

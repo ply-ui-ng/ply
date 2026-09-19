@@ -1,0 +1,26 @@
+<div class="flex justify-between w-full border border-slate-300 dark:border-slate-700 rounded-lg overflow-hidden relative bg-white dark:bg-slate-800 transition-colors duration-200 focus-within:border-blue-500 items-center dark:text-white"
+    [class.h-7]="sizeKey() === 'sm'"
+    [class.h-9]="sizeKey() === 'default'"
+    [class.h-10]="sizeKey() === 'lg'"
+    [class.h-11]="sizeKey() === 'xl'"
+    [class.opacity-50]="isDisabled()" [class.pointer-events-none]="isDisabled()">
+    <select
+        #nativeSelect
+        class="appearance-none bg-transparent border-none w-full h-full z-2 absolute top-0 left-0 text-slate-800 dark:text-white focus:outline-none"
+        [class.text-xs]="sizeKey() === 'sm'"
+        [class.pl-3]="sizeKey() === 'sm'"
+        [class.pr-7]="sizeKey() === 'sm'"
+        [class.text-sm]="sizeKey() === 'default' || sizeKey() === 'lg'"
+        [class.pl-4]="sizeKey() === 'default' || sizeKey() === 'lg'"
+        [class.pr-8]="sizeKey() === 'default' || sizeKey() === 'lg'"
+        [class.text-base]="sizeKey() === 'xl'"
+        [class.pl-5]="sizeKey() === 'xl'"
+        [class.pr-9]="sizeKey() === 'xl'"
+        [disabled]="isDisabled()" [value]="value()" (change)="onSelectChange($event)">
+        @if (placeholder()) {
+        <option value="" disabled selected hidden>{{ placeholder() }}</option>
+        }
+        <ng-content></ng-content>
+    </select>
+    <ply-icon name="chevron-down" class="ml-auto w-4 h-4 stroke-slate-500 z-1 mr-3"></ply-icon>
+</div>

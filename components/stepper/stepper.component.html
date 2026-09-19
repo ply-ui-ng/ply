@@ -1,0 +1,95 @@
+<div class="ply-stepper w-full text-slate-700 dark:text-slate-300">
+    <!-- Stepper Header -->
+    <div class="flex items-center w-full mb-8 overflow-x-auto no-scrollbar py-2 px-1">
+        @for (step of steps(); track step; let i = $index, last = $last) {
+        <button type="button" class="flex items-center cursor-pointer group shrink-0 bg-transparent border-0 p-0 text-left"
+          (click)="goToStep(i)"
+          [attr.aria-current]="i === activeStepIndex() ? 'step' : null"
+          [attr.aria-label]="'Step ' + (i + 1) + ': ' + step.label()">
+
+            <!-- Step Indicator -->
+            <div [class]="getStepIndicatorClass(step, i === activeStepIndex(), last)">
+
+                @if (step.isCompleted() && (!(i === activeStepIndex()) || last)) {
+                <ply-icon name="check" class="w-5 h-5 stroke-white"></ply-icon>
+                }
+
+                @if (step.icon() && (!step.isCompleted() || ((i === activeStepIndex()) && !last))) {
+                <ply-icon [name]="step.icon()"
+                    [class]="getStepIconClass(i === activeStepIndex())">
+                </ply-icon>
+                }
+
+                @if (!step.icon() && (!step.isCompleted() || ((i === activeStepIndex()) && !last))) {
+                <span class="text-sm font-bold">{{ i + 1 }}</span>
+                }
+            </div>
+
+            <!-- Step Label -->
+            <div class="flex flex-col mr-6">
+                <span [class]="getStepLabelClass(i === activeStepIndex())">
+                    {{ step.label() }}
+                </span>
+                @if (step.description()) {
+                <span class="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap">
+                    {{ step.description() }}
+                </span>
+                }
+            </div>
+
+            <!-- Connector Line -->
+            @if (!last) {
+            <div [class]="getStepConnectorClass(step)">
+            </div>
+            }
+        </button>
+        }
+    </div>
+
+    <!-- Stepper Content -->
+    <div
+        class="ply-stepper-content bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 md:p-8 shadow-sm min-h-50">
+        @if (isSubmitted()) {
+        <div class="flex flex-col items-center justify-center py-8 text-center animate-in fade-in zoom-in duration-300">
+            <div class="w-20 h-20 bg-green-100 dark:bg-green-500/20 rounded-full flex items-center justify-center mb-4">
+                <ply-icon name="check" class="w-10 h-10 stroke-green-500"></ply-icon>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">{{ successTitle() }}</h3>
+            <p class="text-slate-500 dark:text-slate-400">{{ successMessage() }}</p>
+        </div>
+        } @else {
+        @for (step of steps(); track step; let i = $index) {
+        @if (i === activeStepIndex()) {
+        <div class="animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <ng-container [ngTemplateOutlet]="step.content()"></ng-container>
+        </div>
+        }
+        }
+        }
+    </div>
+
+    <!-- Internal Navigation Buttons -->
+    @if (!isSubmitted() && !hideNavigation()) {
+    <div class="flex justify-between items-center mt-6">
+        <button (click)="previous()" [disabled]="activeStepIndex() === 0" ply-stroked-button color="primary">
+            <ply-icon name="arrow-left" class="-ml-2 w-4 h-4"></ply-icon>
+            Back
+        </button>
+
+        @if (activeStepIndex() < steps().length - 1) {
+        <button (click)="next()" [disabled]="!steps()[activeStepIndex()].isValid()" ply-button color="primary">
+            Next Step
+            <ply-icon name="arrow-right" class="-mr-2 w-4 h-4"></ply-icon>
+        </button>
+        } @else {
+        <div class="flex items-center gap-4">
+            <span class="text-sm text-slate-500 dark:text-slate-400 hidden sm:block">Please review and click Submit to confirm.</span>
+            <button (click)="submit()" [disabled]="!steps()[activeStepIndex()].isValid()" ply-button color="success">
+                Submit
+                <ply-icon name="check" class="-mr-2 w-4 h-4"></ply-icon>
+            </button>
+        </div>
+        }
+    </div>
+    }
+</div>

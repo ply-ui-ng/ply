@@ -1,0 +1,29 @@
+<ply-card>
+  <form class="p-8 flex flex-col h-full" (submit)="onSubmit($event)">
+    <h3
+      class="font-bold text-sm text-slate-900 dark:text-white mb-6 uppercase tracking-widest text-center">
+      {{ heading() }}</h3>
+    <div class="flex gap-4 mb-4">
+      <ply-input-group class="flex-1">
+        <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">First Name</ply-label>
+        <input ply-input name="firstName" placeholder="First Name" [(ngModel)]="firstName" />
+      </ply-input-group>
+      <ply-input-group class="flex-1">
+        <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Last Name</ply-label>
+        <input ply-input name="lastName" placeholder="Last Name" [(ngModel)]="lastName" />
+      </ply-input-group>
+    </div>
+    <ply-input-group class="mb-4">
+      <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Email address</ply-label>
+      <input ply-input type="email" name="email" placeholder="Email address" [(ngModel)]="email" />
+    </ply-input-group>
+    <ply-input-group class="mb-6">
+      <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Password</ply-label>
+      <input ply-input type="password" name="password" placeholder="Password" [(ngModel)]="password" />
+    </ply-input-group>
+    <button ply-button color="primary" type="submit" class="w-full py-3 mb-6 mt-auto">{{ submitLabel() }}</button>
+    <p class="text-center text-[10px] uppercase font-light text-slate-400 tracking-widest">{{ footerHint() }}
+      <a [routerLink]="footerLink()" class="text-slate-900 dark:text-white">{{ footerLabel() }}</a>
+    </p>
+  </form>
+</ply-card>

@@ -1,0 +1,13 @@
+<button type="button" [id]="headerId" [class]="headerButtonClass()" [attr.aria-expanded]="isOpen()"
+  [attr.aria-controls]="panelId" [disabled]="disabled()" (click)="toggle()">
+  <h4 class="flex-1 m-0! text-left">
+    <ng-content select="ply-accordion-item-header"></ng-content>
+  </h4>
+  <ply-icon [name]="!isOpen() ? 'chevron-down' : 'chevron-up'" aria-hidden="true"
+    class="w-4 h-4 min-w-4 stroke-slate-800 dark:stroke-slate-200"></ply-icon>
+</button>
+<div #content [id]="panelId" class="not-prose transition-[max-height] duration-300 overflow-hidden"
+  role="region" [attr.aria-labelledby]="headerId"
+  [style.maxHeight.px]="isOpen() ? content.scrollHeight : 0">
+  <ng-content select="ply-accordion-item-body"></ng-content>
+</div>

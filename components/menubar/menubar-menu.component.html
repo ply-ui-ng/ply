@@ -1,0 +1,17 @@
+<button
+  #triggerBtn
+  type="button"
+  class="inline-flex h-9 items-center gap-1 rounded-md px-3 text-sm font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-200 dark:hover:bg-slate-700"
+  role="menuitem"
+  [attr.tabindex]="tabIndex()"
+  [disabled]="disabled()"
+  [ply-dropdown-menu-trigger]="menu"
+  placement="start"
+  (focus)="onTriggerFocus()"
+  (pointerenter)="onTriggerHover()">
+  {{ label() }}
+  <ply-icon name="chevron-down" class="h-3.5 w-3.5 stroke-slate-500 dark:stroke-slate-400"></ply-icon>
+</button>
+<ply-dropdown-menu #menu>
+  <ng-content></ng-content>
+</ply-dropdown-menu>

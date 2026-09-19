@@ -1,0 +1,171 @@
+<div [class]="thumbsCls()">
+  <ng-content></ng-content>
+</div>
+
+@if (isOpen()) {
+  <div
+    #overlayRoot
+    class="fixed inset-0 z-1000 flex flex-col bg-slate-950/95 text-white"
+    [@fade]
+    cdkTrapFocus
+    cdkTrapFocusAutoCapture
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="dialogLabel()"
+    (wheel)="onWheel($event)">
+
+    <!-- Top bar -->
+    <div class="relative z-10 flex shrink-0 items-center justify-between gap-2 px-3 py-3 sm:px-4">
+      <div class="min-w-0 text-sm text-slate-300">
+        @if (showCounter() && counterText()) {
+          <span class="tabular-nums">{{ counterText() }}</span>
+        }
+      </div>
+
+      @if (showToolbar()) {
+        <div
+          class="flex max-w-full items-center gap-1 overflow-x-auto rounded-lg bg-slate-900/80 p-1 ring-1 ring-white/10"
+          role="toolbar"
+          aria-label="Image tools">
+          <button
+            type="button"
+            ply-icon-button
+            color="transparent"
+            size="sm"
+            class="text-white! hover:bg-white/10!"
+            aria-label="Flip horizontal"
+            (click)="flipHorizontal()">
+            <ply-icon name="flip-horizontal" class="h-4 w-4 stroke-white"></ply-icon>
+          </button>
+          <button
+            type="button"
+            ply-icon-button
+            color="transparent"
+            size="sm"
+            class="text-white! hover:bg-white/10!"
+            aria-label="Flip vertical"
+            (click)="flipVertical()">
+            <ply-icon name="flip-vertical" class="h-4 w-4 stroke-white"></ply-icon>
+          </button>
+          <button
+            type="button"
+            ply-icon-button
+            color="transparent"
+            size="sm"
+            class="text-white! hover:bg-white/10!"
+            aria-label="Rotate 90 degrees"
+            (click)="rotate90()">
+            <ply-icon name="rotate-right" class="h-4 w-4 stroke-white"></ply-icon>
+          </button>
+          <button
+            type="button"
+            ply-icon-button
+            color="transparent"
+            size="sm"
+            class="text-white! hover:bg-white/10!"
+            aria-label="Zoom out"
+            (click)="zoomOut()">
+            <ply-icon name="search-minus" class="h-4 w-4 stroke-white"></ply-icon>
+          </button>
+          <button
+            type="button"
+            ply-icon-button
+            color="transparent"
+            size="sm"
+            class="text-white! hover:bg-white/10!"
+            aria-label="Zoom in"
+            (click)="zoomIn()">
+            <ply-icon name="search-plus" class="h-4 w-4 stroke-white"></ply-icon>
+          </button>
+          <button
+            type="button"
+            ply-icon-button
+            color="transparent"
+            size="sm"
+            class="text-white! hover:bg-white/10!"
+            aria-label="Download image"
+            (click)="download()">
+            <ply-icon name="download" class="h-4 w-4 stroke-white"></ply-icon>
+          </button>
+          <button
+            type="button"
+            ply-icon-button
+            color="transparent"
+            size="sm"
+            class="text-white! hover:bg-white/10!"
+            [attr.aria-label]="isFullscreen() ? 'Exit fullscreen' : 'Enter fullscreen'"
+            (click)="toggleFullscreen()">
+            <ply-icon
+              [name]="isFullscreen() ? 'minimize' : 'maximize'"
+              class="h-4 w-4 stroke-white"></ply-icon>
+          </button>
+        </div>
+      } @else {
+        <div></div>
+      }
+
+      <button
+        type="button"
+        ply-icon-button
+        color="transparent"
+        size="sm"
+        class="text-white! hover:bg-white/10!"
+        aria-label="Close lightbox"
+        (click)="close()">
+        <ply-icon name="close" class="h-5 w-5 stroke-white"></ply-icon>
+      </button>
+    </div>
+
+    <!-- Stage -->
+    <div class="relative flex min-h-0 flex-1 items-center justify-center px-12 py-4 sm:px-16">
+      <!-- Backdrop click catcher behind the image -->
+      <button
+        type="button"
+        class="absolute inset-0 cursor-default border-0 bg-transparent"
+        aria-label="Close lightbox"
+        (click)="onBackdropClick()"></button>
+
+      @if (canNavigate()) {
+        <button
+          type="button"
+          ply-icon-button
+          color="transparent"
+          size="lg"
+          class="absolute! left-2 top-1/2 z-10 -translate-y-1/2! text-white! hover:bg-white/10! sm:left-4"
+          aria-label="Previous image"
+          (click)="prev()">
+          <ply-icon name="chevron-left" class="h-6 w-6 stroke-white"></ply-icon>
+        </button>
+        <button
+          type="button"
+          ply-icon-button
+          color="transparent"
+          size="lg"
+          class="absolute! right-2 top-1/2 z-10 -translate-y-1/2! text-white! hover:bg-white/10! sm:right-4"
+          aria-label="Next image"
+          (click)="next()">
+          <ply-icon name="chevron-right" class="h-6 w-6 stroke-white"></ply-icon>
+        </button>
+      }
+
+      @if (showViewerInitials()) {
+        <div role="presentation"
+          class="relative z-1 flex h-48 w-48 max-h-[50vh] max-w-[50vw] select-none items-center justify-center rounded-2xl bg-slate-800 text-4xl font-semibold tracking-wide text-slate-100 transition-transform duration-200 ease-out sm:h-64 sm:w-64 sm:text-5xl"
+          [style.transform]="imageTransform()"
+          [attr.aria-label]="activeAlt() || 'Image unavailable'"
+          (click)="$event.stopPropagation()">
+          {{ activeInitials() }}
+        </div>
+      } @else if (activeSrc()) {
+        <img role="presentation"
+          [src]="activeSrc()"
+          [alt]="activeAlt()"
+          class="relative z-1 max-h-full max-w-full select-none object-contain transition-transform duration-200 ease-out"
+          [style.transform]="imageTransform()"
+          draggable="false"
+          (error)="onViewerError()"
+          (click)="$event.stopPropagation()" />
+      }
+    </div>
+  </div>
+}

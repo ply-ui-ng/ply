@@ -1,0 +1,22 @@
+<ng-content select="ply-label"></ng-content>
+<div [class]="getWrapperClasses()">
+  <div class="flex items-center empty:hidden">
+    <ng-content select="[ply-addon-start]" #addon></ng-content>
+  </div>
+  <ng-content select="datalist"></ng-content>
+
+  <div class="text-sm w-full h-full border-0 bg-transparent outline-none flex-1">
+    <ng-content select="[ply-input]"></ng-content>
+    <ng-content select="[ply-textarea]"></ng-content>
+    <ng-content select="ply-mention-input"></ng-content>
+  </div>
+  <div class="flex items-center empty:hidden">
+    <ng-content select="[ply-addon-end]"></ng-content>
+  </div>
+</div>
+@if (showErrors()) {
+<div [id]="errorId">
+  <ng-content select="ply-error"></ng-content>
+</div>
+}
+<ng-content select="ply-info-text"></ng-content>

@@ -1,0 +1,88 @@
+<div class="flex w-full items-center gap-4">
+  @if (showMinMax()) {
+    <span class="min-w-6 text-xs tabular-nums text-slate-500 dark:text-slate-400">{{ min() }}</span>
+  }
+
+  <div
+    class="group/dual relative flex-1 overflow-visible"
+    [class.opacity-50]="isDisabled()"
+    role="group"
+    [attr.aria-label]="ariaLabel()"
+    [style.--ply-dual-thumb]="thumbCssVar()"
+  >
+    @if (showTip()) {
+      <div class="relative mb-2 h-7">
+        <div [class]="tipVisibleClass()" [style.left.%]="startPercent()" aria-hidden="true">
+          <span [class]="tipBubbleClass()">{{ displayStart() }}</span>
+          <span [class]="tipCaretClass()"></span>
+        </div>
+        <div [class]="tipVisibleClass()" [style.left.%]="endPercent()" aria-hidden="true">
+          <span [class]="tipBubbleClass()">{{ displayEnd() }}</span>
+          <span [class]="tipCaretClass()"></span>
+        </div>
+      </div>
+    }
+
+    <div class="relative h-8">
+      <!-- Track -->
+      <div
+        class="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-slate-200 dark:bg-slate-700"
+      ></div>
+
+      <!-- Selected span -->
+      <div
+        [class]="fillClass()"
+        [style.left.%]="startPercent()"
+        [style.width.%]="rangePercent()"
+      ></div>
+
+      <input
+        type="range"
+        [class]="rangeInputClass"
+        [style.z-index]="startZ()"
+        [min]="min()"
+        [max]="max()"
+        [step]="step()"
+        [value]="start()"
+        [disabled]="isDisabled()"
+        [attr.aria-label]="ariaLabel() + ' start'"
+        [attr.aria-valuemin]="min()"
+        [attr.aria-valuemax]="end()"
+        [attr.aria-valuenow]="start()"
+        (input)="onStartInput($event)"
+        (focus)="onThumbFocus('start')"
+        (blur)="onThumbBlur()"
+      />
+
+      <input
+        type="range"
+        [class]="rangeInputClass"
+        [style.z-index]="endZ()"
+        [min]="min()"
+        [max]="max()"
+        [step]="step()"
+        [value]="end()"
+        [disabled]="isDisabled()"
+        [attr.aria-label]="ariaLabel() + ' end'"
+        [attr.aria-valuemin]="start()"
+        [attr.aria-valuemax]="max()"
+        [attr.aria-valuenow]="end()"
+        (input)="onEndInput($event)"
+        (focus)="onThumbFocus('end')"
+        (blur)="onThumbBlur()"
+      />
+    </div>
+  </div>
+
+  @if (showMinMax()) {
+    <span class="min-w-6 text-xs tabular-nums text-slate-500 dark:text-slate-400">{{ max() }}</span>
+  }
+
+  @if (showValue()) {
+    <span
+      class="min-w-16 text-right text-sm font-medium tabular-nums text-slate-700 dark:text-slate-300"
+    >
+      {{ displayRange() }}
+    </span>
+  }
+</div>

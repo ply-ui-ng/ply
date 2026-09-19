@@ -1,0 +1,7 @@
+node_modules
+dist
+out-tsc
+.angular
+.ply-ui
+*.tgz
+.DS_Store

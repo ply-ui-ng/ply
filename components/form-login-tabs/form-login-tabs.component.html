@@ -1,0 +1,98 @@
+<ply-card>
+          <ply-tabs type="underline" class="block pt-3">
+            <ply-tab>
+              <ply-tab-label class="p-4">Sign Up</ply-tab-label>
+              <ply-tab-body>
+                <form class="contents" (submit)="onSignupSubmit($event)">
+                <div class="flex flex-col gap-4 p-6">
+                  <ply-input-group>
+                    <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Name</ply-label>
+                    <input ply-input name="name" placeholder="Name" [(ngModel)]="name" />
+                  </ply-input-group>
+                  <ply-input-group>
+                    <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Lastname</ply-label>
+                    <input ply-input name="lastname" placeholder="Lastname" [(ngModel)]="lastname" />
+                  </ply-input-group>
+
+                  <ply-input-group>
+                    <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Phone</ply-label>
+                    <input ply-input name="phone" placeholder="Phone" [(ngModel)]="phone" />
+                  </ply-input-group>
+                  <ply-input-group>
+                    <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Email</ply-label>
+                    <input ply-input type="email" name="email" placeholder="Email" [(ngModel)]="email" />
+                  </ply-input-group>
+                  <ply-input-group>
+                    <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Password</ply-label>
+                    <input ply-input type="password" name="signupPassword" placeholder="Password" [(ngModel)]="signupPassword" />
+                  </ply-input-group>
+                  <ply-input-group>
+                    <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Confirm
+                      Password</ply-label>
+                    <input ply-input type="password" name="confirmPassword" placeholder="Confirm Password" [(ngModel)]="confirmPassword" />
+                  </ply-input-group>
+                </div>
+                <div class="flex flex-col gap-6 px-6">
+                  <ply-checkbox class="text-xs text-slate-500 whitespace-nowrap" name="acceptTerms" [(ngModel)]="acceptTerms">I accept the
+                    <a ply-link [routerLink]="termsLink()">Terms and Conditions</a>
+                  </ply-checkbox>
+                  <button ply-button color="primary" type="submit">Sign Up</button>
+                </div>
+                </form>
+                <div class="flex flex-col items-center mt-auto p-6 pb-10">
+                  <p class="text-sm uppercase font-light text-slate-400 mb-4">Or sign in with</p>
+                  <div class="flex gap-4">
+                    <button type="button" ply-stroked-icon-button class="rounded-full!">
+                      <ply-icon name="facebook"></ply-icon>
+                    </button>
+                    <button type="button" ply-stroked-icon-button class="rounded-full!">
+                      <ply-icon name="linkedin"></ply-icon>
+                    </button>
+                    <button type="button" ply-stroked-icon-button class="rounded-full!">
+                      <ply-icon name="x-twitter"></ply-icon>
+                    </button>
+                  </div>
+                </div>
+              </ply-tab-body>
+            </ply-tab>
+            <ply-tab>
+              <ply-tab-label>Login</ply-tab-label>
+              <ply-tab-body>
+                <form class="p-6 max-w-100 mx-auto" (submit)="onLoginSubmit($event)">
+                  <ply-input-group class="mb-4">
+                    <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Login</ply-label>
+                    <input ply-input name="login" placeholder="Login" [(ngModel)]="login" />
+                  </ply-input-group>
+                  <ply-input-group class="mb-4">
+                    <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Password</ply-label>
+                    <input ply-input type="password" name="loginPassword" placeholder="Password" [(ngModel)]="loginPassword" />
+                    <button type="button" ply-addon-end class="px-3 text-slate-400"><ply-icon name="eye"
+                        class="w-4 h-4"></ply-icon></button>
+                  </ply-input-group>
+
+                  <div class="flex items-center justify-between my-8">
+                    <ply-checkbox class="text-xs text-slate-500" name="remember" [(ngModel)]="remember">Remember me</ply-checkbox>
+                    <a [routerLink]="forgotLink()" class="text-xs font-bold text-slate-900 dark:text-white">Forgot password?</a>
+                  </div>
+
+                  <button ply-button color="primary" type="submit" class="w-full mb-8">Sign In</button>
+
+                  <div class="flex flex-col items-center mt-auto">
+                    <p class="text-[10px]! uppercase font-light! mb-6 dark:text-slate-300">Or sign in with</p>
+                    <div class="flex gap-4">
+                      <button type="button" ply-stroked-icon-button color="transparent">
+                        <ply-icon name="facebook" class="w-4 h-4"></ply-icon>
+                      </button>
+                      <button type="button" ply-stroked-icon-button color="transparent">
+                        <ply-icon name="linkedin" class="w-4 h-4"></ply-icon>
+                      </button>
+                      <button type="button" ply-stroked-icon-button color="transparent">
+                        <ply-icon name="x-twitter" class="w-4 h-4"></ply-icon>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </ply-tab-body>
+            </ply-tab>
+          </ply-tabs>
+        </ply-card>

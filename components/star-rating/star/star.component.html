@@ -1,0 +1,49 @@
+<svg
+  viewBox="0 0 1160 200"
+  class="h-5 w-auto"
+  role="img"
+  [attr.aria-label]="editable() ? 'Rate ' + rating() + ' out of 5 stars' : rating() + ' out of 5 stars'"
+  [attr.aria-hidden]="editable() ? null : true"
+  [class.cursor-pointer]="editable()"
+  [attr.tabindex]="editable() ? 0 : null"
+  (keydown.arrowleft)="editable() && changeRating(Math.max(1, Math.ceil(rating()) - 1))"
+  (keydown.arrowright)="editable() && changeRating(Math.min(5, Math.floor(rating()) + 1))"
+  >
+  <defs>
+    <polygon
+      [attr.id]="uid + '-star'"
+      points="100,0 131,66 200,76 150,128 162,200 100,166 38,200 50,128 0,76 69,66 "
+      />
+
+    <clipPath [attr.id]="uid + '-stars'">
+      @for (rating of ratings; track rating) {
+        <use
+          [attr.href]="'#' + uid + '-star'"
+          [attr.x]="rating.x"
+          />
+      }
+    </clipPath>
+  </defs>
+  <rect class="fill-slate-300 w-full h-full" [attr.clip-path]="'url(#' + uid + '-stars)'"></rect>
+
+  <rect
+    class="h-full fill-[#FFB800]"
+    [style.width]="fillWidth()"
+    [attr.clip-path]="'url(#' + uid + '-stars)'"
+    #startRect
+  ></rect>
+  @for (rating of ratings; track rating) {
+    <rect
+      class="clickable-star"
+      [attr.x]="rating.x"
+      y="0"
+      (click)="changeRating(rating.val)"
+      (keydown.enter)="changeRating(rating.val)"
+      width="200"
+      height="100%"
+      fill="transparent"
+      [attr.aria-label]="editable() ? 'Rate ' + rating.val + ' stars' : null"
+      [attr.tabindex]="editable() ? -1 : null"
+      />
+  }
+</svg>

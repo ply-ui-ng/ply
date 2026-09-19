@@ -1,0 +1,40 @@
+<!-- With icon -->
+@if (link() && icon()) {
+  <a
+    [href]="link()"
+    class="peer dark:text-slate-200 hover:text-blue-500! cursor-pointer pointer-events-auto"
+    [attr.title]="label()">
+    <span class="cursor-pointer">{{ label() }}</span>
+  </a>
+  <ply-icon
+    [name]="icon()"
+    class="w-4 h-4 min-w-4 stroke-slate-800 dark:stroke-slate-200 peer-hover:stroke-blue-500! -mr-1.5 order-first"
+  ></ply-icon>
+}
+
+@if (!link() && icon()) {
+  <span
+    class="min-w-0 truncate text-slate-500"
+    aria-current="page"
+    [attr.title]="label()">{{ label() }}</span>
+  <ply-icon
+    [name]="icon()"
+    class="w-4 h-4 min-w-4 shrink-0 stroke-slate-500 peer-hover:stroke-blue-500! -mr-1.5 order-first"
+  ></ply-icon>
+}
+<!-- Without icon -->
+@if (link() && !icon()) {
+  <a
+    [href]="link()"
+    class="peer hover:text-blue-500 cursor-pointer pointer-events-auto"
+    [attr.title]="label()">
+  <span class="cursor-pointer">{{ label() }}</span>
+</a>
+}
+
+@if (!link() && !icon()) {
+  <span
+    class="min-w-0 truncate font-light text-slate-500"
+    aria-current="page"
+    [attr.title]="label()">{{ label() }}</span>
+}

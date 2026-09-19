@@ -1,0 +1,126 @@
+@if (label()) {
+  <label [id]="labelId" [attr.for]="inputId" class="mb-px block text-sm font-medium text-slate-700 dark:text-slate-300">
+    {{ label() }}
+  </label>
+}
+
+<div #origin class="relative">
+  <input
+    #inputElement
+    [id]="inputId"
+    type="text"
+    role="combobox"
+    autocomplete="off"
+    aria-autocomplete="list"
+    aria-haspopup="listbox"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-controls]="listboxId"
+    [attr.aria-labelledby]="label() ? labelId : null"
+    [attr.aria-label]="!label() ? placeholder() : null"
+    [attr.aria-activedescendant]="activeDescendant()"
+    [disabled]="isDisabled()"
+    [placeholder]="placeholder()"
+    [ngModel]="displayValue()"
+    (ngModelChange)="onQueryInput($event)"
+    (focus)="openDropdown()"
+    (keydown)="onComboboxKeydown($event)"
+    class="h-9 w-full rounded-lg border border-slate-300 bg-white py-2 pl-3 pr-16 text-sm text-slate-800 shadow-sm transition-all duration-200 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+    [class.opacity-50]="isDisabled()"
+    [class.cursor-not-allowed]="isDisabled()" />
+
+  <div class="absolute inset-y-0 right-0 flex items-center gap-0.5 pr-2">
+    @if (selectedValue() && !isDisabled()) {
+      <button
+        type="button"
+        class="flex h-6 w-6 items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-700"
+        [attr.aria-label]="i18n.clear(label() || i18n.selection)"
+        (click)="clear($event)">
+        <ply-icon name="x" class="h-3.5 w-3.5 stroke-slate-400"></ply-icon>
+      </button>
+    }
+    <button
+      type="button"
+      tabindex="-1"
+      class="flex h-6 w-6 items-center justify-center"
+      [attr.aria-label]="isOpen() ? i18n.closeOptions : i18n.openOptions"
+      [disabled]="isDisabled()"
+      (click)="toggleDropdown()">
+      <ply-icon
+        name="chevron-down"
+        class="h-4 w-4 stroke-slate-500 transition-transform duration-200"
+        [class.rotate-180]="isOpen()"></ply-icon>
+    </button>
+  </div>
+</div>
+
+<ng-template #panelTemplate>
+  <div
+    class="not-prose max-h-60 overflow-auto rounded-lg border border-slate-300 bg-white shadow-lg focus:outline-none dark:border-slate-700 dark:bg-slate-800">
+    <ul
+      [id]="listboxId"
+      role="listbox"
+      tabindex="-1"
+      class="m-0 list-none p-0 text-sm"
+      [attr.aria-labelledby]="label() ? labelId : null">
+      @if (loading()) {
+        <li class="flex items-center justify-center gap-2 px-4 py-3 text-slate-500" role="presentation">
+          <ply-spinner size="sm"></ply-spinner>
+          {{ i18n.searching }}
+        </li>
+      }
+      @for (option of filtered(); track option.value; let i = $index) {
+        <li tabindex="-1"
+          role="option"
+          [id]="optionId(i)"
+          [attr.aria-selected]="isSelected(option)"
+          [attr.aria-disabled]="option.disabled || null"
+          (click)="selectOption(option)" (keydown.enter)="selectOption(option)"
+          class="relative cursor-pointer select-none px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700"
+          [class.bg-blue-50]="activeIndex() === i || isSelected(option)"
+          [class.dark:bg-blue-900/30]="activeIndex() === i || isSelected(option)"
+          [class.text-blue-600]="isSelected(option)"
+          [class.dark:text-blue-400]="isSelected(option)"
+          [class.opacity-40]="option.disabled"
+          [class.cursor-not-allowed]="option.disabled"
+          [class.pointer-events-none]="option.disabled">
+          @if (optionTemplate(); as optionTpl) {
+            <ng-container
+              [ngTemplateOutlet]="optionTpl.template"
+              [ngTemplateOutletContext]="{
+                $implicit: option,
+                option: option,
+                selected: isSelected(option),
+                active: activeIndex() === i,
+                index: i
+              }"></ng-container>
+          } @else {
+            <span class="block truncate" [class.font-semibold]="isSelected(option)">{{ option.label }}</span>
+            @if (option.description) {
+              <span class="mt-0.5 block truncate text-xs text-slate-500 dark:text-slate-400">{{ option.description }}</span>
+            }
+          }
+          @if (isSelected(option)) {
+            <span class="absolute inset-y-0 right-0 flex items-center pr-3" aria-hidden="true">
+              <ply-icon name="check" class="h-4 w-4 stroke-blue-600 dark:stroke-blue-400"></ply-icon>
+            </span>
+          }
+        </li>
+      }
+      @if (canCreate()) {
+        <li tabindex="-1"
+          role="option"
+          [id]="optionId(filtered().length)"
+          [attr.aria-selected]="false"
+          (click)="createFromQuery()" (keydown.enter)="createFromQuery()"
+          class="cursor-pointer select-none px-4 py-2 text-blue-600 hover:bg-slate-100 dark:text-blue-400 dark:hover:bg-slate-700"
+          [class.bg-blue-50]="activeIndex() === filtered().length"
+          [class.dark:bg-blue-900/30]="activeIndex() === filtered().length">
+          {{ i18n.createQuoted(filterQuery().trim()) }}
+        </li>
+      }
+      @if (!loading() && filtered().length === 0 && !canCreate()) {
+        <li class="px-4 py-3 text-xs italic text-slate-500" role="status">{{ emptyLabel() }}</li>
+      }
+    </ul>
+  </div>
+</ng-template>

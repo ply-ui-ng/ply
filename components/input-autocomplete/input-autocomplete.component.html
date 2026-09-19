@@ -1,0 +1,7 @@
+<ply-input-group>
+  <input ply-input type="text" [attr.list]="suggestions()" placeholder="Start typing...">
+  <ply-icon name="chevron-down" ply-addon-end class="mr-3 w-4 h-4 stroke-slate-500"></ply-icon>
+  <datalist [attr.id]="suggestions()">
+    <ng-content></ng-content>
+  </datalist>
+</ply-input-group>

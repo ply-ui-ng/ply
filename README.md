@@ -1,4 +1,4 @@
-> **Community hub.** Star this repository, open issues, and follow the changelog. Component source is **not** stored here — install with `npx ply-ui-cli add button` from [ply-ui.com](https://ply-ui.com).
+> **MIT free-tier source.** Components live in `components/` (same layout as `npx ply-ui-cli add`). CLI and MCP live in `packages/`. Pro items are not stored here — install those with `PLY_LICENSE_KEY` from [ply-ui.com](https://ply-ui.com).
 
 # Ply — Angular + Tailwind Component Library
 
@@ -65,7 +65,7 @@ Omit the name (`npx ply-ui-cli add`) in a terminal to pick from the catalog. Pas
 
 Component dependencies are resolved recursively, and missing npm packages are installed with your package manager automatically. Run `npx ply-ui-cli list` to see everything that's available.
 
-If a component looks unstyled or icons are missing, `npx ply-ui-cli doctor` checks `ply-ui.json`, Tailwind, CDK, and the icon sprites (read-only). Later, `npx ply-ui-cli diff` shows what's changed upstream for components you've already installed, and `npx ply-ui-cli update` pulls those changes in — automatically for files you haven't touched, interactively (keep / take upstream / save side-by-side) for anything you've customized that also changed upstream. See [`ply-ui-cli`](https://www.npmjs.com/package/ply-ui-cli) for details.
+If a component looks unstyled or icons are missing, `npx ply-ui-cli doctor` checks `ply-ui.json`, Tailwind, CDK, and the icon sprites (read-only). Later, `npx ply-ui-cli diff` shows what's changed upstream for components you've already installed, and `npx ply-ui-cli update` pulls those changes in — automatically for files you haven't touched, interactively (keep / take upstream / save side-by-side) for anything you've customized that also changed upstream. See [`packages/cli`](packages/cli) for details.
 
 ### 4. Import in your Angular app
 
@@ -127,6 +127,20 @@ Templates are complete, production-grade applications built on Pro — every rou
 
 ---
 
+## 🔧 Development (this repository)
+
+Free component source lives in `components/`. CLI and MCP source live in `packages/`. Pro components are **not** in this repository.
+
+```bash
+npm ci
+npm test
+npm run lint
+npm test --prefix packages/cli
+npm test --prefix packages/mcp
+```
+
+Pull requests: see [CONTRIBUTING.md](CONTRIBUTING.md). Maintainer merges land upstream first; this repo is synced after.
+
 ## 📋 Requirements
 
 - **Node.js** 22+
@@ -152,7 +166,7 @@ no-ops outside a server render.
 
 For AI agents and LLM-assisted development:
 
-- **MCP server** — [`ply-ui-mcp`](https://www.npmjs.com/package/ply-ui-mcp): catalog tools `list_components`, `search_components`, `get_component`. Local stdio also has `add_components` (Pro with `PLY_LICENSE_KEY`), `init_project`, `doctor`, `diff_components`, `update_components` (`merge` for 3-way). Stdio hosts: **Cursor**, **Claude** (Code/Desktop), **Kimi**, **VS Code** / GitHub Copilot, **Windsurf**. ChatGPT/Gemini chat catalog: [mcp.ply-ui.com/mcp](https://mcp.ply-ui.com/mcp) (read-only; install with `npx ply-ui-cli add <name>`). Run `npx -y ply-ui-mcp` locally to install. Setup: [Getting started — AI agents (MCP)](https://ply-ui.com/getting-started#ai-agents-mcp). The CLI remains the canonical installer; MCP wraps it.
+- **MCP server** — [`ply-ui-mcp`](packages/mcp): catalog tools `list_components`, `search_components`, `get_component`. Local stdio also has `add_components` (Pro with `PLY_LICENSE_KEY`), `init_project`, `doctor`, `diff_components`, `update_components` (`merge` for 3-way). Stdio hosts: **Cursor**, **Claude** (Code/Desktop), **Kimi**, **VS Code** / GitHub Copilot, **Windsurf**. ChatGPT/Gemini chat catalog: [mcp.ply-ui.com/mcp](https://mcp.ply-ui.com/mcp) (read-only; install with `npx ply-ui-cli add <name>`). Run `npx -y ply-ui-mcp` locally to install. Setup: [Getting started — AI agents (MCP)](https://ply-ui.com/getting-started#ai-agents-mcp). The CLI remains the canonical installer; MCP wraps it.
 - **Component catalog** — [`docs/ai/components.md`](docs/ai/components.md): selectors, inputs, outputs, and descriptions in one file. Published at [ply-ui.com/docs/ai/components.md](https://ply-ui.com/docs/ai/components.md) and inlined in [llms-full.txt](https://ply-ui.com/llms-full.txt).
 - **Cursor rules & snippets** — [`docs/ai/ply-ui.mdc`](docs/ai/ply-ui.mdc) and [`docs/ai/ply-ui.code-snippets`](docs/ai/ply-ui.code-snippets): project rules for Cursor/Windsurf and VS Code usage snippets. Copy from [Getting started — editor rules](https://ply-ui.com/getting-started/#editor-rules), or `npx ply-ui-cli init` writes them when missing.
 - **Cookbooks** — [ply-ui.com/cookbooks](https://ply-ui.com/cookbooks): assembled screens (settings form, dialog + CVA, invoice table, AI chat, signal forms, httpResource, @defer, view transitions).

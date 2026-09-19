@@ -1,0 +1,73 @@
+<ply-card class="mb-8">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+          <h3 class="font-bold text-sm text-slate-900 dark:text-white">Payment Info</h3>
+          <div class="flex gap-2 items-center">
+            <ply-icon name="check-circle" class="w-4 h-4 stroke-green-500"></ply-icon>
+            <ply-icon name="check-circle" class="w-4 h-4 stroke-slate-900 dark:stroke-white"></ply-icon>
+            <div
+              class="w-4 h-4 rounded-full border border-slate-200 dark:border-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-400">
+              3</div>
+          </div>
+        </div>
+        <ply-card-body class="p-6 flex flex-col flex-1">
+          <form class="contents" (submit)="onSubmit($event)">
+          <div class="flex gap-4 mb-6">
+            <button type="button" (click)="method = 'visa'"
+              class="flex-1 py-4 rounded-xl border flex items-center justify-center"
+              [class.border-blue-500]="method === 'visa'"
+              [class.dark:border-white]="method === 'visa'"
+              [class.border-slate-200]="method !== 'visa'"
+              [class.dark:border-slate-700]="method !== 'visa'"
+              [class.opacity-50]="method !== 'visa'">
+              <span class="text-blue-600 font-bold italic text-lg">VISA</span>
+            </button>
+            <button type="button" (click)="method = 'paypal'"
+              class="flex-1 py-4 rounded-xl border flex items-center justify-center"
+              [class.border-blue-500]="method === 'paypal'"
+              [class.dark:border-white]="method === 'paypal'"
+              [class.border-slate-200]="method !== 'paypal'"
+              [class.dark:border-slate-700]="method !== 'paypal'"
+              [class.opacity-50]="method !== 'paypal'">
+              <span class="text-blue-800 font-bold italic text-lg">PayPal</span>
+            </button>
+          </div>
+
+          <p class="text-xs text-slate-500 mb-8 leading-relaxed">Safe money transfer using your bank account.
+            Visa, Maestro, Discover...</p>
+
+          <ply-input-group class="mb-4">
+            <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Cardholder
+              Name</ply-label>
+            <input ply-input name="cardholderName" placeholder="Full name" [(ngModel)]="cardholderName" />
+          </ply-input-group>
+
+          <ply-input-group class="mb-4">
+            <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Card Number</ply-label>
+            <input ply-input name="cardNumber" placeholder="•••• •••• •••• ••••" [(ngModel)]="cardNumber" />
+          </ply-input-group>
+
+          <div class="flex gap-4 mb-8">
+            <ply-input-group class="inline-block">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Expiry Date</ply-label>
+              <input ply-input name="expiry" placeholder="MM / YY" [(ngModel)]="expiry" />
+            </ply-input-group>
+            <ply-input-group class="inline-block">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">CVV</ply-label>
+              <input ply-input name="cvv" placeholder="CVV" [(ngModel)]="cvv" />
+            </ply-input-group>
+          </div>
+
+          <div class="flex gap-4 mt-auto ">
+            <div class="flex-1">
+              <button type="button" ply-stroked-button color="primary" class="py-3">
+                <ply-icon name="arrow-left" class="-ml-2"></ply-icon>
+                Back
+              </button>
+            </div>
+            <div class="flex-1">
+              <button ply-button color="primary" type="submit" class="py-3 w-full">Pay Now</button>
+            </div>
+          </div>
+          </form>
+        </ply-card-body>
+      </ply-card>

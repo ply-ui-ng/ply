@@ -1,0 +1,74 @@
+<ply-card>
+  <div class="p-8 flex flex-col gap-6">
+    <div>
+      <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1 uppercase tracking-widest">Invite Team Members</h3>
+      <p class="text-[11px] text-slate-400 uppercase tracking-widest">Add people to your workspace</p>
+    </div>
+
+    <form class="contents" (submit)="onSubmit($event)">
+    <div class="flex gap-3">
+      <ply-input-group class="flex-1">
+        <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Email Address</ply-label>
+        <input ply-input type="email" name="email" placeholder="colleague@company.com" [(ngModel)]="email" />
+      </ply-input-group>
+      <ply-input-group class="w-34">
+        <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Role</ply-label>
+        <select ply-input class="appearance-none pr-8" name="role" [(ngModel)]="role">
+          <option>Admin</option>
+          <option>Member</option>
+          <option>Viewer</option>
+        </select>
+        <ply-icon ply-addon-end name="chevron-down" class="w-3.5 h-3.5 stroke-slate-400 pointer-events-none absolute right-3 top-1/2 -translate-y-1/2"></ply-icon>
+      </ply-input-group>
+    </div>
+
+    <button ply-button color="primary" type="submit" class="w-full">Send Invitation</button>
+    </form>
+
+    <div class="border-t border-slate-100 dark:border-slate-800 pt-5">
+      <p class="text-[10px] uppercase tracking-widest text-slate-400 mb-4">Pending Invitations</p>
+      <div class="flex flex-col gap-2.5">
+
+        <div class="flex items-center justify-between py-2.5 px-4 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center shrink-0">
+              <span class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">JD</span>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-slate-700 dark:text-slate-200">james.doe@company.com</p>
+              <p class="text-[10px] text-slate-400 uppercase tracking-wider">Member · Sent 2 days ago</p>
+            </div>
+          </div>
+          <ply-badge color="warning" size="sm" shape="rectangular">Pending</ply-badge>
+        </div>
+
+        <div class="flex items-center justify-between py-2.5 px-4 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0">
+              <span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">SA</span>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-slate-700 dark:text-slate-200">sarah.ash@company.com</p>
+              <p class="text-[10px] text-slate-400 uppercase tracking-wider">Viewer · Sent 5 days ago</p>
+            </div>
+          </div>
+          <ply-badge color="success" size="sm" shape="rectangular">Accepted</ply-badge>
+        </div>
+
+        <div class="flex items-center justify-between py-2.5 px-4 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/50 flex items-center justify-center shrink-0">
+              <span class="text-[11px] font-bold text-rose-600 dark:text-rose-400">TK</span>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-slate-700 dark:text-slate-200">tom.k@company.com</p>
+              <p class="text-[10px] text-slate-400 uppercase tracking-wider">Admin · Sent 8 days ago</p>
+            </div>
+          </div>
+          <ply-badge color="danger" size="sm" shape="rectangular">Expired</ply-badge>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</ply-card>

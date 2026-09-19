@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    // tsup owns the emit (format: cjs); tsc runs type-check only. Legacy "node"
+    // resolution ignores package exports maps, which made `zod` resolve to
+    // index.d.cts while the MCP SDK's zod-compat resolved `zod/v3` to the ESM
+    // declarations — two incompatible declarations of one package.
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

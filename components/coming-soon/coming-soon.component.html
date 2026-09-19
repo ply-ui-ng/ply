@@ -1,0 +1,43 @@
+<div
+  class="relative overflow-hidden group rounded-3xl p-2 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/10 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 backdrop-blur-xl">
+  <!-- Background Decorative Elements -->
+  <div
+    class="absolute -top-6 -right-6 w-12 h-12 bg-blue-500/50 rounded-full blur-2xl group-hover:bg-blue-500/90 transition-colors duration-500">
+  </div>
+  <div
+    class="absolute -bottom-6 -left-6 w-12 h-12 bg-indigo-500/50 rounded-full blur-2xl group-hover:bg-indigo-500/90 transition-colors duration-500">
+  </div>
+
+  <div class="relative flex flex-col items-center text-center space-y-1.5 py-3">
+    <!-- Icon Container -->
+    <div class="relative">
+      <div class="absolute inset-0 bg-blue-500/20 rounded-2xl blur-xl animate-pulse"></div>
+      <div
+        class="relative w-16 h-16 flex items-center justify-center bg-linear-to-tr from-blue-600 to-indigo-600 rounded-2xl shadow-lg transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+        <ply-icon name="clock" class="text-white w-10 h-10" style="stroke: currentColor"></ply-icon>
+      </div>
+    </div>
+
+    <!-- Text Content -->
+    <div class="space-y-0.5 px-1">
+      <span
+        class="inline-flex px-0.75 py-px text-[10px] font-bold tracking-widest text-blue-600 dark:text-blue-400 uppercase bg-blue-50 dark:bg-blue-900/30 rounded-full">
+        Under Development
+      </span>
+      <h3 class="text-2xl font-bold text-slate-900 dark:text-white">
+        {{ title() || 'Coming Soon' }}
+      </h3>
+      <p class="max-w-70 mx-auto text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+        {{ description() || 'We’re working hard to bring you something amazing. Stay tuned for updates!' }}
+      </p>
+    </div>
+
+    <!-- Progress Indicator (Decorative) -->
+    <div class="w-full max-w-40 h-0.75 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden mt-4!">
+      <div class="h-full bg-blue-600 dark:bg-blue-500 rounded-full relative overflow-hidden w-2/3">
+        <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/90 to-transparent animate-shimmer">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+@if (open()) {
+<div role="presentation" class="fixed inset-0 z-1000 bg-slate-900/50 dark:bg-slate-900/80 backdrop-blur-sm"
+  [@fade] (click)="onBackdropClick()"></div>
+
+<div role="presentation"
+  class="fixed bottom-0 left-0 right-0 z-1001 mx-auto w-full sm:max-w-140 flex flex-col bg-white dark:bg-slate-900 rounded-t-2xl shadow-2xl overflow-hidden"
+  [class]="heightClass()"
+  [style.height]="customHeightStyle()"
+  [style.transform]="'translateY(' + dragOffset() + 'px)'"
+  [class.transition-transform]="!isDragging()"
+  [class.duration-300]="!isDragging()"
+  [class.ease-out]="!isDragging()"
+  [@slideBottom]
+  cdkTrapFocus
+  cdkTrapFocusAutoCapture
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-label]="sheetLabel()"
+  (click)="$event.stopPropagation()">
+
+  @if (showHandle()) {
+  <div class="flex justify-center py-3 cursor-grab active:cursor-grabbing touch-none shrink-0"
+    (pointerdown)="onDragStart($event)">
+    <div class="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></div>
+  </div>
+  }
+
+  @if (showClose()) {
+  <button ply-icon-button color="transparent" size="sm" (click)="close()"
+    class="absolute! top-3 right-3 z-10" aria-label="Close bottom sheet">
+    <ply-icon name="close"></ply-icon>
+  </button>
+  }
+
+  <div class="flex-1 overflow-y-auto px-6 pb-6" [class.pt-6]="!showHandle()">
+    <ng-content></ng-content>
+  </div>
+</div>
+}

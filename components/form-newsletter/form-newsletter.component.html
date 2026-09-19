@@ -1,0 +1,18 @@
+<ply-card>
+          <div class="p-8 text-center flex flex-col justify-center h-full">
+            <div
+              class="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center mx-auto mb-6">
+              <ply-icon name="email"></ply-icon>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">Subscribe to Our Weekly Newsletter
+            </h3>
+            <p class="text-xs text-slate-500 mb-6 leading-relaxed">No spam, I promise. You can unsubscribe at any time.
+            </p>
+            <form (submit)="onSubmit($event)">
+            <ply-input-group class="mb-4">
+              <input ply-input type="email" name="email" placeholder="Email" class="text-center" [(ngModel)]="email" />
+            </ply-input-group>
+            <button ply-button color="primary" type="submit" class="w-full py-3">Subscribe</button>
+            </form>
+          </div>
+        </ply-card>

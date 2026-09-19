@@ -1,0 +1,6 @@
+<label [class]="containerClasses()">
+  <input type="checkbox" role="switch" class="w-0 h-0 opacity-0 peer" [disabled]="isDisabled()" [checked]="checked()"
+    [attr.aria-label]="ariaLabel()" (change)="onToggle($event)" />
+  <span [class]="trackClasses()" class="peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500 peer-focus-visible:ring-offset-2 rounded-full"></span>
+  <span [class]="thumbClasses()"></span>
+</label>

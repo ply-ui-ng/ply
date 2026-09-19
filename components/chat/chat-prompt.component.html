@@ -1,0 +1,34 @@
+<div class="flex items-end gap-2 rounded-xl border border-slate-200 bg-white p-2 dark:border-slate-700 dark:bg-slate-900">
+  <textarea
+    #composer
+    rows="1"
+    class="min-h-9 w-full resize-none appearance-none overflow-hidden bg-transparent px-2 py-2 text-sm leading-5 text-slate-800 outline-none placeholder:text-slate-400 dark:text-slate-100"
+    [placeholder]="placeholder()"
+    [disabled]="disabled()"
+    [ngModel]="draft()"
+    (ngModelChange)="draft.set($event)"
+    (keydown)="onKeydown($event)"
+    [attr.aria-label]="placeholder()"></textarea>
+  @if (streaming()) {
+    <button
+      type="button"
+      ply-icon-button
+      color="danger"
+      size="sm"
+      aria-label="Stop generating"
+      (click)="stop.emit()">
+      <ply-icon name="stop" class="h-4 w-4 stroke-current"></ply-icon>
+    </button>
+  } @else {
+    <button
+      type="button"
+      ply-icon-button
+      color="primary"
+      size="sm"
+      aria-label="Send message"
+      [disabled]="!canSend()"
+      (click)="submit()">
+      <ply-icon name="send" class="h-4 w-4 stroke-current"></ply-icon>
+    </button>
+  }
+</div>

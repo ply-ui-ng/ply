@@ -1,0 +1,49 @@
+@if (isSystem()) {
+  <p class="w-full text-center text-xs text-slate-500 dark:text-slate-400">{{ message().content }}</p>
+} @else {
+  <div class="flex w-full gap-3" [class.flex-row-reverse]="isUser()">
+    <ply-avatar
+      size="sm"
+      shape="circle"
+      [avatarUrl]="message().avatarUrl ?? ''"
+      [initials]="initials()"
+      class="mt-0.5 shrink-0"></ply-avatar>
+    <div class="min-w-0 max-w-[80%]" [class.ml-auto]="isUser()">
+      @if (isTool()) {
+        <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/60">
+          <div class="mb-1 flex items-center gap-2">
+            <ply-icon name="sparkles" class="h-3.5 w-3.5 stroke-slate-500 dark:stroke-slate-400"></ply-icon>
+            <span class="text-xs font-semibold text-slate-700 dark:text-slate-200">
+              {{ message().toolName || 'Tool' }}
+            </span>
+            @if (message().toolStatus) {
+              <ply-badge [color]="toolBadgeColor()" size="sm" shape="rectangular">{{ message().toolStatus }}</ply-badge>
+            }
+            @if (message().toolStatus === 'running') {
+              <ply-spinner size="sm"></ply-spinner>
+            }
+          </div>
+          @if (message().content) {
+            <p class="m-0! whitespace-pre-wrap text-sm text-slate-600 dark:text-slate-300">{{ message().content }}</p>
+          }
+        </div>
+      } @else {
+        <div
+          class="rounded-2xl px-3.5 py-2 text-sm leading-relaxed"
+          [class.bg-blue-500]="isUser()"
+          [class.text-white]="isUser()"
+          [class.rounded-br-md]="isUser()"
+          [class.bg-slate-100]="!isUser()"
+          [class.text-slate-800]="!isUser()"
+          [class.dark:bg-slate-800]="!isUser()"
+          [class.dark:text-slate-100]="!isUser()"
+          [class.rounded-bl-md]="!isUser()">
+          <span class="whitespace-pre-wrap">{{ message().content }}</span>
+          @if (message().streaming) {
+            <span class="ml-0.5 inline-block h-3 w-1 animate-pulse bg-current align-middle" aria-hidden="true"></span>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

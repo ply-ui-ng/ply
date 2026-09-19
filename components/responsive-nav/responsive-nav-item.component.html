@@ -1,0 +1,21 @@
+<ng-template #body>
+  <ng-content></ng-content>
+</ng-template>
+
+@if (routerLink() !== undefined) {
+<a [routerLink]="routerLink()" [class]="linkCls()">
+  <ng-container [ngTemplateOutlet]="body"></ng-container>
+</a>
+} @else if (href()) {
+<a
+  [href]="href()"
+  [attr.target]="target() || null"
+  [attr.rel]="target() === '_blank' ? 'noopener noreferrer' : null"
+  [class]="linkCls()">
+  <ng-container [ngTemplateOutlet]="body"></ng-container>
+</a>
+} @else {
+<span [class]="linkCls()">
+  <ng-container [ngTemplateOutlet]="body"></ng-container>
+</span>
+}

@@ -1,0 +1,17 @@
+<div
+  class="flex items-center h-9 border border-slate-200 dark:border-slate-700 rounded-[8px] overflow-hidden bg-white dark:bg-slate-800 transition-colors duration-200 focus-within:border-blue-500"
+  [class.opacity-50]="isDisabled()" [class.pointer-events-none]="isDisabled()">
+  <button ply-icon-button color="transparent" size="sm" type="button" class="h-full! w-9!"
+    (click)="updateValue(false)" [disabled]="isDisabled() || value() <= min()">
+    <ply-icon name="minus" class="w-4 h-4 stroke-slate-500"></ply-icon>
+  </button>
+
+  <input type="number"
+    class="w-full h-full text-center text-sm bg-transparent border-x border-slate-200 dark:border-slate-700 focus:outline-none dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+    [value]="value()" [min]="min()" [max]="max()" [step]="step()" [disabled]="isDisabled()" (change)="onInputChange($event)" />
+
+  <button ply-icon-button color="transparent" size="sm" type="button" class="h-full! w-9!" (click)="updateValue(true)"
+    [disabled]="isDisabled() || value() >= max()">
+    <ply-icon name="plus" class="w-4 h-4 stroke-slate-500"></ply-icon>
+  </button>
+</div>

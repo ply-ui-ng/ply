@@ -1,12 +1,13 @@
 # Contributing to Ply
 
-This repository ([ply-ui-ng/ply](https://github.com/ply-ui-ng/ply)) is the **public community hub**: README, changelog, license, security policy, issues, and discussions.
+This repository ([ply-ui-ng/ply](https://github.com/ply-ui-ng/ply)) holds:
 
-Component source is **not** in this repository. Install with:
+- MIT **free-tier** component source in `components/` (same layout as `npx ply-ui-cli add`)
+- MIT **CLI** (`packages/cli`, npm `ply-ui-cli`)
+- MIT **MCP** (`packages/mcp`, npm `ply-ui-mcp`)
+- Docs, changelog, issues, and discussions
 
-```bash
-npx ply-ui-cli add button card
-```
+**Pro** components are not here. Do not paste license keys, Pro source, or authenticated registry URLs into issues or PRs.
 
 Docs and live previews: [ply-ui.com](https://ply-ui.com)
 
@@ -14,27 +15,30 @@ Docs and live previews: [ply-ui.com](https://ply-ui.com)
 
 | Kind | Where |
 | --- | --- |
-| Bug | [Issue — bug report](https://github.com/ply-ui-ng/ply/issues/new?template=bug_report.md) |
-| New component / feature | [Issue — feature request](https://github.com/ply-ui-ng/ply/issues/new?template=feature_request.md) |
+| Bug in a free component, CLI, or MCP | [Issue — bug report](https://github.com/ply-ui-ng/ply/issues/new?template=bug_report.md) or a pull request |
+| New free component / feature | [Issue — feature request](https://github.com/ply-ui-ng/ply/issues/new?template=feature_request.md) (a PR is welcome after discussion) |
 | How-to / usage question | [Discussions — Q&A](https://github.com/ply-ui-ng/ply/discussions/new?category=q-a) |
 | Something you built | [Discussions — Show and tell](https://github.com/ply-ui-ng/ply/discussions/new?category=show-and-tell) |
 | Security vulnerability | Email **security@ply-ui.com** — do not open a public issue |
-| License, billing, account | Email **support@ply-ui.com** |
-
-Do not paste **license keys**, **Pro component source**, or **authenticated registry URLs** into issues or discussions.
+| License, billing, Pro catalog | Email **support@ply-ui.com** |
 
 ## Pull requests
 
-We do **not** merge pull requests on this repository.
+PRs against **free** source, the CLI, and the MCP are welcome.
 
-- There is no library source here to patch.
-- Docs on this repo are copied from a private source tree; a PR would be overwritten on the next sync.
+1. Fork this repo and branch from `main`.
+2. Change files under `components/<item>/`, `packages/cli/`, or `packages/mcp/`.
+3. Add or update a spec next to the code you touch (`*.spec.ts`).
+4. Run `npm ci && npm test && npm run lint` (and `npm test --prefix packages/cli` or `packages/mcp` if you changed those).
+5. Open the PR with a short description of the why.
 
-Please file an issue (or a discussion for questions) instead.
+This public tree is synced from a private upstream (docs site, Pro registry, and the same free source). **Maintainer merges happen on that upstream first**, then this repository is updated. Your GitHub username is kept as `Co-authored-by` on the upstream commit and in the changelog. The public PR is closed with a link to that commit once the sync lands.
+
+Please do not add Pro components, registry payloads, or license-key handling workarounds.
 
 ## Related
 
 - Live catalog: [ply-ui.com](https://ply-ui.com)
-- Free admin dashboard (source): [ply-ui-ng/ply-free-dashboard](https://github.com/ply-ui-ng/ply-free-dashboard)
+- Free admin dashboard: [ply-ui-ng/ply-free-dashboard](https://github.com/ply-ui-ng/ply-free-dashboard)
 - CLI: [`ply-ui-cli`](https://www.npmjs.com/package/ply-ui-cli)
 - MCP: [`ply-ui-mcp`](https://www.npmjs.com/package/ply-ui-mcp)

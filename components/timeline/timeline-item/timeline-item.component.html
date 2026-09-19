@@ -1,0 +1,20 @@
+<div class="flex flex-col items-center">
+  <!-- Dot -->
+  <div [class]="dotClasses()">
+    @if (icon()) {
+      <ply-icon [name]="icon()!" [class]="'w-4 h-4 stroke-white'"></ply-icon>
+    }
+  </div>
+  <!-- Connector line -->
+  @if (!last()) {
+    <div class="w-0.5 flex-1 mt-1 bg-slate-200 dark:bg-slate-700 min-h-6"></div>
+  }
+</div>
+
+<!-- Content -->
+<div class="pb-6 flex-1 min-w-0">
+  @if (time()) {
+    <p class="text-xs text-slate-400 dark:text-slate-500 mb-1">{{ time() }}</p>
+  }
+  <ng-content></ng-content>
+</div>

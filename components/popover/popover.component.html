@@ -1,0 +1,27 @@
+<!-- Trigger wrapper — always in DOM, inline -->
+<span role="presentation"
+  #triggerSlot
+  class="inline-block"
+  role="button" tabindex="0"
+  (click)="toggle(); $event.stopPropagation()"
+  [attr.aria-haspopup]="true"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-controls]="panelId"
+  (keydown.enter)="toggle(); $event.preventDefault()"
+  (keydown.space)="toggle(); $event.preventDefault()">
+  <ng-content select="[popover-trigger]"></ng-content>
+</span>
+
+<ng-template #panelTemplate>
+  <div role="presentation"
+    [id]="panelId"
+    role="dialog"
+    cdkTrapFocus
+    [attr.aria-hidden]="!isOpen()"
+    class="not-prose rounded-xl border border-slate-200 bg-white p-4 shadow-2xl dark:border-slate-700 dark:bg-slate-800"
+    [style.min-width]="minWidth()"
+    (click)="$event.stopPropagation()"
+    (keydown.escape)="close()">
+    <ng-content></ng-content>
+  </div>
+</ng-template>

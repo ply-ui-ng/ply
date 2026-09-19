@@ -1,0 +1,11 @@
+<button
+  type="button"
+  ply-icon-button
+  [color]="color()"
+  [size]="size()"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-hidden]="!visible()"
+  class="shadow-lg"
+  (click)="scroll()">
+  <ply-icon name="arrow-up" class="stroke-current"></ply-icon>
+</button>

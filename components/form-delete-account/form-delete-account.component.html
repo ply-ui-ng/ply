@@ -1,0 +1,57 @@
+<ply-card>
+  <form class="p-8 flex flex-col gap-6" (submit)="onSubmit($event)">
+
+    <div class="flex items-start gap-4 p-5 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50">
+      <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/50 flex items-center justify-center shrink-0">
+        <ply-icon name="alert-triangle" class="w-5 h-5 stroke-red-600 dark:stroke-red-400"></ply-icon>
+      </div>
+      <div>
+        <h3 class="text-[13px] font-semibold text-red-700 dark:text-red-400 mb-1.5 uppercase tracking-wider">Danger Zone — This cannot be undone</h3>
+        <p class="text-[11px] text-red-600/80 dark:text-red-400/70 leading-relaxed">Deleting your account permanently removes all data, projects, and workspace configurations. You will lose access immediately.</p>
+      </div>
+    </div>
+
+    <div>
+      <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
+        Before proceeding, consider
+        <a [routerLink]="exportLink()" class="text-blue-600 dark:text-blue-400 underline underline-offset-2">exporting your data</a>
+        or
+        <a [routerLink]="transferLink()" class="text-blue-600 dark:text-blue-400 underline underline-offset-2">transferring ownership</a>
+        to another team member.
+      </p>
+      <div class="flex flex-col gap-2.5">
+        <div class="flex items-center gap-2.5">
+          <ply-icon name="x-circle" class="w-3.5 h-3.5 stroke-red-400 shrink-0"></ply-icon>
+          <span class="text-[11px] text-slate-500 dark:text-slate-400">All 14 projects will be permanently deleted</span>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <ply-icon name="x-circle" class="w-3.5 h-3.5 stroke-red-400 shrink-0"></ply-icon>
+          <span class="text-[11px] text-slate-500 dark:text-slate-400">3 team members will lose workspace access</span>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <ply-icon name="x-circle" class="w-3.5 h-3.5 stroke-red-400 shrink-0"></ply-icon>
+          <span class="text-[11px] text-slate-500 dark:text-slate-400">Active subscriptions will be immediately cancelled</span>
+        </div>
+      </div>
+    </div>
+
+    <ply-input-group>
+      <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Type DELETE to confirm</ply-label>
+      <input
+        ply-input
+        name="confirmText"
+        placeholder="DELETE"
+        class="font-mono tracking-widest"
+        [(ngModel)]="confirmText" />
+    </ply-input-group>
+
+    <button
+      ply-button
+      type="submit"
+      [disabled]="!canDelete"
+      class="w-full bg-red-600! hover:bg-red-700! border-red-600! text-white! disabled:opacity-40 disabled:cursor-not-allowed">
+      Delete Account Permanently
+    </button>
+
+  </form>
+</ply-card>

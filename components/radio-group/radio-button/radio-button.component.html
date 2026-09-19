@@ -1,0 +1,10 @@
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-start relative">
+  <input type="radio" [name]="effectiveName()" [value]="value()" [disabled]="isDisabled()" [checked]="isChecked()"
+    (change)="onInputInteraction($event)" [class]="radioClasses()" />
+  <span class="peer-disabled:opacity-50 cursor-pointer peer-checked:cursor-default peer-disabled:cursor-default mt-0.5">
+    <ng-content></ng-content>
+  </span>
+
+  <span
+    class="w-2 h-2 bg-white border-2 border-white rounded-full absolute opacity-0 left-1 top-0.5 transform translate-y-1.5 peer-checked:opacity-100 cursor-pointer peer-checked:cursor-default peer-disabled:cursor-default"></span>
+</label>

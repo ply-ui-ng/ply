@@ -1,0 +1,85 @@
+<ng-template>
+  @if (position() === 'left') {
+  <div class="bg-white dark:bg-slate-900 p-4 fixed top-0 bottom-0 left-0 h-full max-w-[92vw] shadow-lg z-1000"
+    [@slideLeft] cdkTrapFocus cdkTrapFocusAutoCapture
+    role="dialog" aria-modal="true" [attr.aria-label]="drawerLabel()"
+    [class.w-[200px]]="size() === 'sm'"
+    [class.w-[400px]]="size() === 'md'"
+    [class.w-[40vw]]="size() === 'lg'"
+    [class.w-[56vw]]="size() === 'xl'">
+    <div class="relative w-full h-full">
+      @if (close()) {
+      <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
+        class="absolute! top-0 right-0 z-10" aria-label="Close drawer">
+        <ply-icon name="close"></ply-icon>
+      </button>
+      }
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </div>
+  </div>
+  }
+
+  @if (position() === 'right') {
+  <div class="bg-white dark:bg-slate-900 p-4 fixed top-0 bottom-0 right-0 h-full max-w-[92vw] shadow-lg z-1000"
+    [@slideRight] cdkTrapFocus cdkTrapFocusAutoCapture
+    role="dialog" aria-modal="true" [attr.aria-label]="drawerLabel()"
+    [class.w-[200px]]="size() === 'sm'"
+    [class.w-[400px]]="size() === 'md'"
+    [class.w-[40vw]]="size() === 'lg'"
+    [class.w-[56vw]]="size() === 'xl'">
+    <div class="relative w-full h-full">
+      @if (close()) {
+      <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
+        class="absolute! top-0 right-0 z-10" aria-label="Close drawer">
+        <ply-icon name="close"></ply-icon>
+      </button>
+      }
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </div>
+  </div>
+  }
+
+  @if (position() === 'top') {
+  <div class="bg-white dark:bg-slate-900 p-4 fixed top-0 left-0 right-0 w-screen shadow-lg z-1000" [@slideTop]
+    cdkTrapFocus cdkTrapFocusAutoCapture
+    role="dialog" aria-modal="true" [attr.aria-label]="drawerLabel()"
+    [class.h-40]="size() === 'sm'"
+    [class.h-[280px]]="size() === 'md'"
+    [class.h-[400px]]="size() === 'lg'"
+    [class.h-[560px]]="size() === 'xl'">
+    <div class="relative w-full h-full">
+      @if (close()) {
+      <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
+        class="absolute! top-0 right-0 z-10" aria-label="Close drawer">
+        <ply-icon name="close"></ply-icon>
+      </button>
+      }
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </div>
+  </div>
+  }
+
+  @if (position() === 'bottom') {
+  <div class="bg-white dark:bg-slate-900 p-4 fixed bottom-0 left-0 right-0 w-screen shadow-lg z-1000" [@slideBottom]
+    cdkTrapFocus cdkTrapFocusAutoCapture
+    role="dialog" aria-modal="true" [attr.aria-label]="drawerLabel()"
+    [class.h-40]="size() === 'sm'"
+    [class.h-[280px]]="size() === 'md'"
+    [class.h-[400px]]="size() === 'lg'"
+    [class.h-[560px]]="size() === 'xl'">
+    <div class="relative w-full h-full">
+      @if (close()) {
+      <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
+        class="absolute! top-0 right-0 z-10" aria-label="Close drawer">
+        <ply-icon name="close"></ply-icon>
+      </button>
+      }
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </div>
+  </div>
+  }
+
+  <ng-template #content>
+    <ng-content></ng-content>
+  </ng-template>
+</ng-template>

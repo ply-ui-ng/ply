@@ -1,0 +1,38 @@
+<ply-card class="mb-8">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+          <h3 class="font-bold text-sm text-slate-900 dark:text-white">Write a Review</h3>
+          <button type="button"><ply-icon name="x"
+              class="w-4 h-4 text-slate-400 hover:text-slate-600 transition-colors"></ply-icon></button>
+        </div>
+        <ply-card-body class="p-6 flex flex-col flex-1">
+          <form class="contents" (submit)="onSubmit($event)">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0">
+              <img src="assets/images/products/watch.png" alt="" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <p class="text-sm font-bold text-slate-900 dark:text-white mb-1">G-Shock Premium Edition Watch</p>
+              <button type="button" class="text-[10px] uppercase font-light text-slate-400 hover:text-slate-600 transition-colors">Add
+                a
+                Review</button>
+            </div>
+          </div>
+          <div class="mb-6">
+            <p class="text-[10px]! uppercase font-light! tracking-[2px]! text-slate-400 mb-2">Post Review</p>
+            <ply-star-rating>
+              <ply-star [rating]="rating" editable (ratingChanged)="rating = $event"></ply-star>
+              <h4 class="m-0!">{{ rating }}</h4>
+            </ply-star-rating>
+          </div>
+          <ply-input-group class="mb-4">
+            <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Title</ply-label>
+            <input ply-input name="title" placeholder="Title" [(ngModel)]="title" />
+          </ply-input-group>
+          <ply-input-group class="mb-6 flex-1">
+            <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Review</ply-label>
+            <textarea ply-textarea rows="4" name="review" placeholder="Review" [(ngModel)]="review"></textarea>
+          </ply-input-group>
+          <button ply-button color="primary" type="submit" class="w-full py-3 mt-auto">Write a Review</button>
+          </form>
+        </ply-card-body>
+      </ply-card>

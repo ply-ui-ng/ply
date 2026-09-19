@@ -1,0 +1,22 @@
+@if (!fullscreen()) {
+  <ng-content></ng-content>
+}
+
+@if (visible()) {
+  <div
+    [class]="
+      fullscreen()
+        ? 'fixed inset-0 z-[10000] flex items-center justify-center bg-white/80 dark:bg-slate-900/80'
+        : 'absolute inset-0 z-50 flex items-center justify-center bg-white/80 dark:bg-slate-900/80'
+    "
+    role="status"
+    aria-live="polite"
+    [attr.aria-label]="message() || 'Loading'">
+    <div class="flex flex-col items-center gap-3 px-4">
+      <ply-spinner [size]="size()" [color]="color()"></ply-spinner>
+      @if (message()) {
+        <p class="m-0! text-sm font-medium text-slate-700 dark:text-slate-200">{{ message() }}</p>
+      }
+    </div>
+  </div>
+}

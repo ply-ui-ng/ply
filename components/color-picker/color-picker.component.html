@@ -1,0 +1,44 @@
+<!-- Trigger swatch -->
+<button #trigger type="button"
+  class="w-10 h-10 rounded-lg border-2 border-slate-300 dark:border-slate-600 shadow-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+  [style.background]="value()" [disabled]="isDisabled()" [class.opacity-50]="isDisabled()"
+  [class.cursor-not-allowed]="isDisabled()" (click)="toggle()"
+  [attr.aria-label]="pickerLabel() + ': ' + value()"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-controls]="panelId">
+</button>
+
+<!-- Panel — rendered at fixed viewport position, always on top -->
+@if (isOpen()) {
+<div role="presentation" [id]="panelId" [ngStyle]="panelStyle()"
+  class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xl p-4"
+  (click)="$event.stopPropagation()"
+  (keydown.escape)="close()">
+
+  <!-- Native color input (full spectrum) -->
+  <div class="mb-3">
+    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5" [attr.for]="panelId + '-custom'">Custom</label>
+    <div class="flex items-center gap-2">
+      <input type="color" [id]="panelId + '-custom'" [value]="value()" (input)="onNativeInput($event)"
+        class="min-w-10 w-10 h-9 cursor-pointer rounded-lg border border-slate-300 dark:border-slate-600 bg-transparent p-0.5" />
+      <input type="text" [ngModel]="hexInput()" (ngModelChange)="onHexInput($event)" maxlength="7" placeholder="#3b82f6"
+        class="flex-1 min-w-0! h-9 px-2.5 text-sm font-mono rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+    </div>
+  </div>
+
+  <!-- Swatches -->
+  <span class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Presets</span>
+  <div class="grid grid-cols-6 gap-1.5">
+    @for (color of swatches(); track color) {
+    <button type="button"
+      class="w-8 h-8 rounded-lg border-2 transition-all duration-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+      [style.background]="color" [class.border-blue-500]="isActiveColor(color)"
+      [class.border-transparent]="!isActiveColor(color)"
+      [class.!border-slate-200]="color === '#ffffff' && !isActiveColor(color)" (click)="selectSwatch(color)"
+      [attr.aria-label]="'Select color ' + color"
+      [attr.aria-pressed]="isActiveColor(color)">
+    </button>
+    }
+  </div>
+</div>
+}

@@ -1,0 +1,7 @@
+<button
+  [class]="buttonClasses()" [disabled]="disabled()" (click)="toggle()">
+  @if (icon()) {
+  <ply-icon [name]="icon()" [class]="iconClasses()"></ply-icon>
+  }
+  <ng-content></ng-content>
+</button>

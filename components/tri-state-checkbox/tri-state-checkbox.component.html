@@ -1,0 +1,26 @@
+<label class="relative flex items-start text-sm font-medium text-slate-700 dark:text-slate-200">
+  <input
+    type="checkbox"
+    [disabled]="isDisabled()"
+    [checked]="isChecked()"
+    [indeterminate]="isIndeterminate()"
+    [class]="checkboxClasses()"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-checked]="ariaChecked()"
+    (click)="onClick($event)"
+  />
+  <ply-icon
+    name="checkbox"
+    class="invisible absolute left-0.5 mt-1.5 h-3 w-3 stroke-white peer-checked:visible"
+    aria-hidden="true"
+  ></ply-icon>
+  <ply-icon
+    name="minus"
+    class="invisible absolute left-0.5 mt-1.5 h-3 w-3 stroke-white peer-indeterminate:visible"
+    aria-hidden="true"
+  ></ply-icon>
+
+  <span class="cursor-pointer peer-disabled:cursor-default peer-disabled:opacity-50">
+    <ng-content></ng-content>
+  </span>
+</label>

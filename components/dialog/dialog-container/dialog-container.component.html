@@ -1,0 +1,13 @@
+<div class="fixed inset-0 flex items-center justify-center z-1000">
+  <!-- Backdrop -->
+  <div role="presentation" class="absolute inset-0 bg-slate-900/50 dark:bg-slate-900/80 backdrop-blur-sm" [class.cursor-pointer]="!!context"
+    [@backdrop] (click)="context?.close()">
+  </div>
+
+  <!-- Dialog Box -->
+  <div #dialogBox role="dialog" aria-modal="true"
+    class="relative bg-white dark:bg-slate-800 rounded-xl shadow overflow-hidden w-fit max-w-[calc(100%-32px)] max-h-[calc(100%-32px)] flex flex-col [view-transition-name:ply-dialog]"
+    [@box]>
+    <ng-container #container></ng-container>
+  </div>
+</div>

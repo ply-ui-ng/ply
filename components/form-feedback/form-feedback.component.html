@@ -1,0 +1,36 @@
+<ply-card class="mb-8">
+        <form class="p-8 flex flex-col h-full" (submit)="onSubmit($event)">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-widest">Feedback
+          </h3>
+          <p class="text-xs text-slate-500 mb-8 leading-relaxed">Tell us what you think. Your feedback helps us
+            improve our products and services.</p>
+
+          <div class="flex gap-4 mb-4">
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Name</ply-label>
+              <input ply-input name="name" placeholder="Name" [(ngModel)]="name" />
+            </ply-input-group>
+            <ply-input-group class="flex-1">
+              <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Email</ply-label>
+              <input ply-input type="email" name="email" placeholder="Email" [(ngModel)]="email" />
+            </ply-input-group>
+          </div>
+
+          <ply-input-group class="mb-4">
+            <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">What type of feedback is
+              it?</ply-label>
+            <select ply-input class="appearance-none w-full" name="type" [(ngModel)]="type">
+              <option>General</option>
+            </select>
+            <ply-icon ply-addon-end name="chevron-down"
+              class="w-4 h-4 text-slate-400 mr-3 pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"></ply-icon>
+          </ply-input-group>
+
+          <ply-input-group class="mb-8 flex-1">
+            <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Message</ply-label>
+            <textarea ply-textarea rows="5" name="message" placeholder="Message" [(ngModel)]="message"></textarea>
+          </ply-input-group>
+
+          <button ply-button color="primary" type="submit" class="w-full py-3 mt-auto">Send Feedback</button>
+        </form>
+      </ply-card>

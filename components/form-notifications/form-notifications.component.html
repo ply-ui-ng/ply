@@ -1,0 +1,71 @@
+<ply-card class="mb-8">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+          <h3 class="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-widest">Notifications
+          </h3>
+          <button type="button"><ply-icon name="more" class="w-4 h-4 text-slate-400"></ply-icon></button>
+        </div>
+        <ply-card-body class="p-6 flex flex-col flex-1">
+          <form class="contents" (submit)="onSubmit($event)">
+          <div class="space-y-4 mb-8">
+            <p class="text-[10px]! uppercase font-light! tracking-[2px]! text-slate-400 mb-2">Activity notifications
+            </p>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-900 dark:text-white">Someone mentions me in any way</span>
+              <ply-toggle name="mentions" [(ngModel)]="mentions"></ply-toggle>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-900 dark:text-white">Someone follows me</span>
+              <ply-toggle name="follows" [(ngModel)]="follows"></ply-toggle>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-900 dark:text-white">Any other activity</span>
+              <ply-toggle name="otherActivity" [(ngModel)]="otherActivity"></ply-toggle>
+            </div>
+          </div>
+
+          <div class="space-y-4 mb-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+            <p class="text-[10px]! uppercase font-light! tracking-[2px]! text-slate-400 mb-2">Marketing</p>
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold text-slate-900 dark:text-white">Weekly Product</p>
+                <p class="text-[10px] text-slate-400 mt-1">Stay up to date with our weekly products.</p>
+              </div>
+              <ply-toggle name="weeklyProduct" [(ngModel)]="weeklyProduct"></ply-toggle>
+            </div>
+            <div class="flex items-center justify-between mt-4">
+              <div>
+                <p class="text-xs font-bold text-slate-900 dark:text-white">Newsletter</p>
+                <p class="text-[10px] text-slate-400 mt-1">Occasional updates about what's new.</p>
+              </div>
+              <ply-toggle name="newsletter" [(ngModel)]="newsletter"></ply-toggle>
+            </div>
+          </div>
+
+          <div class="pt-6 border-t border-slate-100 dark:border-slate-800 mt-auto">
+            <p class="text-[10px]! uppercase font-light! tracking-[2px]! text-slate-400 mb-4">Add more contacts</p>
+            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl">
+              <div class="flex gap-4 mb-4">
+                <ply-input-group class="flex-1">
+                  <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Cardholder
+                    Name</ply-label>
+                  <input ply-input name="cardholderName" placeholder="Full name" [(ngModel)]="cardholderName" />
+                </ply-input-group>
+                <ply-input-group class="flex-1">
+                  <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Email</ply-label>
+                  <input ply-input type="email" name="email" placeholder="Email" [(ngModel)]="email" />
+                  <ply-icon ply-addon-end name="check-circle" class="w-4 h-4 stroke-green-500"></ply-icon>
+                </ply-input-group>
+              </div>
+              <div class="flex items-center gap-2 mb-6">
+                <input type="radio" name="addToContacts" [value]="true" class="w-4 h-4 accent-slate-900" [(ngModel)]="addToContacts">
+                <span class="text-xs font-bold text-slate-900 dark:text-white">Add to contacts</span>
+              </div>
+              <div class="flex gap-4">
+                <button ply-button color="primary" type="submit" class="flex-1">Add</button>
+                <button type="button" ply-stroked-button class="flex-1">Cancel</button>
+              </div>
+            </div>
+          </div>
+          </form>
+        </ply-card-body>
+      </ply-card>

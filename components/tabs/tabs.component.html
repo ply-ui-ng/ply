@@ -1,0 +1,59 @@
+<div class="relative flex items-center group">
+  @if (showLeftArrow()) {
+  <button type="button" ply-icon-button color="transparent" size="sm"
+    class="absolute left-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-[2px_0_4px_-1px_rgba(0,0,0,0.1)]"
+    aria-label="Scroll tabs left"
+    (click)="scrollTabs('left')">
+    <ply-icon name="chevron-left" aria-hidden="true"></ply-icon>
+  </button>
+  }
+
+  <div #tabListContainer
+    role="tablist"
+    tabindex="-1"
+    aria-orientation="horizontal"
+    [attr.aria-label]="ariaLabel() || null"
+    [attr.aria-labelledby]="labelledBy() || null"
+    [class]="containerClass()"
+    (scroll)="checkOverflow()"
+    (keydown)="onTabListKeydown($event)">
+    @for (item of tabs(); track item) {
+    <button type="button"
+      role="tab"
+      [id]="item.tabId"
+      [attr.aria-selected]="activeTab() === item"
+      [attr.aria-controls]="item.panelId"
+      [attr.tabindex]="activeTab() === item ? 0 : -1"
+      [class]="getTabClass(item)"
+      (click)="selectTab(item, true)">
+      @if (item.labelComponent()) {
+      <ng-container *ngTemplateOutlet="item.labelComponent()!.labelContent()"></ng-container>
+      }
+      @if (!item.labelComponent()) {
+      {{ item.label() }}
+      }
+    </button>
+    }
+  </div>
+
+  @if (showRightArrow()) {
+  <button type="button" ply-icon-button color="transparent" size="sm"
+    class="absolute right-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-[-2px_0_4px_-1px_rgba(0,0,0,0.1)]"
+    aria-label="Scroll tabs right"
+    (click)="scrollTabs('right')">
+    <ply-icon name="chevron-right" aria-hidden="true"></ply-icon>
+  </button>
+  }
+</div>
+
+@if (activeTab(); as activeTab) {
+  @if (activeTab.bodyComponent()) {
+  <div role="tabpanel"
+    [id]="activeTab.panelId"
+    [attr.aria-labelledby]="activeTab.tabId"
+    tabindex="0"
+    [class.overflow-hidden]="scrollRestricted()">
+    <div *ngTemplateOutlet="activeTab.bodyComponent()!.bodyContent()"></div>
+  </div>
+  }
+}

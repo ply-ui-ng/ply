@@ -1,0 +1,97 @@
+<ply-card>
+  <form class="p-8 flex flex-col gap-6" (submit)="onSubmit($event)">
+
+    <div class="flex items-start justify-between">
+      <div>
+        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1 uppercase tracking-widest">Filter &amp;
+          Search</h3>
+        <p class="text-[11px] text-slate-400 uppercase tracking-widest">Narrow results by status, tags &amp; date</p>
+      </div>
+      @if (activeCount() > 0) {
+      <button type="button" (click)="clearAll()"
+        class="text-[10px] uppercase tracking-widest text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors flex items-center gap-1.5 mt-1">
+        <ply-icon name="x" class="w-3 h-3 stroke-current"></ply-icon>
+        Clear all ({{ activeCount() }})
+      </button>
+      }
+    </div>
+
+    <!-- Search -->
+    <ply-input-group>
+      <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Search</ply-label>
+      <ply-icon ply-addon-start name="search" class="w-3.5 h-3.5 stroke-slate-400"></ply-icon>
+      <input ply-input name="search" placeholder="Search by name, tag, or ID…" [(ngModel)]="search" />
+    </ply-input-group>
+
+    <!-- Status Chips -->
+    <div>
+      <p class="text-[10px] uppercase tracking-widest text-slate-400 mb-3">Status</p>
+      <div class="flex flex-wrap gap-2">
+        @for (s of statuses(); track s.label; let i = $index) {
+        <button type="button" (click)="toggleStatus(i)"
+          [class.bg-blue-600]="s.active" [class.text-white]="s.active" [class.border-blue-600]="s.active"
+          [class.bg-white]="!s.active" [class.dark:bg-slate-800]="!s.active" [class.text-slate-600]="!s.active"
+          [class.dark:text-slate-300]="!s.active" [class.border-slate-200]="!s.active"
+          [class.dark:border-slate-600]="!s.active"
+          class="px-3.5 py-1.5 rounded-full text-[11px] font-medium border transition-all duration-150 cursor-pointer hover:border-blue-400">
+          {{ s.label }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <!-- Date Range -->
+    <div class="flex gap-3">
+      <ply-input-group class="flex-1">
+        <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">From</ply-label>
+        <input ply-input type="date" name="from" [(ngModel)]="from" />
+      </ply-input-group>
+      <ply-input-group class="flex-1">
+        <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">To</ply-label>
+        <input ply-input type="date" name="to" [(ngModel)]="to" />
+      </ply-input-group>
+    </div>
+
+    <!-- Sort -->
+    <ply-input-group>
+      <ply-label class="text-[10px]! uppercase font-light! tracking-[2px]!">Sort By</ply-label>
+      <select ply-input class="appearance-none pr-8" name="sort" [(ngModel)]="sort">
+        <option>Newest first</option>
+        <option>Oldest first</option>
+        <option>Name A–Z</option>
+        <option>Name Z–A</option>
+        <option>Most active</option>
+      </select>
+      <ply-icon ply-addon-end name="chevron-down"
+        class="w-3.5 h-3.5 stroke-slate-400 pointer-events-none absolute right-3 top-1/2 -translate-y-1/2"></ply-icon>
+    </ply-input-group>
+
+    <!-- Tags -->
+    <div>
+      <p class="text-[10px] uppercase tracking-widest text-slate-400 mb-3">Tags</p>
+      <div class="flex flex-wrap gap-2">
+        @for (t of tags(); track t.label; let i = $index) {
+        <button type="button" (click)="toggleTag(i)"
+          [class.bg-slate-800]="t.active" [class.dark:bg-slate-200]="t.active" [class.text-white]="t.active"
+          [class.dark:text-slate-900]="t.active" [class.border-slate-800]="t.active"
+          [class.dark:border-slate-200]="t.active" [class.bg-white]="!t.active" [class.dark:bg-slate-800]="!t.active"
+          [class.text-slate-600]="!t.active" [class.dark:text-slate-300]="!t.active"
+          [class.border-slate-200]="!t.active" [class.dark:border-slate-600]="!t.active"
+          class="px-3.5 py-1.5 rounded-full text-[11px] font-medium border transition-all duration-150 cursor-pointer font-mono">
+          # {{ t.label }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex gap-2.5 pt-1">
+      <button ply-button color="primary" type="submit" class="flex-1">Apply Filters</button>
+      <button type="button" (click)="clearAll()"
+        class="px-5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 text-[11px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors uppercase tracking-widest">
+        Reset
+      </button>
+    </div>
+
+  </form>
+</ply-card>
