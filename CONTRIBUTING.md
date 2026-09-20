@@ -45,10 +45,10 @@ Anyone can open **issues** and **pull requests**. GitHub rulesets block everythi
 | Open an issue or discussion | Yes | Yes |
 | Open a PR from a **fork** | Yes | Yes |
 | Push to `main` or `compat/*` | No | Bypass only (hub sync) |
-| Merge a PR | No — needs maintainer approval | Yes, after review + CI |
+| Merge a PR | No (Read / Triage only) | Yes, after CI |
 | Force-push any branch | No | Bypass only |
 
-PRs targeting `main` need **at least one approving review** from someone other than the last pusher, resolved review threads, and green CI (`free-source`, `cli`, `mcp`). Approvals reset when new commits are pushed.
+PRs targeting `main` need green CI (`free-source`, `cli`, `mcp`). GitHub does not let you approve your own PR, so required reviews are not used as a lock (a solo maintainer could never merge). Contributors stay unable to merge because they must not have **Write**.
 
 **Access for future collaborators:** add them as outside collaborators on [ply-ui-ng/ply](https://github.com/ply-ui-ng/ply) with **Read** (fork + PR) or **Triage** (issues + PRs). Do not grant **Write**, and do not add community contributors as org members — org membership would also read private Pro repos.
 

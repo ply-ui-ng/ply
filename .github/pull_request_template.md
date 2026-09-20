@@ -8,4 +8,4 @@ Please:
 2. Include or update a spec next to the code you changed.
 3. Note what you ran locally (`npm test`, `npm run lint`, CLI/MCP tests if relevant).
 
-You cannot merge this PR. A maintainer must approve it (CI green, review threads resolved). Direct pushes to `main` / `compat/*` are blocked. See [CONTRIBUTING.md](CONTRIBUTING.md).
+You cannot merge this PR. A maintainer merges after CI is green. Direct pushes to `main` / `compat/*` are blocked. See [CONTRIBUTING.md](CONTRIBUTING.md).
