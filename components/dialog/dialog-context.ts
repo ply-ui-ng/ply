@@ -1,4 +1,5 @@
-import { ComponentRef, ApplicationRef, Injectable } from '@angular/core';
+import { ComponentRef, Injectable } from '@angular/core';
+import { OverlayRef } from '@angular/cdk/overlay';
 import { DialogContainer } from './dialog-container';
 
 /**
@@ -16,8 +17,7 @@ import { DialogContainer } from './dialog-container';
  */
 @Injectable()
 export class DialogContext<TData = unknown, TResult = TData> {
-  private componentRef?: ComponentRef<DialogContainer>;
-  private appRef?: ApplicationRef;
+  private overlayRef?: OverlayRef;
 
   data?: TData;
   public _resolve?: (value: TResult | undefined) => void;
@@ -25,10 +25,8 @@ export class DialogContext<TData = unknown, TResult = TData> {
   private _promise?: Promise<TResult | undefined>;
 
   private hide() {
-    if (this.appRef && this.componentRef) {
-      this.appRef.detachView(this.componentRef.hostView);
-      this.componentRef.destroy();
-    }
+    this.overlayRef?.dispose();
+    this.overlayRef = undefined;
   }
 
   close(result?: TResult) {
@@ -46,13 +44,12 @@ export class DialogContext<TData = unknown, TResult = TData> {
   }
 
   public promise(
-    componentRef: ComponentRef<DialogContainer>,
-    appRef: ApplicationRef
+    _componentRef: ComponentRef<DialogContainer>,
+    overlayRef: OverlayRef,
   ): Promise<TResult | undefined> {
     if (!this._promise) {
       this._promise = new Promise<TResult | undefined>((resolve, reject) => {
-        this.componentRef = componentRef;
-        this.appRef = appRef;
+        this.overlayRef = overlayRef;
         this._resolve = resolve;
         this._reject = reject;
       });

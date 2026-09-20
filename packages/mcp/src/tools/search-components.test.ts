@@ -37,7 +37,17 @@ describe('search_components aliases', () => {
         category: 'component',
         description: 'Image carousel',
         usage: '<ply-slider>',
-        keywords: ['carousel'],
+        keywords: ['carousel', 'gallery'],
+        dependencies: [],
+        registryDependencies: [],
+      },
+      {
+        name: 'carousel',
+        tier: 'free',
+        category: 'component',
+        description: 'Horizontal scroller',
+        usage: '<ply-horizontal-carousel>',
+        keywords: [],
         dependencies: [],
         registryDependencies: [],
       },
@@ -71,8 +81,14 @@ describe('search_components aliases', () => {
     expect(names).not.toContain('button');
   });
 
-  it('maps carousel to slider', async () => {
+  it('finds the carousel registry item without aliasing it to slider', async () => {
     const result = await searchComponents({ query: 'carousel' });
+    const names = body(result).matches.map((m: { name: string }) => m.name);
+    expect(names).toContain('carousel');
+  });
+
+  it('still finds the gallery slider when searching gallery', async () => {
+    const result = await searchComponents({ query: 'gallery' });
     const names = body(result).matches.map((m: { name: string }) => m.name);
     expect(names).toContain('slider');
   });

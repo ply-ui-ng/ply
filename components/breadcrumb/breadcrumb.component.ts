@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, HostBinding, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, input } from '@angular/core';
 import { cn } from '../tw-merge/tw-merge';
 
 /**
@@ -17,6 +17,7 @@ import { cn } from '../tw-merge/tw-merge';
   selector: 'ply-breadcrumb',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './breadcrumb.component.html',
+  host: { '[class]': 'hostClass()' },
 })
 export class BreadcrumbComponent {
   /**
@@ -25,10 +26,7 @@ export class BreadcrumbComponent {
    * @example
    * <ply-breadcrumb class="mb-6"></ply-breadcrumb>
    */
-  @Input('class') extraClass = '';
+  readonly extraClass = input('', { alias: 'class' });
 
-  @HostBinding('class')
-  get hostClass() {
-    return cn('block min-w-0 max-w-full', this.extraClass);
-  }
+  protected readonly hostClass = computed(() => cn('block min-w-0 max-w-full', this.extraClass()));
 }

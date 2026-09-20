@@ -60,4 +60,17 @@ describe('TabsComponent a11y', () => {
     expect(tabs[1].getAttribute('aria-selected')).toBe('true');
     expect(tabs[0].getAttribute('aria-selected')).toBe('false');
   });
+
+  it('ignores ArrowDown on a horizontal tablist', () => {
+    const tablist = fixture.nativeElement.querySelector('[role="tablist"]') as HTMLElement;
+    const tabs = Array.from(
+      fixture.nativeElement.querySelectorAll('[role="tab"]')
+    ) as HTMLButtonElement[];
+
+    tablist.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    fixture.detectChanges();
+
+    expect(tabs[0].getAttribute('aria-selected')).toBe('true');
+    expect(tabs[1].getAttribute('aria-selected')).toBe('false');
+  });
 });

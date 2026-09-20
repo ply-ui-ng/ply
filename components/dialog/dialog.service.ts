@@ -1,16 +1,14 @@
 import {
-  ApplicationRef,
   ComponentRef,
-  EmbeddedViewRef,
   Injectable,
   Injector,
   Type,
   inject,
-  createComponent,
-  EnvironmentInjector,
   PLATFORM_ID,
 } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { Observable, Subject, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DialogContainer } from './dialog-container';
@@ -23,7 +21,7 @@ import { BASE_UI_I18N } from '../i18n/i18n';
 /**
  * A service for dynamically rendering and managing dialogs/modals.
  * SSR-safe: `open()` is a no-op on the server and returns `of(undefined)`.
- * Overlay hosts are appended via injected `DOCUMENT`. Unit tests: `DialogHarness` with
+ * Hosts attach through CDK Overlay (`.cdk-overlay-container`). Unit tests: `DialogHarness` with
  * `TestbedHarnessEnvironment.documentRootLoader(fixture)` (the overlay is outside the fixture).
  *
  * @example
@@ -40,10 +38,8 @@ import { BASE_UI_I18N } from '../i18n/i18n';
   providedIn: 'root',
 })
 export class DialogService {
-  private appRef = inject(ApplicationRef);
+  private overlay = inject(Overlay);
   private injector = inject(Injector);
-  private environmentInjector = inject(EnvironmentInjector);
-  private readonly document = inject(DOCUMENT);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly i18n = inject(BASE_UI_I18N);
 
@@ -76,15 +72,13 @@ export class DialogService {
       ...options
     };
 
-    const containerRef = this.createContainer(finalOptions.containerType);
+    const { containerRef, overlayRef } = this.createContainer(finalOptions.containerType);
     containerRef.instance.className = className || '';
     containerRef.changeDetectorRef.detectChanges();
 
-    this.appRef.tick();
-
     const dialogContext = new DialogContext<TData, TResult>();
     dialogContext.data = data;
-    
+
     if (finalOptions.hideOnBackdropClick !== false) {
       containerRef.instance.context = dialogContext as DialogContext<unknown, unknown>;
       containerRef.changeDetectorRef.detectChanges();
@@ -100,11 +94,11 @@ export class DialogService {
       injector: dialogInjector
     });
 
-    dialogContext.promise(containerRef, this.appRef).then(result => {
+    dialogContext.promise(containerRef, overlayRef).then(result => {
       dialogResult.next(result);
       dialogResult.complete();
     });
-    
+
     containerRef.changeDetectorRef.detectChanges();
     containerRef.instance.applyDialogLabelling?.();
 
@@ -144,16 +138,20 @@ export class DialogService {
     );
   }
 
-  private createContainer(containerType: Type<DialogContainer>): ComponentRef<DialogContainer> {
-    const componentRef = createComponent(containerType, {
-      environmentInjector: this.environmentInjector,
-      elementInjector: this.injector
+  private createContainer(
+    containerType: Type<DialogContainer>,
+  ): { containerRef: ComponentRef<DialogContainer>; overlayRef: OverlayRef } {
+    const overlayRef = this.overlay.create({
+      hasBackdrop: false,
+      positionStrategy: this.overlay.position().global().top('0').left('0'),
+      width: '100%',
+      height: '100%',
+      scrollStrategy: this.overlay.scrollStrategies.block(),
+      panelClass: 'ply-dialog-overlay-pane',
+      disposeOnNavigation: true,
     });
-
-    this.appRef.attachView(componentRef.hostView);
-    const domElem = (componentRef.hostView as EmbeddedViewRef<unknown>).rootNodes[0] as HTMLElement;
-    this.document.body.appendChild(domElem);
-    
-    return componentRef;
+    overlayRef.overlayElement.style.overflow = 'visible';
+    const containerRef = overlayRef.attach(new ComponentPortal(containerType, null, this.injector));
+    return { containerRef, overlayRef };
   }
 }

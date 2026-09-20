@@ -133,11 +133,9 @@ export class TabsComponent implements OnChanges {
 
     switch (event.key) {
       case 'ArrowRight':
-      case 'ArrowDown':
         nextIndex = (currentIndex + 1) % tabItems.length;
         break;
       case 'ArrowLeft':
-      case 'ArrowUp':
         nextIndex = (currentIndex - 1 + tabItems.length) % tabItems.length;
         break;
       case 'Home':

@@ -322,6 +322,78 @@ The body content of an accordion item.
 
 ---
 
+### CollapsibleComponent
+**Selector:** `ply-collapsible`
+**Standalone:** true
+
+One disclosure region. For exclusive stacked sections use `ply-accordion`.
+
+**Inputs:**
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| open | `boolean` (model) | false | Two-way open state. |
+| class | `string` | '' | Extra host classes merged via `cn()`. |
+
+---
+
+### CollapsibleTriggerDirective
+**Selector:** `[ply-collapsible-trigger]`
+**Standalone:** true
+
+Toggles the parent `ply-collapsible`. Put it on a native `button`.
+
+*No inputs or outputs.*
+
+---
+
+### CollapsibleContentComponent
+**Selector:** `ply-collapsible-content`
+**Standalone:** true
+
+Body of a `ply-collapsible`. Hidden when the parent is closed.
+
+*No inputs or outputs.*
+
+---
+
+### NavigationMenuComponent
+**Selector:** `ply-navigation-menu`
+**Standalone:** true
+
+Horizontal site navigation. For app menus use `ply-menubar`; for overflowing top nav use `ply-responsive-nav`; for a docs rail use `ply-sidenav`.
+
+**Inputs:**
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| ariaLabel | `string` | 'Main' | Accessible name for the navigation landmark. |
+| class | `string` | '' | Extra host classes merged via `cn()`. |
+
+---
+
+### NavigationMenuLinkDirective
+**Selector:** `[ply-navigation-menu-link]`
+**Standalone:** true
+
+Styled link inside `ply-navigation-menu`.
+
+*No inputs or outputs.*
+
+---
+
+### NavigationMenuItemComponent
+**Selector:** `ply-navigation-menu-item`
+**Standalone:** true
+
+Dropdown item in `ply-navigation-menu`. Project panel links as content. Panel is a CDK Overlay.
+
+**Inputs:**
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| label | `string` | — | Trigger label. |
+| class | `string` | '' | Extra host classes merged via `cn()`. |
+
+---
+
 ### TabsComponent
 **Selector:** `ply-tabs`
 **Standalone:** true
@@ -2552,7 +2624,7 @@ A single star in the `StarRatingComponent`. Handles the SVG rendering for each s
 **Selector:** `ply-gallery-slider, ply-carousel`
 **Standalone:** true
 
-A highly configurable image/content carousel component. Supports auto-play, touch swiping, and slide/crossfade transitions.
+A highly configurable image/content carousel (`npx ply-ui-cli add slider`). Not `ply-horizontal-carousel` (install `carousel`).
 
 **Inputs:**
 | Name | Type | Default | Description |
@@ -2602,7 +2674,7 @@ A caption overlay for a gallery slider or carousel item, typically positioned ov
 **Selector:** `ply-horizontal-carousel`
 **Standalone:** true
 
-A horizontally scrollable container component for presenting multiple items in a row. Includes built-in smooth scrolling, mouse drag-to-scroll, and touch swipe support.
+A horizontally scrollable container (`npx ply-ui-cli add carousel`). Not the gallery slider (`slider` / `ply-carousel`).
 
 **Inputs:**
 | Name | Type | Default | Description |
@@ -3562,12 +3634,16 @@ An element positioned at the end of an input group.
 ---
 
 ### BaseHeadingDirective
-**Selector:** `[plyHeadingText]`
+**Selector:** `[plyHeadingText], [plyTypography]`
 **Standalone:** true
 
-Applies standardized heading typography styles to an element.
+Type-scale utility. `plyTypography` is `display | title | heading | subheading | body | caption | overline`. `plyHeadingText` is the heading step.
 
-*No inputs.*
+**Inputs:**
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| plyTypography | `TypographyVariant` | 'heading' | Scale step. |
+| class | `string` | '' | Extra classes merged via `cn()`. |
 
 ---
 
@@ -3880,7 +3956,7 @@ A service that manages the application's light/dark mode state. SSR-safe: `local
 ### SidebarService
 **`providedIn: 'root'`**
 
-A service to control the visibility state of the application sidebar.
+A leftover open/close boolean for a simple app rail (the docs site sidebar uses this). Not a layout primitive. For a docs rail copy `sidenav`. For product chrome copy `shell` and use `ShellService`.
 
 **Properties:**
 - `isOpen$: Observable<boolean>` — Observable that emits sidebar open/close state.

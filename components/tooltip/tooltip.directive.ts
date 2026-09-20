@@ -9,9 +9,9 @@ import {
   booleanAttribute,
   effect,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TooltipPlacement } from '../types';
-import { tooltipAbsolutePosition } from '../overlay-position/overlay-position';
+import { OverlayPlacement, overlayPositions } from '../overlay-position/overlay-position';
 
 let tooltipIdCounter = 0;
 
@@ -19,7 +19,7 @@ let tooltipIdCounter = 0;
  * An attribute directive that attaches a floating tooltip to any element.
  * Hides on mouse leave, blur, Escape, or scroll (including nested overflow containers).
  * Position via `tooltipPlacement` — not bare `placement`, which collides with
- * dropdown / popover / drawer on the same host.
+ * dropdown / popover / drawer on the same host. The panel is a CDK Overlay.
  *
  * @example
  * <button ply-tooltip="This is a helpful tip" tooltipPlacement="right" type="light">Hover Me</button>
@@ -37,9 +37,9 @@ let tooltipIdCounter = 0;
   selector: '[ply-tooltip]',
 })
 export class TooltipDirective implements OnDestroy {
-  private readonly ssrDocument = inject(DOCUMENT);
   private el = inject(ElementRef);
   private renderer = inject(Renderer2);
+  private overlay = inject(Overlay);
 
   /** The text content to display inside the tooltip. */
   readonly tooltipTitle = input('', { alias: 'ply-tooltip' });
@@ -66,15 +66,11 @@ export class TooltipDirective implements OnDestroy {
   /** Whether the tooltip is permitted to show at all. Defaults to true. */
   readonly canShow = input(true, { transform: booleanAttribute });
 
+  private overlayRef: OverlayRef | null = null;
   private tooltip: HTMLElement | null = null;
-  private offset = 10;
   private showTimeout?: ReturnType<typeof setTimeout>;
   private animateInTimeout?: ReturnType<typeof setTimeout>;
-  private scrollListening = false;
   private readonly tooltipId = `ply-tooltip-${tooltipIdCounter++}`;
-
-  /** Capture-phase so nested overflow containers also dismiss the tooltip. */
-  private readonly onScroll = (): void => this.hide();
 
   constructor() {
     effect(() => {
@@ -113,11 +109,9 @@ export class TooltipDirective implements OnDestroy {
   }
 
   private show(): void {
-    if (!this.canShow() || this.tooltip || !this.tooltipTitle()) return;
+    if (!this.canShow() || this.overlayRef || !this.tooltipTitle()) return;
 
-    this.create();
-    this.setPosition();
-    this.attachScrollListener();
+    this.attachOverlay();
     this.renderer.setAttribute(this.el.nativeElement, 'aria-describedby', this.tooltipId);
 
     clearTimeout(this.animateInTimeout);
@@ -141,24 +135,10 @@ export class TooltipDirective implements OnDestroy {
   private hide(): void {
     clearTimeout(this.showTimeout);
     clearTimeout(this.animateInTimeout);
-    this.detachScrollListener();
     this.renderer.removeAttribute(this.el.nativeElement, 'aria-describedby');
-    if (this.tooltip) {
-      this.renderer.removeChild(this.ssrDocument.body, this.tooltip);
-      this.tooltip = null;
-    }
-  }
-
-  private attachScrollListener(): void {
-    if (this.scrollListening) return;
-    this.ssrDocument.addEventListener?.('scroll', this.onScroll, true);
-    this.scrollListening = true;
-  }
-
-  private detachScrollListener(): void {
-    if (!this.scrollListening) return;
-    this.ssrDocument.removeEventListener?.('scroll', this.onScroll, true);
-    this.scrollListening = false;
+    this.overlayRef?.dispose();
+    this.overlayRef = null;
+    this.tooltip = null;
   }
 
   /** Keep an already-open tooltip in sync when `ply-tooltip` text changes. */
@@ -168,24 +148,40 @@ export class TooltipDirective implements OnDestroy {
     const textNode = tooltip.childNodes[0];
     if (textNode?.nodeType === Node.TEXT_NODE) {
       textNode.textContent = title;
-      this.setPosition();
+      this.overlayRef?.updatePosition();
     }
   }
 
-  private create(): void {
+  private attachOverlay(): void {
+    const placement = this.placement() as OverlayPlacement;
+    this.overlayRef = this.overlay.create({
+      hasBackdrop: false,
+      positionStrategy: this.overlay
+        .position()
+        .flexibleConnectedTo(this.el)
+        .withFlexibleDimensions(false)
+        .withPush(true)
+        .withPositions(overlayPositions(placement, 10)),
+      scrollStrategy: this.overlay.scrollStrategies.close(),
+      panelClass: 'ply-tooltip-overlay-pane',
+    });
+    this.overlayRef.detachments().subscribe(() => {
+      this.renderer.removeAttribute(this.el.nativeElement, 'aria-describedby');
+      this.overlayRef = null;
+      this.tooltip = null;
+    });
+
     const tooltip = this.renderer.createElement('span') as HTMLElement;
     this.renderer.setAttribute(tooltip, 'id', this.tooltipId);
     this.renderer.setAttribute(tooltip, 'role', 'tooltip');
     const text = this.renderer.createText(this.tooltipTitle());
     this.renderer.appendChild(tooltip, text);
-    this.renderer.appendChild(this.ssrDocument.body, tooltip);
 
     const baseClasses = [
-      'text-sm', 'rounded-md', 'text-center', 'px-2', 'py-1', 'max-w-xs', 'z-[1200]',
-      'pointer-events-none', 'absolute', 'opacity-0', 'transition-all', 'duration-300',
-      'transform', 'shadow-lg',
+      'text-sm', 'rounded-md', 'text-center', 'px-2', 'py-1', 'max-w-xs',
+      'pointer-events-none', 'opacity-0', 'transition-all', 'duration-300',
+      'transform', 'shadow-lg', 'block',
     ];
-
     baseClasses.forEach((cls) => this.renderer.addClass(tooltip, cls));
 
     const type = this.type();
@@ -261,29 +257,9 @@ export class TooltipDirective implements OnDestroy {
       });
     }
 
+    this.renderer.addClass(tooltip, 'relative');
+    this.overlayRef.overlayElement.style.overflow = 'visible';
+    this.overlayRef.overlayElement.appendChild(tooltip);
     this.tooltip = tooltip;
-  }
-
-  private setPosition(): void {
-    if (!this.tooltip) return;
-
-    const hostPos = this.el.nativeElement.getBoundingClientRect();
-    const tooltipPos = this.tooltip.getBoundingClientRect();
-    const scrollPos =
-      this.ssrDocument.defaultView?.pageYOffset ||
-      this.ssrDocument.documentElement.scrollTop ||
-      this.ssrDocument.body.scrollTop ||
-      0;
-
-    const { top, left } = tooltipAbsolutePosition(
-      hostPos,
-      tooltipPos,
-      this.placement() as 'top' | 'bottom' | 'left' | 'right',
-      this.offset,
-      scrollPos,
-    );
-
-    this.renderer.setStyle(this.tooltip, 'top', `${top}px`);
-    this.renderer.setStyle(this.tooltip, 'left', `${left}px`);
   }
 }

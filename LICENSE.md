@@ -5,8 +5,7 @@ Ply uses two licenses.
 **MIT** (this file, below) covers:
 
 - Free-tier components — every registry item marked `tier: "free"`
-- The CLI tool (`ply-ui-cli`)
-- The MCP server (`ply-ui-mcp`)
+- The CLI tool (`ply-ui-cli`) and MCP server (`ply-ui-mcp`) — the same MIT text is copied next to those packages when they are published or synced to the public hub
 
 **Ply Pro** ([LICENSE-PRO.md](LICENSE-PRO.md)) covers components marked `tier: "pro"`. Those items require a paid license. They are not MIT.
 

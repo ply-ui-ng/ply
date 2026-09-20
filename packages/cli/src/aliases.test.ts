@@ -4,8 +4,12 @@ import { canonicalComponentName } from './aliases';
 describe('component aliases', () => {
   it('maps shadcn sheet to drawer', () => {
     expect(canonicalComponentName('sheet')).toBe('drawer');
-    expect(canonicalComponentName('carousel')).toBe('slider');
+    expect(canonicalComponentName('gallery')).toBe('slider');
     expect(canonicalComponentName('range')).toBe('range-slider');
+  });
+
+  it('leaves carousel as the horizontal scroller, not the gallery slider', () => {
+    expect(canonicalComponentName('carousel')).toBe('carousel');
   });
 
   it('leaves real registry names alone', () => {

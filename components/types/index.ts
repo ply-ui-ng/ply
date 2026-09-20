@@ -198,6 +198,8 @@ export interface TableColumn {
   minWidth?: string;
   /** When the table is `resizable`, set `false` to lock this column. */
   resizable?: boolean;
+  /** When true, this column shows a filter field in the filter row. */
+  filterable?: boolean;
   align?: 'left' | 'center' | 'right';
 }
 

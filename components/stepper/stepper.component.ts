@@ -80,7 +80,6 @@ export class StepperComponent {
     if (activeStepIndex === steps.length - 1) {
       steps[activeStepIndex].isCompleted.set(true);
       this.isSubmitted.set(true);
-      // TODO: The 'emit' function requires a mandatory void argument
       this.stepperSubmit.emit();
     }
   }
