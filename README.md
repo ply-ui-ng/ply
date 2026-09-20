@@ -1,4 +1,6 @@
 > **MIT free-tier source.** Components live in `components/` (same layout as `npx ply-ui-cli add`). CLI and MCP live in `packages/`. Pro items are not stored here — install those with `PLY_LICENSE_KEY` from [ply-ui.com](https://ply-ui.com).
+>
+> **`compat/angular-19`:** this branch is free-tier source for **Angular 19+**. `main` stays Angular 22 and keeps signal-forms `[formField]`. Do not merge this branch into `main`. See [docs/angular-19.md](docs/angular-19.md).
 
 # Ply — Angular + Tailwind Component Library
 
@@ -147,9 +149,12 @@ Pull requests: see [CONTRIBUTING.md](CONTRIBUTING.md). Maintainer merges land up
 
 ## 📋 Requirements
 
-- **Node.js** 22+
-- **Angular** 22+
+- **Node.js** 18.19+ (20 LTS is fine)
+- **Angular** 19+ (standalone, signals, `input()` / `output()` / `model()`, OnPush)
 - **Tailwind CSS** 4.x
+- **@angular/cdk** matching your Angular major
+
+`main` requires Angular 22+ because of signal-forms `[formField]` in `input-group` / `password-input`. This branch drops that import so the free components compile on 19. Bind forms with `[(ngModel)]` or `formControlName`.
 
 ### Server-side rendering
 

@@ -13,7 +13,7 @@ import { IconComponent } from '../icon/icon.component';
 import { cn } from '../tw-merge/tw-merge';
 
 /**
- * A native HTML `<select>` wrapper component. Bind `[(ngModel)]`, `formControlName`, or `[formField]`.
+ * A native HTML `<select>` wrapper component. Bind `[(ngModel)]` or `formControlName`.
  *
  * @example
  * <ply-select [(ngModel)]="selectedValue" placeholder="Select an option">

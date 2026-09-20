@@ -1,7 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FormField, FormRoot, form, required } from '@angular/forms/signals';
 import { InputGroupComponent } from './input-group.component';
 import { LabelComponent } from './label/label.component';
 import { ErrorComponent } from './error/error.component';
@@ -29,33 +28,6 @@ import { BaseInputDirective } from './ply-input.directive';
 class ReactiveHostComponent {
   readonly form = new FormGroup({
     name: new FormControl('', Validators.required),
-  });
-}
-
-@Component({
-  standalone: true,
-  imports: [
-    InputGroupComponent,
-    LabelComponent,
-    ErrorComponent,
-    BaseInputDirective,
-    FormField,
-    FormRoot,
-  ],
-  template: `
-    <form [formRoot]="nameForm">
-      <ply-input-group>
-        <ply-label>Name</ply-label>
-        <input ply-input [formField]="nameForm.name" />
-        <ply-error>Required</ply-error>
-      </ply-input-group>
-    </form>
-  `,
-})
-class SignalHostComponent {
-  readonly model = signal({ name: '' });
-  readonly nameForm = form(this.model, (schemaPath) => {
-    required(schemaPath.name, { message: 'Required' });
   });
 }
 
@@ -87,21 +59,6 @@ describe('InputGroupComponent', () => {
     input.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('ply-error')?.textContent).toContain('Required');
-    fixture.destroy();
-  });
-
-  it('shows signal-form errors after the field is touched', async () => {
-    await TestBed.configureTestingModule({
-      imports: [SignalHostComponent],
-    }).compileComponents();
-    const fixture = TestBed.createComponent(SignalHostComponent);
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('ply-error')).toBeNull();
-
-    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
-    input.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('ply-error')).toBeTruthy();
     fixture.destroy();
   });
 

@@ -36,6 +36,15 @@ A maintainer merges the PR here. The private docs/Pro repo then imports `main` (
 
 Please do not add Pro components, registry payloads, or license-key handling workarounds.
 
+## Angular 19+ compatibility branch
+
+`compat/angular-19` is a **parallel line**, not a replacement for `main`.
+
+- `main` — Angular 22, including signal-forms `[formField]` on `input-group` / `password-input`
+- `compat/angular-19` — same free components, without `@angular/forms/signals`, so copy-in source compiles on Angular 19+
+
+Do not merge `compat/angular-19` into `main`. Details: [docs/angular-19.md](docs/angular-19.md).
+
 ## Related
 
 - Live catalog: [ply-ui.com](https://ply-ui.com)

@@ -7,7 +7,7 @@ import { ToggleColor, ToggleSize, ToggleShape } from "../types";
 
 /**
  * A highly customizable toggle/switch component.
- * Integrates natively with Angular Forms (`ngModel`, `formControlName`, and signal-forms `[formField]`).
+ * Integrates natively with Angular Forms (`ngModel` / `formControlName`).
  * 
  * @example
  * <ply-toggle [(ngModel)]="isActive" color="success" size="lg" shape="rounded"></ply-toggle>

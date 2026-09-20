@@ -15,7 +15,7 @@ You are generating Angular for a project that uses **Ply** at https://ply-ui.com
 - If components look unstyled or icons are missing, run `npx ply-ui-cli doctor` (read-only). It checks `ply-ui.json`, Angular CDK, Tailwind v4 `@source` paths, `ply-ui.css`, and icon sprites.
 - Free items need no license. Pro items need `PLY_LICENSE_KEY` — do not scrape keys or paste Pro source from memory.
 
-## Angular 22 shape
+## Angular 19+ shape
 
 - New components: `standalone: true`, `changeDetection: ChangeDetectionStrategy.OnPush`.
 - Public APIs: `input()`, `output()`, `model()` — not `@Input()` / `@Output()`.
@@ -27,12 +27,12 @@ You are generating Angular for a project that uses **Ply** at https://ply-ui.com
 
 - Components: `<ply-card>`, `<ply-dialog>` is not a tag — open modals with `inject(DialogService).open(MyComponent)`.
 - Directives: `[ply-button]`, `[ply-stroked-button]`, `[ply-input]`, `[ply-textarea]`.
-- Native fields: `<input ply-input [(ngModel)]="…">` or Angular 22 `[formField]` + `ply-input`.
+- Native fields: `<input ply-input [(ngModel)]="…">` or `formControlName` + `ply-input`.
 - `data-table` cells: project `<ng-template plyTableCell="columnKey" let-row let-value="value">`. Combobox options: `plyComboboxOption`. Custom select: `plySelectOption`. Do not fork those components to render a badge or a row action.
 - Chrome strings (empty states, Close, paginator): `provideBaseUiI18n({ close: 'Fermer' })` in `app.config.ts`. Per-instance `emptyMessage` / `emptyText` still override. Not ngx-translate.
 - Icon sprites: `provideBaseUI({ iconPath: 'assets/icons.svg' })` in `app.config.ts`. Per-instance `[path]` / `[filledPath]` / `[size]` still win. `w-*`/`h-*` classes keep class-based sizing.
 - Tests: use the copied `*.harness.ts` for data-table, custom-select, and dialog. `TestbedHarnessEnvironment.loader(fixture)`; dialogs need `documentRootLoader` (overlay on `document.body`). Do not invent query helpers for those three.
-- CVA hosts (`ply-combobox`, `ply-tags-input`, `ply-toggle`, `ply-custom-select`, `ply-file-upload`, `ply-mention-input`, `ply-password-input`) bind `[(ngModel)]` / `[formField]` on the host, not on an inner native input.
+- CVA hosts (`ply-combobox`, `ply-tags-input`, `ply-toggle`, `ply-custom-select`, `ply-password-input`) bind `[(ngModel)]` / `formControlName` on the host, not on an inner native input.
 - Do not nest composite controls inside `ply-input-group` — only `[ply-input]`, `[ply-textarea]`, and `ply-mention-input` are projected. Use `ply-password-input` for password fields (it already includes a group).
 - Confirm destructive actions with `inject(DialogService).confirm({ title, destructive: true })` — do not copy a one-off confirm dialog.
 
