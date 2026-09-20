@@ -1,4 +1,6 @@
 > **MIT free-tier source.** Components live in `components/` (same layout as `npx ply-ui-cli add`). CLI and MCP live in `packages/`. Pro items are not stored here — install those with `PLY_LICENSE_KEY` from [ply-ui.com](https://ply-ui.com).
+>
+> **Angular 19+:** free components on [`compat/angular-19`](https://github.com/ply-ui-ng/ply/tree/compat/angular-19). `main` is Angular 22 (signal-forms `[formField]`).
 
 # Ply — Angular + Tailwind Component Library
 
@@ -148,7 +150,7 @@ Pull requests: see [CONTRIBUTING.md](CONTRIBUTING.md). Maintainer merges land up
 ## 📋 Requirements
 
 - **Node.js** 22+
-- **Angular** 22+
+- **Angular** 22+ on `main`. Free-tier source for **Angular 19+** is on [`compat/angular-19`](https://github.com/ply-ui-ng/ply/tree/compat/angular-19) (same `components/`, without signal-forms `[formField]`).
 - **Tailwind CSS** 4.x
 
 ### Server-side rendering
