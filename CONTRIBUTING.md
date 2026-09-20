@@ -24,7 +24,7 @@ Docs and live previews: [ply-ui.com](https://ply-ui.com)
 
 ## Pull requests
 
-PRs against **free** source, the CLI, and the MCP are welcome.
+PRs against **free** source, the CLI, and the MCP merge **on this repository**.
 
 1. Fork this repo and branch from `main`.
 2. Change files under `components/<item>/`, `packages/cli/`, or `packages/mcp/`.
@@ -32,7 +32,7 @@ PRs against **free** source, the CLI, and the MCP are welcome.
 4. Run `npm ci && npm test && npm run lint` (and `npm test --prefix packages/cli` or `packages/mcp` if you changed those).
 5. Open the PR with a short description of the why.
 
-This public tree is synced from a private upstream (docs site, Pro registry, and the same free source). **Maintainer merges happen on that upstream first**, then this repository is updated. Your GitHub username is kept as `Co-authored-by` on the upstream commit and in the changelog. The public PR is closed with a link to that commit once the sync lands.
+A maintainer merges the PR here. The private docs/Pro repo then imports `main` (`scripts/import-public-tree.sh` / the Import Public Hub workflow) so the docs site, registry, and npm publish stay in sync. Your GitHub username is kept as `Co-authored-by` on that import commit and in the changelog.
 
 Please do not add Pro components, registry payloads, or license-key handling workarounds.
 
