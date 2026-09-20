@@ -5,3 +5,4 @@ out-tsc
 .ply-ui
 *.tgz
 .DS_Store
+.agents

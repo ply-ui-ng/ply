@@ -14,7 +14,6 @@
     [style]="getToastStyle(toast, group)"
     [attr.role]="getToastRole(toast)"
     [attr.inert]="isToastInert(toast, group) ? '' : null"
-    aria-live="polite"
     aria-atomic="true"
     (pointerdown)="onPointerDown($event, toast)"
     (pointermove)="onPointerMove($event, toast)"

@@ -26,4 +26,11 @@ describe('DualRangeSliderComponent', () => {
   it('should render content', () => {
     expect(fixture.nativeElement).toBeTruthy();
   });
+
+  it('writes a start/end pair onto the thumbs', () => {
+    component.writeValue({ start: 15, end: 70 });
+    fixture.detectChanges();
+    expect(component.start()).toBe(15);
+    expect(component.end()).toBe(70);
+  });
 });

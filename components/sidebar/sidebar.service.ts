@@ -1,7 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 
 /**
- * A service to control the visibility state of the application sidebar.
+ * Open/close boolean for a simple app rail (the docs site sidebar uses this).
+ * It is not a layout primitive. For a docs/section rail copy `sidenav`.
+ * For product chrome (page/dashboard modes, drawers, mini rail) copy `shell`
+ * and use `ShellService` from that tree.
  *
  * @example
  * sidebar = inject(SidebarService);

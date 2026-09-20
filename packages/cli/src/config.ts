@@ -6,8 +6,6 @@ import { CONFIG_FILE, LEGACY_CONFIG_FILE, configFilePath } from './paths';
 export interface Config {
   aliases: {
     components: string;
-    /** Leftover from older init output. The CLI does not read this path. */
-    utils?: string;
   };
 }
 

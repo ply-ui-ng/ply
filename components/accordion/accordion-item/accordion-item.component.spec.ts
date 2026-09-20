@@ -65,6 +65,13 @@ describe('AccordionItemComponent', () => {
     expect(component.headerButtonClass()).toContain('--ply-ring');
   });
 
+  it('wraps the header button in a heading, not a heading inside the button', () => {
+    const heading = fixture.nativeElement.querySelector('h4') as HTMLElement;
+    const button = heading?.querySelector('button[type="button"]') as HTMLButtonElement;
+    expect(button).toBeTruthy();
+    expect(button.querySelector('h4')).toBeNull();
+  });
+
   it('uses a button header with aria-controls and aria-expanded', () => {
     const button = fixture.nativeElement.querySelector('button[type="button"]') as HTMLButtonElement;
     const panel = fixture.nativeElement.querySelector('[role="region"]') as HTMLElement;

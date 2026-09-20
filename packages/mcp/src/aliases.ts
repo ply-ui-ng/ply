@@ -2,9 +2,9 @@
 export const COMPONENT_ALIASES: Record<string, string> = {
   sheet: 'drawer',
   'side-sheet': 'drawer',
-  carousel: 'slider',
   gallery: 'slider',
   'image-slider': 'slider',
+  slideshow: 'slider',
   range: 'range-slider',
   'slider-input': 'range-slider',
   'input-slider': 'range-slider',

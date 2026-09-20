@@ -1,0 +1,15 @@
+<button
+  #trigger
+  type="button"
+  [class]="triggerCls()"
+  [attr.aria-expanded]="open()"
+  [attr.aria-haspopup]="'menu'"
+  (click)="toggle()">
+  {{ label() }}
+  <ply-icon name="chevron-down" class="h-3.5 w-3.5" aria-hidden="true"></ply-icon>
+</button>
+<ng-template #panel>
+  <div class="min-w-48 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+    <ng-content />
+  </div>
+</ng-template>
