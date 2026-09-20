@@ -12,7 +12,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgControl } from '@angular/forms';
-import { FormField } from '@angular/forms/signals';
 import { cn, FOCUS_RING_WITHIN } from '../tw-merge/tw-merge';
 import { LabelComponent } from './label/label.component';
 import { BaseInputDirective } from './ply-input.directive';
@@ -24,9 +23,10 @@ let inputGroupIdCounter = 0;
  * A structural container wrapping form controls.
  *
  * Extra `class` values are merged with `cn()`. Validation messages
- * (`ply-error`) show after the field is touched for both `formControlName`
- * and Angular 22 `[formField]`. Focus ring is on this wrapper (`focus-within`)
- * so start/end addons stay inside the halo.
+ * (`ply-error`) show after the field is touched for `formControlName` /
+ * `ngModel`. Signal-forms `[formField]` error chrome is on `main` (Angular 21+).
+ * Focus ring is on this wrapper (`focus-within`) so start/end addons stay
+ * inside the halo.
  *
  * @example
  * <ply-input-group>
@@ -64,7 +64,6 @@ export class InputGroupComponent {
   private readonly inputEl = contentChild(BaseInputDirective, { read: ElementRef });
   private readonly textareaEl = contentChild(BaseTextareaDirective, { read: ElementRef });
   readonly control = contentChild(NgControl, { descendants: true });
-  private readonly formField = contentChild(FormField, { descendants: true });
 
   constructor() {
     effect(() => this.syncControlDom());
@@ -74,11 +73,6 @@ export class InputGroupComponent {
 
   showErrors(): boolean {
     if (this.invalid()) return true;
-    const field = this.formField();
-    if (field) {
-      const state = field.state();
-      return state.invalid() && state.touched();
-    }
     const ctrl = this.control();
     if (!ctrl) return false;
     return !!(ctrl.touched && ctrl.errors);

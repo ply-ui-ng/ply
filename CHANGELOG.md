@@ -10,6 +10,7 @@ Also published at [https://ply-ui.com/changelog](https://ply-ui.com/changelog).
 
 ## September 2026
 
+- **Compatibility** — `compat/angular-19`: free components compile on Angular 19+; signal-forms `[formField]` error chrome stays on `main`.
 - **Features** — add collapsible and navigation-menu; stop CLI `carousel` from installing slider; move dialog and tooltip onto CDK Overlay; accordion, tabs, and toast a11y nits.
 - **Features** — **cli:** Print MIT source URLs after add. Free items are MIT at github.com/ply-ui-ng/ply. Removing license headers from free files may show a header-only diff in `ply-ui-cli update` on previously installed copies.
 - **Other** — Rename CLI identifiers and directive files to ply-*.

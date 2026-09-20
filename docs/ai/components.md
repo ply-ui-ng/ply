@@ -1305,7 +1305,7 @@ An input field that opens a calendar popup specifically for picking start and en
 **Selector:** `ply-input-group`
 **Standalone:** true
 
-A structural container wrapping form controls. Extra `class` values merge via `cn()`. Nested `ply-error` shows after the field is touched for both `formControlName` / `ngModel` and Angular 22 `[formField]`. Sets `aria-invalid` and `aria-describedby` on the projected input. Focus ring is on the wrapper (`focus-within`) so start/end addons stay inside the halo.
+A structural container wrapping form controls. Extra `class` values merge via `cn()`. Nested `ply-error` shows after the field is touched for `formControlName` / `ngModel`. Signal-forms `[formField]` error chrome is on `main` (Angular 21+). Sets `aria-invalid` and `aria-describedby` on the projected input. Focus ring is on the wrapper (`focus-within`) so start/end addons stay inside the halo.
 
 **Inputs:**
 | Name | Type | Default | Description |
@@ -1638,7 +1638,7 @@ Four-segment password strength meter bar with a text label below it. Computes a 
 **Selector:** `ply-password-input`
 **Standalone:** true
 
-Password field with a show/hide toggle. ControlValueAccessor — bind `formControlName`, `ngModel`, or `[formField]` on `ply-password-input` itself. Do not wrap in another `ply-input-group`. Project `ply-error` as content. Optional `[showStrength]` renders `ply-password-strength` below the field. Toggle labels come from `provideBaseUiI18n()` (`showPassword` / `hidePassword`).
+Password field with a show/hide toggle. ControlValueAccessor — bind `formControlName` or `ngModel` on `ply-password-input` itself. Do not wrap in another `ply-input-group`. Project `ply-error` as content. Optional `[showStrength]` renders `ply-password-strength` below the field. Toggle labels come from `provideBaseUiI18n()` (`showPassword` / `hidePassword`).
 
 **Inputs:**
 | Name | Type | Default | Description |

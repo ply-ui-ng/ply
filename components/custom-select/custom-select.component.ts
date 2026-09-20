@@ -20,7 +20,7 @@ import { CustomSelectOptionDirective } from './custom-select-option.directive';
 let customSelectIdCounter = 0;
 
 /**
- * A searchable dropdown select component. Bind `[(ngModel)]`, `formControlName`, or `[formField]`.
+ * A searchable dropdown select component. Bind `[(ngModel)]` or `formControlName`.
  * Override option rows with `<ng-template plySelectOption>`. Unit tests: `CustomSelectHarness`
  * with `TestbedHarnessEnvironment.loader(fixture)`.
  *

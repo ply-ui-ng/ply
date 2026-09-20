@@ -12,7 +12,6 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
-import { FORM_FIELD } from '@angular/forms/signals';
 import { cn } from '../tw-merge/tw-merge';
 import { BASE_UI_I18N } from '../i18n/i18n';
 import { InputGroupComponent } from '../input-group/input-group.component';
@@ -25,8 +24,10 @@ import { PasswordStrengthComponent } from '../password-strength/password-strengt
 
 /**
  * Password field with a show/hide toggle. Integrates with Angular Forms via
- * ControlValueAccessor. Do not wrap this in another `ply-input-group` —
- * the control already includes one. Project `ply-error` as content.
+ * ControlValueAccessor (`formControlName` / `ngModel`). Signal-forms
+ * `[formField]` error chrome is on `main` (Angular 21+). Do not wrap this
+ * in another `ply-input-group` — the control already includes one. Project
+ * `ply-error` as content.
  *
  * @example
  * <ply-password-input label="Password" formControlName="password" [showStrength]="true">
@@ -63,7 +64,6 @@ export class PasswordInputComponent implements ControlValueAccessor {
   private readonly i18n = inject(BASE_UI_I18N);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly injector = inject(Injector);
-  private readonly formField = inject(FORM_FIELD, { optional: true });
   private ngControl: NgControl | null = null;
 
   protected readonly visible = signal(false);
@@ -88,11 +88,6 @@ export class PasswordInputComponent implements ControlValueAccessor {
   }
 
   protected showErrors(): boolean {
-    const field = this.formField;
-    if (field) {
-      const state = field.state();
-      return state.invalid() && state.touched();
-    }
     const ctrl = this.ngControl;
     if (!ctrl) return false;
     return !!(ctrl.touched && ctrl.invalid);
