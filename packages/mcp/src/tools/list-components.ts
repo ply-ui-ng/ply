@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { fetchIndex, itemHaystack, type Category } from '../registry';
+import { fetchIndex, itemHaystack, itemLicense, type Category } from '../registry';
 import { installHint } from '../install-hint';
 import { failJson, okJson } from '../result';
 
@@ -57,6 +57,7 @@ export async function listComponents(args: {
       items: items.map((i) => ({
         name: i.name,
         tier: i.tier,
+        license: i.license || itemLicense(i.tier),
         category: i.category || 'component',
         description: i.description || '',
         usage: i.usage || '',

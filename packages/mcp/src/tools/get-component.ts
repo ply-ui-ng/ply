@@ -3,7 +3,9 @@ import {
   SITE_URL,
   fetchFreeItem,
   fetchIndex,
+  hubSourceUrl,
   isSafeItemName,
+  itemLicense,
   suggestNames,
 } from '../registry';
 import { cliAddCommand, installHint } from '../install-hint';
@@ -45,6 +47,7 @@ export async function getComponent(args: { name: string; includeSource?: boolean
       ok: true as const,
       name: entry.name,
       tier: entry.tier,
+      license: entry.license || itemLicense(entry.tier),
       category: entry.category || 'component',
       description: entry.description || '',
       usage: entry.usage || '',
@@ -59,6 +62,7 @@ export async function getComponent(args: { name: string; includeSource?: boolean
       return okJson({
         ...base,
         source: null,
+        sourceUrl: null,
         installCommand: cliAddCommand(name),
         note: `Pro component — metadata only. ${installHint(name)} Pro install also needs PLY_LICENSE_KEY. Buy at ${SITE_URL}/pricing.`,
       });
@@ -75,6 +79,7 @@ export async function getComponent(args: { name: string; includeSource?: boolean
       ...base,
       files,
       includeSource: Boolean(args.includeSource),
+      sourceUrl: hubSourceUrl(name),
       installCommand: cliAddCommand(name),
       note: args.includeSource
         ? `Free source included for reading. ${installHint(name)}`

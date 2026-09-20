@@ -45,6 +45,7 @@ export const registryItemSchema = z.object({
   keywords: z.array(z.string()).optional().default([]),
   files: z.array(registryFileSchema),
   type: z.string().optional(),
+  license: z.enum(['MIT', 'Ply Pro']).optional(),
 });
 
 export const registryIndexSchema = z.array(

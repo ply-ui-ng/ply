@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { canonicalComponentName } from '../aliases';
-import { fetchIndex, itemHaystack, suggestNames, type Category } from '../registry';
+import { fetchIndex, itemHaystack, suggestNames, itemLicense, type Category } from '../registry';
 import { installHint } from '../install-hint';
 import { failJson, okJson } from '../result';
 
@@ -85,6 +85,7 @@ export async function searchComponents(args: {
       matches: ranked.map((i) => ({
         name: i.name,
         tier: i.tier,
+        license: i.license || itemLicense(i.tier),
         category: i.category || 'component',
         description: i.description || '',
         usage: i.usage || '',

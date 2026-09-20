@@ -244,8 +244,7 @@ export async function init(options: InitOptions = {}) {
     },
     aliases: {
       components: response.componentsAlias,
-      utils: 'src/app/utils',
-    }
+    },
   };
 
   fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf8');

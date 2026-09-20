@@ -168,9 +168,9 @@ Get a license and browse live previews of every component at [ply-ui.com](https:
 
 ```json
 {
+  "$schema": "https://ply-ui.com/schema.json",
   "aliases": {
-    "components": "src/app/components",
-    "utils": "src/app/utils"
+    "components": "src/app/components"
   }
 }
 ```

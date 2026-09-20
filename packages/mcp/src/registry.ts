@@ -6,6 +6,7 @@
 import { z } from 'zod';
 
 export const SITE_URL = 'https://ply-ui.com';
+export const GITHUB_HUB_URL = 'https://github.com/ply-ui-ng/ply';
 
 const env =
   typeof process !== 'undefined' && process.env ? process.env : ({} as Record<string, string | undefined>);
@@ -43,6 +44,7 @@ export const registryItemSchema = z.object({
   keywords: z.array(z.string()).optional().default([]),
   files: z.array(registryFileSchema),
   type: z.string().optional(),
+  license: z.enum(['MIT', 'Ply Pro']).optional(),
 });
 
 export const registryIndexSchema = z.array(registryItemSchema.omit({ files: true }));
@@ -51,6 +53,14 @@ export type RegistryItem = z.infer<typeof registryItemSchema>;
 export type RegistryIndexEntry = z.infer<typeof registryIndexSchema>[number];
 
 export type Category = NonNullable<RegistryIndexEntry['category']>;
+
+export function itemLicense(tier: 'free' | 'pro'): 'MIT' | 'Ply Pro' {
+  return tier === 'pro' ? 'Ply Pro' : 'MIT';
+}
+
+export function hubSourceUrl(name: string): string {
+  return `${GITHUB_HUB_URL}/tree/main/components/${name}`;
+}
 
 export function itemHaystack(
   item: Pick<RegistryIndexEntry, 'name' | 'description' | 'usage' | 'keywords'>

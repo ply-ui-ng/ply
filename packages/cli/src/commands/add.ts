@@ -19,6 +19,7 @@ import { ADD_NEEDS_NAME, canPromptInteractively, pickComponents } from './pick-c
 import { canonicalComponentName } from '../aliases';
 import { writeSnapshot } from '../snapshot';
 import { CLI_NPX } from '../brand';
+import { installLicenseLine } from '../license-note';
 
 export interface AddOptions {
   yes?: boolean;
@@ -211,6 +212,7 @@ export async function add(components: string[], options: AddOptions = {}) {
     installedItems.push(name);
     recordComponent(lock, name, entry.tier, item.files);
     spinner.succeed(`${name} → ${path.relative(process.cwd(), targetDir)}${entry.tier === 'pro' ? '  (pro)' : ''}`);
+    console.log(installLicenseLine(name, entry.tier));
   }
 
   if (installedItems.length) {
