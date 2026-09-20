@@ -1,6 +1,6 @@
 {
   "name": "ply-ui-cli",
-  "version": "1.1.127",
+  "version": "1.1.128",
   "description": "Ply CLI — add Angular + Tailwind CSS components to your project (shadcn-style, code is copied in and owned by you). Not MUI Base UI.",
   "main": "dist/index.js",
   "publishConfig": {

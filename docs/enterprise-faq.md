@@ -60,7 +60,9 @@ signed index before a single byte is written to disk; set
 
 Yes. Point `PLY_REGISTRY_URL` (and `PLY_PRO_REGISTRY_URL` for Pro) at
 your own host serving the same JSON layout. Every release also ships an offline
-Pro payload archive — see the continuity section below.
+registry archive with the full index plus free and Pro payloads — see the
+continuity section below. Free MIT source is also at
+[github.com/ply-ui-ng/ply](https://github.com/ply-ui-ng/ply).
 
 ## The project has one main maintainer. Is that a problem?
 
@@ -92,10 +94,11 @@ materially different failure mode from an abandoned runtime dependency.
   exist.
 - If the registry is unavailable for more than 30 consecutive days, or the
   product is discontinued, Pro source is made available by another means.
-- You do not have to wait for that event: every library release attaches a Pro
-  source archive to a GitHub Release, so you can keep an offline copy from day
-  one. The archive includes instructions for installing from it with no network
-  access.
+- You do not have to wait for that event: every library release attaches an
+  offline registry archive to a GitHub Release, so you can keep a copy from day
+  one. The archive includes the full index plus every payload (free MIT items
+  and Pro) and instructions for installing with no network access. Free MIT
+  source is also at [github.com/ply-ui-ng/ply](https://github.com/ply-ui-ng/ply).
 
 ## Does a license dispute put my shipped software at risk?
 
@@ -110,7 +113,7 @@ recall, re-license, or rewrite a released product over a licensing dispute.
 | Layer | License |
 |---|---|
 | `ply-ui-cli` and `ply-ui-mcp` | MIT ([LICENSE.md](../LICENSE.md)) |
-| Free-tier components | MIT — use, modify, and redistribute |
+| Free-tier components | MIT — use, modify, and redistribute. Source: [github.com/ply-ui-ng/ply](https://github.com/ply-ui-ng/ply) |
 | Pro components | Paid license ([LICENSE-PRO.md](../LICENSE-PRO.md)); may not be redistributed as a library or kit |
 
 Building and selling products with either tier is unrestricted, including

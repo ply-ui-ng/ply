@@ -1,6 +1,6 @@
 {
   "name": "ply-ui-mcp",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Ply MCP server — stdio or Streamable HTTP (--http). List, search, init, doctor, diff, update, and add Angular + Tailwind components (Pro with PLY_LICENSE_KEY). Not MUI Base UI.",
   "type": "commonjs",
   "main": "dist/index.js",

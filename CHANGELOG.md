@@ -10,7 +10,16 @@ Also published at [https://ply-ui.com/changelog](https://ply-ui.com/changelog).
 
 ## September 2026
 
+- **Features** — **cli:** Print MIT source URLs after add. Free items are MIT at github.com/ply-ui-ng/ply. Removing license headers from free files may show a header-only diff in `ply-ui-cli update` on previously installed copies.
+- **Other** — Rename CLI identifiers and directive files to ply-*.
+- **Features** — ship ply-ui-cli, ply-ui-mcp, and ply-* selectors.
+- **Features** — Motif Polar, overlay keyboard, and a push-smooth shell drawer.
+- **Bug Fixes** — **mcp:** treat the hosted catalog as read-only
+- **Features** — ship MCP on npm as ply-ui-mcp
+- **Features** — **mcp:** host the read-only catalog on mcp.ply-ui.com
+- **Features** — ship Relay on /templates, CLI 3-way merge, and HTTP MCP
 - **Features** — add free table primitives and run cookbooks on the APIs they name (#144)
+- **Features** — add CLI changelog command and MCP project tools
 - **Features** — add password input, confirm dialog, and semantic theme tokens (#143)
 - **Features** — **a11y:** overlay keyboard specs and axe-core on open panels (#138)
 - **Features** — **testing:** add CDK harnesses for data-table, select, and dialog (#140)
