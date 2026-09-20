@@ -32,9 +32,25 @@ PRs against **free** source, the CLI, and the MCP merge **on this repository**.
 4. Run `npm ci && npm test && npm run lint` (and `npm test --prefix packages/cli` or `packages/mcp` if you changed those).
 5. Open the PR with a short description of the why.
 
-A maintainer merges the PR here. The private docs/Pro repo then imports `main` (`scripts/import-public-tree.sh` / the Import Public Hub workflow) so the docs site, registry, and npm publish stay in sync. Your GitHub username is kept as `Co-authored-by` on that import commit and in the changelog.
+A maintainer reviews and merges the PR here. Contributors cannot merge, and cannot push to `main` or `compat/*`. The private docs/Pro repo then imports `main` (`scripts/import-public-tree.sh` / the Import Public Hub workflow) so the docs site, registry, and npm publish stay in sync. Your GitHub username is kept as `Co-authored-by` on that import commit and in the changelog.
 
 Please do not add Pro components, registry payloads, or license-key handling workarounds.
+
+## Review and merge (rulesets)
+
+Anyone can open **issues** and **pull requests**. GitHub rulesets block everything else:
+
+| Action | Contributors | Maintainers (admin) |
+| --- | --- | --- |
+| Open an issue or discussion | Yes | Yes |
+| Open a PR from a **fork** | Yes | Yes |
+| Push to `main` or `compat/*` | No | Bypass only (hub sync) |
+| Merge a PR | No (Read / Triage only) | Yes, after CI |
+| Force-push any branch | No | Bypass only |
+
+PRs targeting `main` need green CI (`free-source`, `cli`, `mcp`). GitHub does not let you approve your own PR, so required reviews are not used as a lock (a solo maintainer could never merge). Contributors stay unable to merge because they must not have **Write**.
+
+**Access for future collaborators:** add them as outside collaborators on [ply-ui-ng/ply](https://github.com/ply-ui-ng/ply) with **Read** (fork + PR) or **Triage** (issues + PRs). Do not grant **Write**, and do not add community contributors as org members — org membership would also read private Pro repos.
 
 ## Related
 
