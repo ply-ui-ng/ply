@@ -30,3 +30,7 @@ export const FOCUS_RING_INSET =
  */
 export const FOCUS_RING_WITHIN =
   'focus-within:ring-2! focus-within:ring-inset! focus-within:ring-[var(--ply-ring)]!';
+
+/** Selected / highlighted row in lists (select, combobox, command palette). */
+export const PRIMARY_SOFT =
+  'bg-[var(--ply-primary-soft)] text-[var(--ply-primary)]';

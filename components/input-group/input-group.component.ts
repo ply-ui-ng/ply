@@ -86,7 +86,7 @@ export class InputGroupComponent {
 
   getWrapperClasses(): string {
     return cn(
-      'flex items-center w-full border border-[var(--ply-border)] rounded-[var(--ply-radius)] relative bg-white dark:bg-slate-800 focus-within:border-[var(--ply-ring)]!',
+      'flex items-center w-full min-h-9 border border-solid border-[var(--ply-border)] rounded-[var(--ply-radius)] relative bg-[var(--ply-background)] shadow-sm focus-within:border-[var(--ply-ring)]!',
       FOCUS_RING_WITHIN,
       { 'border-red-500!': this.showErrors() },
     );

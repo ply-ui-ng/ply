@@ -4,7 +4,7 @@ import { NgTemplateOutlet, DOCUMENT } from '@angular/common';
 import { TabComponent } from './tab/tab.component';
 import { IconComponent } from '../icon/icon.component';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
-import { cn } from '../tw-merge/tw-merge';
+import { cn, FOCUS_RING } from '../tw-merge/tw-merge';
 import { injectTimers } from '../safe-timer/safe-timer';
 
 /**
@@ -174,13 +174,21 @@ export class TabsComponent implements OnChanges {
 
   getTabClass(item: TabComponent) {
     return cn(
-      'px-8 h-10 flex items-center text-sm bg-transparent whitespace-nowrap dark:text-slate-400 border-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900',
+      'px-8 h-10 flex items-center text-sm bg-transparent whitespace-nowrap dark:text-slate-400 border-0',
+      FOCUS_RING,
       item.tabClass(),
       this.type() === 'underline' && 'hover:shadow-tab',
-      this.activeTab() === item && this.type() === 'underline' && 'text-blue-500! shadow-tab-active hover:shadow-tab-active bg-transparent',
-      this.type() === 'pills' && 'bg-slate-100 dark:bg-slate-600 dark:text-slate-200 rounded-md! mr-2 last-of-type:mr-0 transition-color duration-300',
-      this.activeTab() === item && this.type() === 'pills' && 'text-white! bg-blue-500! rounded-md',
-      this.activeTab() === item && this.type() === 'folder' && 'bg-white dark:bg-slate-800 text-blue-500 rounded-t-md',
+      this.activeTab() === item &&
+        this.type() === 'underline' &&
+        'text-[var(--ply-primary)]! shadow-[0_1px_0_var(--ply-primary)] hover:shadow-[0_1px_0_var(--ply-primary)] bg-transparent',
+      this.type() === 'pills' &&
+        'bg-slate-100 dark:bg-slate-600 dark:text-slate-200 rounded-md! mr-2 last-of-type:mr-0 transition-color duration-300',
+      this.activeTab() === item &&
+        this.type() === 'pills' &&
+        'text-[var(--ply-primary-foreground)]! bg-[var(--ply-primary)]! rounded-md',
+      this.activeTab() === item &&
+        this.type() === 'folder' &&
+        'bg-white dark:bg-slate-800 text-[var(--ply-primary)] rounded-t-md',
       this.position() === 'full-width' && 'flex-1 justify-center'
     );
   }

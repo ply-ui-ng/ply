@@ -21,7 +21,7 @@ import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ComboboxOption } from '../types';
-import { cn } from '../tw-merge/tw-merge';
+import { cn, PRIMARY_SOFT } from '../tw-merge/tw-merge';
 import { BASE_UI_I18N } from '../i18n/i18n';
 import { IconComponent } from '../icon/icon.component';
 import { SpinnerComponent } from '../spinner/spinner.component';
@@ -346,6 +346,24 @@ export class ComboboxComponent implements ControlValueAccessor, OnDestroy {
 
   isSelected(opt: ComboboxOption): boolean {
     return opt.value === this.selectedValue();
+  }
+
+  protected optionRowClass(option: ComboboxOption, index: number): string {
+    const highlighted = this.activeIndex() === index || this.isSelected(option);
+    return cn(
+      'relative cursor-pointer select-none px-4 py-2',
+      option.disabled && 'opacity-40 cursor-not-allowed pointer-events-none',
+      highlighted ? PRIMARY_SOFT : 'hover:bg-slate-100 dark:hover:bg-slate-700',
+    );
+  }
+
+  protected createRowClass(): string {
+    return cn(
+      'cursor-pointer select-none px-4 py-2 text-[var(--ply-primary)]',
+      this.activeIndex() === this.filtered().length
+        ? 'bg-[var(--ply-primary-soft)]'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-700',
+    );
   }
 
   handleClickOutside(e: Event): void {

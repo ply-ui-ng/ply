@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { TabsComponent } from './tabs.component';
 import { TabComponent } from './tab/tab.component';
 import { TabBodyComponent } from './tab-body/tab-body.component';
@@ -39,6 +40,12 @@ describe('TabsComponent a11y', () => {
     expect(tabs.length).toBe(3);
     expect(tabs.filter((tab) => tab.getAttribute('aria-selected') === 'true').length).toBe(1);
     expect(fixture.nativeElement.querySelector('[role="tabpanel"]')).toBeTruthy();
+  });
+
+  it('uses --ply-ring for tab focus', () => {
+    const tabs = fixture.debugElement.query(By.directive(TabsComponent))
+      .componentInstance as TabsComponent;
+    expect(tabs.getTabClass(tabs.tabs()[0])).toContain('--ply-ring');
   });
 
   it('supports arrow-key navigation between tabs', () => {

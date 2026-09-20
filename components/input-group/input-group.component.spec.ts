@@ -112,6 +112,9 @@ describe('InputGroupComponent', () => {
     const fixture = TestBed.createComponent(InputGroupComponent);
     fixture.detectChanges();
     const cls = fixture.componentInstance.getWrapperClasses();
+    expect(cls).toContain('border-[var(--ply-border)]');
+    expect(cls).toContain('bg-[var(--ply-background)]');
+    expect(cls).toContain('shadow-sm');
     expect(cls).toContain('focus-within:ring-2!');
     expect(cls).toContain('focus-within:ring-inset!');
     fixture.destroy();

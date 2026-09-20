@@ -15,7 +15,7 @@
         [disabled]="disabled()"
         (click)="toggleDropdown()"
         (keydown)="onComboboxKeydown($event)"
-        class="relative w-full h-9 pl-4 pr-8 text-left bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all duration-200"
+        class="relative w-full h-9 pl-4 pr-8 text-left bg-[var(--ply-background)] border border-[var(--ply-border)] rounded-[var(--ply-radius)] shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-[var(--ply-ring)] focus:border-[var(--ply-ring)] text-sm transition-all duration-200"
         [class.opacity-50]="disabled()" [class.cursor-not-allowed]="disabled()">
         <span class="block truncate">
             {{ selectedLabel() || placeholder() }}
@@ -28,17 +28,13 @@
 
     @if (isOpen()) {
     <div [ngStyle]="dropdownStyles()"
-        class="fixed z-50 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg shadow-lg max-h-60 overflow-auto focus:outline-none">
+        class="fixed z-50 bg-[var(--ply-background)] border border-[var(--ply-border)] rounded-[var(--ply-radius)] shadow-lg max-h-60 overflow-auto focus:outline-none">
         <ul [id]="listboxId" role="listbox" tabindex="-1" class="py-px text-sm"
             [attr.aria-labelledby]="label() ? labelId : null">
             @for (option of options(); track (valueKey() ? optionKey(option, valueKey()) : option); let i = $index) {
             <li tabindex="-1" role="option" [id]="optionId(i)" [attr.aria-selected]="isSelected(option)"
                 (click)="selectOption(option)" (keydown.enter)="selectOption(option)"
-                class="relative cursor-pointer select-none py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-150"
-                [class.bg-blue-50]="isSelected(option) || activeIndex() === i"
-                [class.dark:bg-blue-900/30]="isSelected(option) || activeIndex() === i"
-                [class.text-blue-600]="isSelected(option) || activeIndex() === i"
-                [class.dark:text-blue-400]="isSelected(option) || activeIndex() === i">
+                [class]="optionRowClass(option, i)">
                 @if (optionTemplate(); as optionTpl) {
                   <ng-container
                     [ngTemplateOutlet]="optionTpl.template"
@@ -57,7 +53,7 @@
                 }
 
                 @if (isSelected(option)) {
-                <span class="absolute inset-y-0 right-0 flex items-center pr-0.75 text-blue-600" aria-hidden="true">
+                <span class="absolute inset-y-0 right-0 flex items-center pr-0.75 text-[var(--ply-primary)]" aria-hidden="true">
                     <ply-icon name="check" class="w-1 h-1 stroke-current"></ply-icon>
                 </span>
                 }

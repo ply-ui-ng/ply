@@ -17,7 +17,7 @@ Button directives (`ply-button`, `ply-stroked-button`, `ply-icon-button`, `ply-s
 <button ply-icon-button color="white" class="absolute right-3 top-3 rounded-full">…</button>
 ```
 
-`color="primary"` / `"danger"` read `--ply-primary` and `--ply-destructive` from `ply-ui.css`. Buttons use `FOCUS_RING`. Field chrome uses `FOCUS_RING_WITHIN` on `ply-input-group` so addons stay inside the halo.
+`color="primary"` / `"danger"` read `--ply-primary` and `--ply-destructive` from `ply-ui.css`. Buttons use `FOCUS_RING`. Field chrome uses `FOCUS_RING_WITHIN` on `ply-input-group` (`--ply-border`, `--ply-background`, `--ply-ring`) so addons stay inside the halo. Tabs (folder, underline, pills), custom-select, combobox, primary toast, accordion focus, and command palette also read `--ply-*`. Theme Studio remaps `--color-blue-*` so remaining `blue-*` widgets follow the same hue.
 
 The same `cn()` merge applies to any component whose host binding includes `extraClass`. Existing `utility!` overrides still work.
 

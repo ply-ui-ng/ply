@@ -26,7 +26,8 @@ const BASE_CSS = `/* Ply global styles — ${SITE_URL} */
 @import '@angular/cdk/overlay-prebuilt.css';
 
 /*
- * Semantic tokens. Buttons, inputs, and Theme Studio read these.
+ * Semantic tokens. Buttons, inputs, tabs, selects, combobox, toast, accordion,
+ * and the command palette read these. Remaining widgets follow --color-blue-*.
  * Override in :root (or paste a Theme Studio export) — do not fork components
  * just to change brand color.
  */
@@ -37,6 +38,7 @@ const BASE_CSS = `/* Ply global styles — ${SITE_URL} */
   --ply-primary-hover: #1d4ed8;
   --ply-primary-active: #1e40af;
   --ply-primary-foreground: #ffffff;
+  --ply-primary-soft: color-mix(in srgb, var(--ply-primary) 14%, transparent);
   --ply-muted: #e2e8f0;
   --ply-muted-foreground: #334155;
   --ply-destructive: #dc2626;
@@ -53,6 +55,7 @@ const BASE_CSS = `/* Ply global styles — ${SITE_URL} */
   --base-primary-hover: var(--ply-primary-hover);
   --base-primary-active: var(--ply-primary-active);
   --base-primary-foreground: var(--ply-primary-foreground);
+  --base-primary-soft: var(--ply-primary-soft);
   --base-muted: var(--ply-muted);
   --base-muted-foreground: var(--ply-muted-foreground);
   --base-destructive: var(--ply-destructive);
@@ -70,6 +73,7 @@ const BASE_CSS = `/* Ply global styles — ${SITE_URL} */
   --ply-muted-foreground: #e2e8f0;
   --ply-border: #334155;
   --ply-primary-foreground: #ffffff;
+  --ply-primary-soft: color-mix(in srgb, var(--ply-primary) 22%, transparent);
   --ply-destructive-foreground: #ffffff;
 }
 

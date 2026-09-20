@@ -261,7 +261,7 @@ export class ToastComponent {
         : 'cursor-grab touch-none';
     const colorMap: Record<string, string> = {
       primary:
-        'bg-white text-slate-800 border-blue-200 dark:bg-slate-800 dark:text-slate-200 dark:border-blue-800',
+        'bg-[var(--ply-background)] text-[var(--ply-foreground)] border-[color-mix(in_srgb,var(--ply-primary)_28%,transparent)] dark:bg-slate-800 dark:text-slate-200',
       success:
         'bg-white text-slate-800 border-green-200 dark:bg-slate-800 dark:text-slate-200 dark:border-green-800',
       danger:
@@ -345,7 +345,7 @@ export class ToastComponent {
   getIconClasses(toast: ToastItem): string {
     const base = 'w-5 h-5 min-w-5';
     const colorMap: Record<string, string> = {
-      primary: 'stroke-blue-500 dark:stroke-blue-400',
+      primary: 'stroke-[var(--ply-primary)]',
       success: 'stroke-green-500 dark:stroke-green-400',
       danger: 'stroke-red-500 dark:stroke-red-400',
       warning: 'stroke-orange-500 dark:stroke-orange-400',
@@ -356,6 +356,14 @@ export class ToastComponent {
 
   getToastRole(toast: ToastItem): 'status' | 'alert' {
     return toast.color === 'danger' || toast.color === 'warning' ? 'alert' : 'status';
+  }
+
+  getActionClasses(): string {
+    return 'shrink-0 text-sm font-semibold text-[var(--ply-primary)] hover:text-[var(--ply-primary-hover)] rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ply-ring)]';
+  }
+
+  getDismissButtonClasses(): string {
+    return 'flex items-center justify-center shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ply-ring)]';
   }
 
   getCloseClasses(): string {

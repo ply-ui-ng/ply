@@ -74,6 +74,14 @@ describe('ToastComponent a11y', () => {
     expect(dismiss).toBeTruthy();
   });
 
+  it('uses --ply-primary for primary toast chrome', () => {
+    const toast = makeToast({ color: 'primary' });
+    expect(component.getIconClasses(toast)).toContain('--ply-primary');
+    expect(component.getToastClasses(toast)).toContain('--ply-primary');
+    expect(component.getActionClasses()).toContain('--ply-ring');
+    expect(component.getDismissButtonClasses()).toContain('--ply-ring');
+  });
+
   it('renders an action button and runs onClick', () => {
     const onClick = vi.fn();
     component.addToast(

@@ -61,6 +61,10 @@ describe('AccordionItemComponent', () => {
     expect(el.className).toContain('opacity-50');
   });
 
+  it('uses --ply-ring for header focus', () => {
+    expect(component.headerButtonClass()).toContain('--ply-ring');
+  });
+
   it('uses a button header with aria-controls and aria-expanded', () => {
     const button = fixture.nativeElement.querySelector('button[type="button"]') as HTMLButtonElement;
     const panel = fixture.nativeElement.querySelector('[role="region"]') as HTMLElement;

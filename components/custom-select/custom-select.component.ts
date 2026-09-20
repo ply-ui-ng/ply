@@ -13,7 +13,7 @@ import { Component,
 import { NgStyle, NgTemplateOutlet, isPlatformBrowser } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
-import { cn } from '../tw-merge/tw-merge';
+import { cn, PRIMARY_SOFT } from '../tw-merge/tw-merge';
 import { BASE_UI_I18N } from '../i18n/i18n';
 import { CustomSelectOptionDirective } from './custom-select-option.directive';
 
@@ -251,6 +251,14 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
       (this.valueKey()
         ? (opt as Record<string, unknown>)[this.valueKey()]
         : opt) === this.selectedOption()
+    );
+  }
+
+  protected optionRowClass(option: unknown, index: number): string {
+    const highlighted = this.isSelected(option) || this.activeIndex() === index;
+    return cn(
+      'relative cursor-pointer select-none py-2 px-4 transition-colors duration-150',
+      highlighted ? PRIMARY_SOFT : 'hover:bg-slate-100 dark:hover:bg-slate-700',
     );
   }
 
