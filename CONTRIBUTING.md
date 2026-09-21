@@ -1,5 +1,7 @@
 # Contributing to Ply
 
+**How merges work:** open the PR on **this** repository. After CI is green, a maintainer merges it *here* (you cannot merge or push to `main`). A private docs/Pro tree then *imports* `main` so ply-ui.com, the registry, and npm stay in sync. That import does not replace your PR. Your GitHub username is kept as `Co-authored-by`. Do not send free-tier patches to a private upstream.
+
 This repository ([ply-ui-ng/ply](https://github.com/ply-ui-ng/ply)) holds:
 
 - MIT **free-tier** component source in `components/` (same layout as `npx ply-ui-cli add`)

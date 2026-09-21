@@ -8,10 +8,10 @@
 [![npm downloads](https://img.shields.io/npm/dw/ply-ui-cli.svg)](https://www.npmjs.com/package/ply-ui-cli)
 [![GitHub stars](https://img.shields.io/github/stars/ply-ui-ng/ply?style=social)](https://github.com/ply-ui-ng/ply)
 
-**Ply** — [ply-ui.com](https://ply-ui.com) — is a CLI-first Angular + Tailwind CSS component library: **217 components and blocks** (127 free, 90 Pro), **390 icons**, and 18 full page layouts — standalone, zoneless, signal-based and **SSR-safe**, delivered shadcn-style: `npx ply-ui-cli add` copies the source into your project and it's yours. Not [MUI Base UI](https://base-ui.com) (React).
+**Ply** (formerly Base UI (Angular)) — [ply-ui.com](https://ply-ui.com) — is a CLI-first Angular + Tailwind CSS component library: **217 components and blocks** (127 free, 90 Pro), **390 icons**, and 18 full page layouts — standalone, zoneless, signal-based and **SSR-safe**, delivered shadcn-style: `npx ply-ui-cli add` copies the source into your project and it's yours. Not [MUI Base UI](https://base-ui.com) (React).
 
 📚 **Documentation & live previews**: [ply-ui.com](https://ply-ui.com)  
-📝 **Changelog**: [ply-ui.com/changelog](https://ply-ui.com/changelog) · [CHANGELOG.md](CHANGELOG.md) · [Issues](https://github.com/ply-ui-ng/ply/issues)  
+📝 **Changelog**: [ply-ui.com/changelog](https://ply-ui.com/changelog) · [CHANGELOG.md](CHANGELOG.md) · [Issues](https://github.com/ply-ui-ng/ply/issues) · [Discussions](https://github.com/ply-ui-ng/ply/discussions)  
 ♿ **Accessibility (ACR)**: [ply-ui.com/accessibility](https://ply-ui.com/accessibility) · `npm run test:a11y`  
 🖥️ **SSR-safe**: the docs site prerenders every catalog route, enforced by a blocking CI job · [how we verify it](https://ply-ui.com/learn/angular-ssr-safe-component-library/)  
 🤖 **AI agents (MCP)**: [ply-ui.com/getting-started#ai-agents-mcp](https://ply-ui.com/getting-started#ai-agents-mcp) · `ply-ui-mcp` · [why copy-in UI works better with LLMs](https://ply-ui.com/learn/why-llms-write-better-code-with-copy-in-ui/) · [token walkthrough: rich text editor](https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/)  
@@ -145,7 +145,7 @@ npm test --prefix packages/cli
 npm test --prefix packages/mcp
 ```
 
-Pull requests: see [CONTRIBUTING.md](CONTRIBUTING.md). Maintainer merges land upstream first; this repo is synced after.
+Pull requests: see [CONTRIBUTING.md](CONTRIBUTING.md). Free, CLI, and MCP PRs **merge on this repository**. A private docs/Pro tree imports `main` afterwards so ply-ui.com and npm stay in sync.
 
 ## 📋 Requirements
 
