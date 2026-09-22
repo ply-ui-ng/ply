@@ -45,9 +45,9 @@ Ply works with **standard Tailwind CSS 4** — no custom theme file required.
 @source "./src/**/*.{html,ts}";
 ```
 
-Buttons, inputs, folder/underline/pills tabs, selects, combobox, toast, accordion, and the command palette read `--ply-primary` from `ply-ui.css`. Remaining widgets follow `--color-blue-*`.
+Buttons, inputs, folder/underline/pills tabs, selects, combobox, toast, accordion, and the command palette read `--ply-primary` from `ply-ui.css`. That file aliases `--color-blue-*` to the same scale, so `blue-*` widgets follow it. A Theme Studio export sets `--ply-brand` and `--ply-scale-*`.
 
-**Optional — custom brand color:** override both in `:root`, or copy a Theme Studio export:
+**Optional — custom brand color:** override `--ply-primary` in `:root` after `ply-ui.css`, or copy a Theme Studio export:
 
 ```css
 :root {
@@ -55,7 +55,6 @@ Buttons, inputs, folder/underline/pills tabs, selects, combobox, toast, accordio
   --ply-primary-hover: rgb(109 40 217);
   --ply-primary-active: rgb(91 33 182);
   --ply-ring: rgb(124 58 237);
-  --color-blue-500: rgb(139 92 246); /* remaining blue-* widgets */
 }
 ```
 
@@ -224,7 +223,7 @@ npx ply-ui-cli init once per project, then npx ply-ui-cli add <name>. Omit the n
 Run npx ply-ui-cli doctor. It checks ply-ui.json, the Angular workspace, @angular/cdk, Tailwind v4 @source paths, the ply-ui.css import, icon sprites, and the components directory — read-only, nothing is written.
 
 **How do I export a Tailwind v4 theme?**  
-Open Theme Studio at https://ply-ui.com/theme/ or the docs customizer, pick a preset or hue, then copy the Tailwind v4 @theme block into src/tailwind.css. Brand color is --ply-primary (buttons, inputs, folder/underline/pills tabs, selects, combobox, toast, accordion, command palette). Remaining blue-* widgets follow the same hue. The live preview shows those controls together.
+Open Theme Studio at https://ply-ui.com/theme/ or the docs customizer, pick a preset or hue, then copy the Tailwind v4 @theme block into src/tailwind.css. ply-ui.css points --ply-primary and Tailwind blue-* utilities at that palette (--ply-brand and --ply-scale-*). The live preview shows buttons, tabs, forms, and overlays together.
 
 **Can AI agents install Ply?**  
 Yes. npx -y ply-ui-mcp is stdio for Cursor, Claude (Code/Desktop), Kimi, VS Code, Windsurf, and other local hosts. ChatGPT and Gemini chat apps use the Streamable HTTP connector at https://mcp.ply-ui.com/mcp (catalog tools) or a local npx -y ply-ui-mcp --http without --read-only so add/init/update can see the project. Pro add uses PLY_LICENSE_KEY on the MCP process. Editors that skip MCP can copy the Cursor rule and snippet pack from https://ply-ui.com/getting-started/#editor-rules.

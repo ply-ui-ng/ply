@@ -27,16 +27,17 @@ const BASE_CSS = `/* Ply global styles — ${SITE_URL} */
 
 /*
  * Semantic tokens. Buttons, inputs, tabs, selects, combobox, toast, accordion,
- * and the command palette read these. Remaining widgets follow --color-blue-*.
- * Override in :root (or paste a Theme Studio export) — do not fork components
- * just to change brand color.
+ * and the command palette read --ply-*. Widgets that still use Tailwind blue-*
+ * utilities follow the same hue: --color-blue-* aliases to this scale.
+ * Set --ply-primary in a later :root, or paste a Theme Studio export
+ * (--ply-brand and --ply-scale-*) — do not fork components to change brand color.
  */
 :root {
   --ply-background: #ffffff;
   --ply-foreground: #0f172a;
-  --ply-primary: #2563eb;
-  --ply-primary-hover: #1d4ed8;
-  --ply-primary-active: #1e40af;
+  --ply-primary: var(--ply-brand, #2563eb);
+  --ply-primary-hover: var(--ply-brand-hover, #1d4ed8);
+  --ply-primary-active: var(--ply-brand-active, #1e40af);
   --ply-primary-foreground: #ffffff;
   --ply-primary-soft: color-mix(in srgb, var(--ply-primary) 14%, transparent);
   --ply-muted: #e2e8f0;
@@ -45,7 +46,18 @@ const BASE_CSS = `/* Ply global styles — ${SITE_URL} */
   --ply-destructive-hover: #b91c1c;
   --ply-destructive-foreground: #ffffff;
   --ply-border: #cbd5e1;
-  --ply-ring: #2563eb;
+  --ply-ring: var(--ply-primary);
+  --color-blue-50: var(--ply-scale-50, color-mix(in srgb, var(--ply-primary) 8%, white));
+  --color-blue-100: var(--ply-scale-100, color-mix(in srgb, var(--ply-primary) 14%, white));
+  --color-blue-200: var(--ply-scale-200, color-mix(in srgb, var(--ply-primary) 26%, white));
+  --color-blue-300: var(--ply-scale-300, color-mix(in srgb, var(--ply-primary) 42%, white));
+  --color-blue-400: var(--ply-scale-400, color-mix(in srgb, var(--ply-primary) 68%, white));
+  --color-blue-500: var(--ply-scale-500, var(--ply-primary));
+  --color-blue-600: var(--ply-scale-600, var(--ply-primary-hover));
+  --color-blue-700: var(--ply-scale-700, var(--ply-primary-active));
+  --color-blue-800: var(--ply-scale-800, color-mix(in srgb, var(--ply-primary-active) 78%, black));
+  --color-blue-900: var(--ply-scale-900, color-mix(in srgb, var(--ply-primary-active) 62%, black));
+  --color-blue-950: var(--ply-scale-950, color-mix(in srgb, var(--ply-primary-active) 48%, black));
   --ply-radius: 0.5rem;
   --radius: var(--ply-radius);
   /* Compat for components copied before the Ply rename. */

@@ -24,6 +24,17 @@ Docs and live previews: [ply-ui.com](https://ply-ui.com)
 | Security vulnerability | Email **security@ply-ui.com** — do not open a public issue |
 | License, billing, Pro catalog | Email **support@ply-ui.com** |
 
+## Good first changes
+
+Fork, change one of these, and open a PR. A maintainer merges it here. Do not start a new component, a Pro widget, or right-to-left layout in a first PR.
+
+- A missing keyboard or focus note on a free component that already has a spec
+- An i18n string wired through `provideBaseUiI18n` where the component still hard-codes English chrome
+- A unit spec for an edge case on a free component you can run with `npm test`
+- A docs correction on [ply-ui.com/getting-started](https://ply-ui.com/getting-started/) behavior that does not match the CLI
+
+Say which of those you are taking in [Discussions](https://github.com/ply-ui-ng/ply/discussions) if you want a sanity check before the PR.
+
 ## Pull requests
 
 PRs against **free** source, the CLI, and the MCP merge **on this repository**.

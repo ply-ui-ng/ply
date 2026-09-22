@@ -40,7 +40,7 @@ You are generating Angular for a project that uses **Ply** at https://ply-ui.com
 
 - Style with utilities. Pair light and `dark:` variants (`bg-white dark:bg-slate-800`). Dark mode is the `dark` class on `<html>`.
 - Prefer pixel arbitrary values in new UI (`p-[16px]`, `gap-[8px]`) so spacing does not depend on a custom theme.
-- `color="primary"` reads `--ply-primary` from `ply-ui.css`. Theme Studio writes the same tokens and remaps `--color-blue-*` so remaining `blue-*` widgets follow the hue. Live preview: https://ply-ui.com/theme/.
+- `color="primary"` reads `--ply-primary` from `ply-ui.css`. That file aliases `--color-blue-*` to the same scale. Theme Studio sets `--ply-brand` and `--ply-scale-*`. Live preview: https://ply-ui.com/theme/.
 - Button and input `class` values merge via `cn()`. `class="rounded-full"` and `class="absolute …"` override defaults. Existing `utility!` still works.
 - `<ply-icon>` outlines: `stroke-*`. Filled icons: `[filled]="true"` and `text-*` / `fill-*`.
 
