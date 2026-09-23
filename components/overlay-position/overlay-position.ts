@@ -1,4 +1,6 @@
 import { ConnectedPosition } from '@angular/cdk/overlay';
+import { flipInlineAxis, type WritingDirection } from '../direction/direction';
+import type { DropdownPlacement } from '../types';
 
 /**
  * Placement union shared by popover/hover-card overlays. Mirrors
@@ -70,12 +72,56 @@ function buildPositions(gap: number): Record<OverlayPlacement, ConnectedPosition
  *     .withViewportMargin(8),
  * });
  */
+const PHYSICAL_OVERLAY = new Set<OverlayPlacement>(['left', 'right']);
+
+/**
+ * `start` / `end` are left for CDK to mirror when the overlay direction is rtl.
+ * Physical `left` / `right` are pre-flipped so they stay on that screen edge.
+ */
+function positionForDirection<T extends ConnectedPosition>(
+  position: T,
+  direction: WritingDirection,
+  physical: boolean,
+): T {
+  if (direction !== 'rtl' || !physical) return position;
+  return {
+    ...position,
+    originX: flipInlineAxis(position.originX),
+    overlayX: flipInlineAxis(position.overlayX),
+  };
+}
+
 export function overlayPositions(
   placement: OverlayPlacement,
   gap = 8,
+  direction: WritingDirection = 'ltr',
 ): ConnectedPosition[] {
   const map = buildPositions(gap);
-  return [map[placement] ?? map['bottom-start'], map[FLIP[placement] ?? 'top-start']];
+  const primary = map[placement] ?? map['bottom-start'];
+  const fallbackKey = FLIP[placement] ?? 'top-start';
+  const fallback = map[fallbackKey];
+  return [
+    positionForDirection(primary, direction, PHYSICAL_OVERLAY.has(placement)),
+    positionForDirection(fallback, direction, PHYSICAL_OVERLAY.has(fallbackKey)),
+  ];
+}
+
+/** Connected positions for a dropdown. `left` / `right` stay physical; `start` / `end` follow `dir`. */
+export function dropdownConnectedPositions(
+  placement: DropdownPlacement,
+  direction: WritingDirection,
+): ConnectedPosition[] {
+  const map: Record<DropdownPlacement, ConnectedPosition> = {
+    start: { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 4 },
+    end: { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 4 },
+    left: { originX: 'start', originY: 'top', overlayX: 'end', overlayY: 'top', offsetX: -4 },
+    right: { originX: 'end', originY: 'top', overlayX: 'start', overlayY: 'top', offsetX: 4 },
+    'top-start': { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -4 },
+    'top-end': { originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'bottom', offsetY: -4 },
+  };
+  const chosen = map[placement] ?? map.end;
+  const physical = placement === 'left' || placement === 'right';
+  return [positionForDirection(chosen, direction, physical)];
 }
 
 /** Rectangle subset needed by {@link overlayDropUpMetrics}. */

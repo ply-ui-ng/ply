@@ -16,6 +16,7 @@ import { DialogContainerComponent } from './dialog-container/dialog-container.co
 import { DialogContext } from './dialog-context';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { AlertDialogData } from './alert-dialog/alert-dialog.types';
+import { injectDocumentDirection } from '../direction/inject-direction';
 import { BASE_UI_I18N } from '../i18n/i18n';
 
 /**
@@ -38,6 +39,7 @@ import { BASE_UI_I18N } from '../i18n/i18n';
   providedIn: 'root',
 })
 export class DialogService {
+  private readonly writingDirection = injectDocumentDirection();
   private overlay = inject(Overlay);
   private injector = inject(Injector);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
@@ -142,6 +144,7 @@ export class DialogService {
     containerType: Type<DialogContainer>,
   ): { containerRef: ComponentRef<DialogContainer>; overlayRef: OverlayRef } {
     const overlayRef = this.overlay.create({
+      direction: this.writingDirection(),
       hasBackdrop: false,
       positionStrategy: this.overlay.position().global().top('0').left('0'),
       width: '100%',

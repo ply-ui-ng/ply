@@ -120,7 +120,7 @@ export class ToastService {
       color: config.color || 'primary',
       icon: config.icon || this.getDefaultIcon(config.color),
       duration: config.duration ?? this.defaultDuration,
-      position: config.position || 'top-right',
+      position: config.position || 'top-end',
       removing: false,
       action: config.action,
     };

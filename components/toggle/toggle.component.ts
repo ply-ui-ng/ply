@@ -98,7 +98,7 @@ export class ToggleComponent implements ControlValueAccessor {
   });
 
   readonly thumbClasses = computed(() => {
-    const base = 'bg-white absolute left-0.5 top-0.5 transform transition-all duration-300 peer-disabled:cursor-default';
+    const base = 'bg-white absolute start-0.5 top-0.5 transform transition-all duration-300 peer-disabled:cursor-default';
     
     const shapeMap: Record<ToggleShape, string> = {
       'rounded': 'rounded-full',
@@ -107,10 +107,10 @@ export class ToggleComponent implements ControlValueAccessor {
 };
 
     const sizeMap: Record<ToggleSize, string> = {
-      'sm': 'h-4 w-4 peer-checked:translate-x-4',
-      'md': 'h-5 w-5 peer-checked:translate-x-5',
-      'default': 'h-5 w-5 peer-checked:translate-x-5',
-      'lg': 'h-6 w-6 peer-checked:translate-x-6'
+      'sm': 'h-4 w-4 peer-checked:translate-x-4 rtl:peer-checked:-translate-x-4',
+      'md': 'h-5 w-5 peer-checked:translate-x-5 rtl:peer-checked:-translate-x-5',
+      'default': 'h-5 w-5 peer-checked:translate-x-5 rtl:peer-checked:-translate-x-5',
+      'lg': 'h-6 w-6 peer-checked:translate-x-6 rtl:peer-checked:-translate-x-6',
 };
 
     return `${base} ${shapeMap[this.shape()] || shapeMap['smooth']} ${sizeMap[this.size()] || sizeMap['md']}`;

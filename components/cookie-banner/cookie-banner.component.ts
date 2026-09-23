@@ -39,7 +39,7 @@ export class CookieBannerComponent {
   /**
    * Extra host classes merged via `cn()`.
    * @example
-   * <ply-cookie-banner class="md:left-8"></ply-cookie-banner>
+   * <ply-cookie-banner class="md:start-8"></ply-cookie-banner>
    */
   readonly extraClass = input('', { alias: 'class' });
 
@@ -133,7 +133,7 @@ export class CookieBannerComponent {
             'pointer-events-none p-4',
             this.inline()
               ? 'relative block max-w-md'
-              : 'fixed inset-x-0 bottom-0 z-[10000] md:inset-x-auto md:left-4 md:max-w-md',
+              : 'fixed inset-x-0 bottom-0 z-[10000] md:inset-x-auto md:start-4 md:max-w-md',
           )
         : 'hidden',
       this.extraClass(),

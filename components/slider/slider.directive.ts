@@ -1,4 +1,5 @@
 import { Directive, HostListener, output } from '@angular/core';
+import { injectElementDirection } from '../direction/inject-direction';
 
 /**
  * A structural directive that wraps elements inside a slider/carousel, adding touch-swipe support.
@@ -12,6 +13,7 @@ import { Directive, HostListener, output } from '@angular/core';
   selector: '[plySlider]',
 })
 export class SliderDirective {
+  private readonly writingDirection = injectElementDirection();
   private threshold = 50;
   private startX: number | null = null;
   
@@ -34,10 +36,10 @@ export class SliderDirective {
     const deltaX = endX - this.startX;
     this.startX = null;
 
-    if (deltaX > this.threshold) {
-      this.slideAction.emit(true);
-    } else if (deltaX < -this.threshold) {
-      this.slideAction.emit(false);
-    }
+    const rtl = this.writingDirection() === 'rtl';
+    const previous = rtl ? deltaX < -this.threshold : deltaX > this.threshold;
+    const next = rtl ? deltaX > this.threshold : deltaX < -this.threshold;
+    if (previous) this.slideAction.emit(true);
+    else if (next) this.slideAction.emit(false);
   }
 }

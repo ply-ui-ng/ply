@@ -60,7 +60,7 @@ describe('TableDirective', () => {
         <table ply-table class="max-w-xl">
           <thead ply-table-header>
             <tr ply-table-row>
-              <th ply-table-head class="text-right">Amount</th>
+              <th ply-table-head class="text-end">Amount</th>
             </tr>
           </thead>
         </table>
@@ -76,8 +76,8 @@ describe('TableDirective', () => {
     const root = fixture.nativeElement as HTMLElement;
     expect(root.querySelector('table')?.className).toContain('max-w-xl');
     const th = root.querySelector('th');
-    expect(th?.className).toContain('text-right');
-    expect(th?.className).not.toContain('text-left');
+    expect(th?.className).toContain('text-end');
+    expect(th?.className).not.toContain('text-start');
     fixture.destroy();
   });
 });

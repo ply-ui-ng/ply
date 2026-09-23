@@ -6,6 +6,7 @@ import {
   inject,
   input
 } from '@angular/core';
+import { injectElementDirection } from '../direction/inject-direction';
 import { DrawerPanel } from './drawer-panel';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
@@ -30,12 +31,13 @@ import { outputToObservable } from '@angular/core/rxjs-interop';
   },
 })
 export class DrawerDirective<T> implements OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   isDrawerOpen = false;
   private overlayRef?: OverlayRef;
   private closingSubscription = Subscription.EMPTY;
 
   /** The edge of the screen to slide the drawer in from. */
-  readonly placement = input('right');
+  readonly placement = input('end');
   
   /** The reference to the `ply-drawer` component to open. */
   readonly drawerPanel = input.required<DrawerPanel<T>>({ alias: "ply-drawer" });
@@ -54,6 +56,7 @@ export class DrawerDirective<T> implements OnDestroy {
 
     this.isDrawerOpen = true;
     this.overlayRef = this.overlay.create({
+      direction: this.writingDirection(),
       hasBackdrop: true,
       backdropClass: ['bg-slate-300/50', 'dark:bg-slate-800/80', 'backdrop-blur-[8px]'],
       scrollStrategy: this.overlay.scrollStrategies.block(),

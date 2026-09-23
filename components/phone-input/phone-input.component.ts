@@ -8,6 +8,7 @@ import {
   OnDestroy,
   HostListener, PLATFORM_ID, inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { injectElementDirection } from '../direction/inject-direction';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface Country {
@@ -50,6 +51,7 @@ export const COMMON_COUNTRIES: Country[] = [
   templateUrl: './phone-input.component.html'
 })
 export class PhoneInputComponent implements ControlValueAccessor, OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   /** Prerendering destroys the app after render; there is nothing to unbind on the server. */
   private readonly isSsrSafeBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   countries = COMMON_COUNTRIES;
@@ -128,7 +130,7 @@ export class PhoneInputComponent implements ControlValueAccessor, OnDestroy {
       minWidth: '200px',
       width: '200px',
       maxHeight: '300px',
-      left: `${rect.left}px`
+      left: `${this.writingDirection() === 'rtl' ? rect.right - 200 : rect.left}px`,
     };
 
     const spaceBelow = vh - rect.bottom;

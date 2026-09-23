@@ -14,6 +14,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { merge, Subscription, fromEvent } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { outputToObservable } from '@angular/core/rxjs-interop';
+import { injectElementDirection } from '../direction/inject-direction';
 import { ContextMenuPanel } from './context-menu-panel';
 import { ContextMenuComponent } from './context-menu.component';
 
@@ -44,6 +45,7 @@ interface ContextMenuPoint {
   },
 })
 export class ContextMenuDirective<T> implements OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   private readonly overlay = inject(Overlay);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly viewContainerRef = inject(ViewContainerRef);
@@ -133,6 +135,7 @@ export class ContextMenuDirective<T> implements OnDestroy {
     this.isOpen.set(true);
 
     this.overlayRef = this.overlay.create({
+      direction: this.writingDirection(),
       hasBackdrop: true,
       backdropClass: 'bg-transparent',
       scrollStrategy: this.overlay.scrollStrategies.close(),

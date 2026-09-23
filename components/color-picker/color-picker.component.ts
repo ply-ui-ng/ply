@@ -12,6 +12,7 @@ import { Component,
   ChangeDetectionStrategy, booleanAttribute, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { injectElementDirection } from '../direction/inject-direction';
 import { cn } from '../tw-merge/tw-merge';
 
 const PANEL_WIDTH  = 248;
@@ -37,6 +38,7 @@ let colorPickerIdCounter = 0;
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ColorPickerComponent), multi: true }]
 })
 export class ColorPickerComponent implements OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   /** Prerendering destroys the app after render; there is nothing to unbind on the server. */
   private readonly isSsrSafeBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   readonly panelId = `ply-color-picker-panel-${++colorPickerIdCounter}`;
@@ -106,7 +108,8 @@ export class ColorPickerComponent implements OnDestroy {
     const top  = rect.bottom + GAP >= vh - PANEL_HEIGHT
       ? Math.max(GAP, rect.top - GAP - PANEL_HEIGHT)
       : rect.bottom + GAP;
-    const left = Math.max(GAP, Math.min(rect.left, vw - PANEL_WIDTH - GAP));
+    const aligned = this.writingDirection() === 'rtl' ? rect.right - PANEL_WIDTH : rect.left;
+    const left = Math.max(GAP, Math.min(aligned, vw - PANEL_WIDTH - GAP));
     this.panelStyle.set({ position: 'fixed', top: `${top}px`, left: `${left}px`, width: `${PANEL_WIDTH}px`, zIndex: '10000' });
   }
 

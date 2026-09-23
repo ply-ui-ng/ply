@@ -9,7 +9,7 @@ import { Directive } from '@angular/core';
 @Directive({
   selector: '[ply-addon-start]',
   host: {
-    class: 'w-5 h-5 flex items-center justify-center ml-4 shrink-0',
+    class: 'w-5 h-5 flex items-center justify-center ms-4 shrink-0',
   },
 })
 export class BaseAddonStartDirective {}

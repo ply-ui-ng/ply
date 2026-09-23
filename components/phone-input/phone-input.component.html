@@ -6,7 +6,7 @@
       #buttonSlot
       type="button" 
       (click)="toggleDropdown()"
-      class="flex items-center gap-2 pl-3 pr-2 py-2.5 border-r border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors rounded-l-lg focus:outline-none"
+      class="flex items-center gap-2 ps-3 pe-2 py-2.5 border-e border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors rounded-s-lg focus:outline-none"
     >
       <span class="text-lg leading-none">{{ selectedCountry().flag }}</span>
       <span class="text-sm font-medium text-slate-600 dark:text-slate-300">{{ selectedCountry().dialCode }}</span>
@@ -26,7 +26,7 @@
           <button 
             type="button"
             (click)="selectCountry(country)"
-            class="flex w-full items-center justify-between px-3 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 focus:bg-slate-100 dark:focus:bg-slate-700 focus:outline-none transition-colors"
+            class="flex w-full items-center justify-between px-3 py-2 text-start hover:bg-slate-100 dark:hover:bg-slate-700 focus:bg-slate-100 dark:focus:bg-slate-700 focus:outline-none transition-colors"
           >
             <div class="flex items-center gap-2">
               <span class="text-lg leading-none">{{ country.flag }}</span>

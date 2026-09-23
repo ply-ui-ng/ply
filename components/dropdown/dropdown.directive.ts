@@ -14,7 +14,10 @@ import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
 import { outputToObservable } from '@angular/core/rxjs-interop';
+import { isInlineBackwardKey, isInlineForwardKey } from '../direction/direction';
+import { injectElementDirection } from '../direction/inject-direction';
 import { DropdownPlacement } from '../types';
+import { dropdownConnectedPositions } from '../overlay-position/overlay-position';
 import {
   DropdownMenuStack,
   DropdownMenuStackEntry,
@@ -47,6 +50,7 @@ import {
   },
 })
 export class DropdownMenuDirective<T> implements OnDestroy, DropdownMenuStackEntry {
+  private readonly writingDirection = injectElementDirection();
   private isDropdownOpen = false;
   private overlayRef?: OverlayRef;
   private closingSubscription = Subscription.EMPTY;
@@ -134,23 +138,24 @@ export class DropdownMenuDirective<T> implements OnDestroy, DropdownMenuStackEnt
         }
         break;
       case 'ArrowRight':
-        if (!this.isDropdownOpen && (this.placement() === 'right' || this.isNestedTrigger())) {
+      case 'ArrowLeft': {
+        const dir = this.writingDirection();
+        const physicalOpen =
+          (event.key === 'ArrowRight' && this.placement() === 'right') ||
+          (event.key === 'ArrowLeft' && this.placement() === 'left');
+        const forward = isInlineForwardKey(event.key, dir);
+        const backward = isInlineBackwardKey(event.key, dir);
+        if (!this.isDropdownOpen && (physicalOpen || (this.isNestedTrigger() && forward))) {
           event.preventDefault();
           event.stopPropagation();
           this.openDropdown();
-        }
-        break;
-      case 'ArrowLeft':
-        if (!this.isDropdownOpen && this.placement() === 'left') {
-          event.preventDefault();
-          event.stopPropagation();
-          this.openDropdown();
-        } else if (this.isDropdownOpen && this.isNestedTrigger()) {
+        } else if (this.isDropdownOpen && this.isNestedTrigger() && backward) {
           event.preventDefault();
           event.stopPropagation();
           this.menuStack.closeFrom(this, true);
         }
         break;
+      }
       case 'Escape':
         if (this.isDropdownOpen) {
           event.preventDefault();
@@ -190,6 +195,7 @@ export class DropdownMenuDirective<T> implements OnDestroy, DropdownMenuStackEnt
 
     this.isDropdownOpen = true;
     this.overlayRef = this.overlay.create({
+      direction: this.writingDirection(),
       // Only the root menu needs a backdrop; nested menus share the root dismiss target
       hasBackdrop: !nested,
       backdropClass: 'bg-transparent',
@@ -241,24 +247,7 @@ export class DropdownMenuDirective<T> implements OnDestroy, DropdownMenuStackEnt
   }
 
   private getPositions(): ConnectedPosition[] {
-    const defaultPosition: ConnectedPosition = {
-      originX: 'end',
-      originY: 'bottom',
-      overlayX: 'end',
-      overlayY: 'top',
-      offsetY: 4,
-    };
-
-    const maps: Record<string, ConnectedPosition> = {
-      start: { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 4 },
-      end: { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 4 },
-      left: { originX: 'start', originY: 'top', overlayX: 'end', overlayY: 'top', offsetX: -4 },
-      right: { originX: 'end', originY: 'top', overlayX: 'start', overlayY: 'top', offsetX: 4 },
-      'top-start': { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -4 },
-      'top-end': { originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'bottom', offsetY: -4 },
-    };
-
-    return [maps[this.placement()] || defaultPosition];
+    return dropdownConnectedPositions(this.placement(), this.writingDirection());
   }
 
   private destroyDropdown(restoreFocus = false): void {

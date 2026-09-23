@@ -18,12 +18,12 @@ const SPINNER_COLOR_BY_BUTTON: Record<string, SpinnerColor> = {
 
 /** Border-arc classes per spinner color. */
 const SPINNER_COLOR_CLASSES: Record<SpinnerColor, string> = {
-  primary: 'border-blue-500 border-t-blue-100 border-r-blue-100 border-b-blue-100',
-  success: 'border-green-500 border-t-green-100 border-r-green-100 border-b-green-100',
-  danger: 'border-red-500 border-t-red-100 border-r-red-100 border-b-red-100',
-  warning: 'border-orange-500 border-t-orange-100 border-r-orange-100 border-b-orange-100',
-  accent: 'border-purple-500 border-t-purple-100 border-r-purple-100 border-b-purple-100',
-  inverted: 'border-white border-t-white/20 border-r-white/20 border-b-white/20',
+  primary: 'border-blue-500 border-t-blue-100 border-e-blue-100 border-b-blue-100',
+  success: 'border-green-500 border-t-green-100 border-e-green-100 border-b-green-100',
+  danger: 'border-red-500 border-t-red-100 border-e-red-100 border-b-red-100',
+  warning: 'border-orange-500 border-t-orange-100 border-e-orange-100 border-b-orange-100',
+  accent: 'border-purple-500 border-t-purple-100 border-e-purple-100 border-b-purple-100',
+  inverted: 'border-white border-t-white/20 border-e-white/20 border-b-white/20',
 };
 
 /**

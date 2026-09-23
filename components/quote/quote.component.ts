@@ -37,8 +37,8 @@ export class QuoteComponent {
   readonly iconColor = input<'primary' | 'success' | 'danger' | 'warning' | 'accent' | 'default' | string>('primary');
 
   readonly containerClass = computed(() => cn('relative',
-    (this.variant() === 'default' || this.variant() === 'border-left') && 'border-l-4 border-slate-300 dark:border-slate-600 pl-4 py-1',
-    this.variant() === 'avatar-left' && 'border-l-2 border-slate-200 dark:border-slate-700 pl-4',
+    (this.variant() === 'default' || this.variant() === 'border-left') && 'border-s-4 border-slate-300 dark:border-slate-600 ps-4 py-1',
+    this.variant() === 'avatar-left' && 'border-s-2 border-slate-200 dark:border-slate-700 ps-4',
     // `isolate` keeps the -z-10 background glyph inside this quote instead of
     // letting it sink behind whatever surface the quote happens to sit on.
     this.variant() === 'icon-top' && 'isolate pt-8 px-4'
@@ -49,7 +49,7 @@ export class QuoteComponent {
     this.variant() === 'icon-top' && 'text-xl font-bold text-slate-900 dark:text-white mb-4'
   ));
 
-  readonly authorClass = computed(() => cn('text-sm text-left',
+  readonly authorClass = computed(() => cn('text-sm text-start',
     (this.variant() === 'default' || this.variant() === 'border-left') && 'mt-2 px-4'
   ));
 }

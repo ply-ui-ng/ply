@@ -1,5 +1,7 @@
 import { Component, OnInit, input, output, model, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { inlineArrowDelta } from '../direction/direction';
+import { injectElementDirection } from '../direction/inject-direction';
 import { IconComponent } from '../icon/icon.component';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
 import { cn, FOCUS_RING_INSET } from '../tw-merge/tw-merge';
@@ -34,6 +36,7 @@ export interface CalendarDate {
   host: { '[class]': 'hostClass()' }
 })
 export class CalendarComponent implements OnInit {
+  private readonly writingDirection = injectElementDirection();
   /** Additional CSS classes to merge into the host element. */
   readonly extraClass = input('', { alias: "class" });
 
@@ -201,9 +204,9 @@ export class CalendarComponent implements OnInit {
       {
         'rounded-full bg-blue-600 text-white font-bold':
           calDate.isSelected || isSingleDayRange,
-        'rounded-l-full rounded-r-0 bg-blue-600 text-white font-bold':
+        'rounded-s-full rounded-e-0 bg-blue-600 text-white font-bold':
           isRangeEndpoint && calDate.isRangeStart,
-        'rounded-l-0 rounded-r-full bg-blue-600 text-white font-bold':
+        'rounded-s-0 rounded-e-full bg-blue-600 text-white font-bold':
           isRangeEndpoint && calDate.isRangeEnd,
         'rounded-full border border-blue-500 text-blue-600 font-bold':
           calDate.isToday &&
@@ -277,12 +280,12 @@ export class CalendarComponent implements OnInit {
   onGridKeydown(event: KeyboardEvent): void {
     const focused = this.focusedDate();
     if (!focused) return;
+    const horizontal = inlineArrowDelta(event.key, this.writingDirection());
     const delta: Record<string, number> = {
-      ArrowLeft: -1,
-      ArrowRight: 1,
       ArrowUp: -7,
       ArrowDown: 7,
     };
+    if (horizontal) delta[event.key] = horizontal;
 
     if (event.key in delta) {
       event.preventDefault();

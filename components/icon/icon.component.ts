@@ -1,4 +1,5 @@
 import { Component, computed, input, inject, ChangeDetectionStrategy, booleanAttribute } from '@angular/core';
+import { isDirectionalIcon } from '../direction/direction';
 import { cn } from '../tw-merge/tw-merge';
 import { BASE_UI_CONFIG } from '../config/config';
 
@@ -61,14 +62,23 @@ export class IconComponent {
    */
   readonly filledPath = input('');
 
+  /**
+   * `auto` mirrors icons that point left or right when an ancestor has `dir="rtl"`.
+   * `on` always mirrors. `off` keeps the glyph pointing the same way.
+   */
+  readonly mirror = input<'auto' | 'on' | 'off'>('auto');
+
   protected readonly hostCls = computed(() => {
     const extra = this.extraClass();
     const sized = this.sizeWithUnit() != null;
+    const mode = this.mirror();
+    const mirror = mode === 'on' || (mode === 'auto' && isDirectionalIcon(this.name()));
     return cn(
       'inline-flex align-middle',
       !sized && !/(?:^|\s)w-/.test(extra) && 'w-6',
       !sized && !/(?:^|\s)h-/.test(extra) && 'h-6',
       !/(?:^|\s)(?:stroke-|text-|fill-)/.test(extra) && 'stroke-current',
+      mirror && 'rtl:-scale-x-100',
       extra,
     );
   });

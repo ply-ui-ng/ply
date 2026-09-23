@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, OnDestroy, computed, input, viewChild, ElementRef, signal,
   ChangeDetectionStrategy
 } from '@angular/core';
+import { inlineScrollState, scrollByInline } from '../direction/direction';
+import { injectElementDirection } from '../direction/inject-direction';
 import { IconComponent } from '../icon/icon.component';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
 import { cn } from '../tw-merge/tw-merge';
@@ -21,6 +23,7 @@ import { cn } from '../tw-merge/tw-merge';
   host: { '[class]': 'hostCls()' },
 })
 export class HorizontalCarouselComponent implements AfterViewInit, OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   readonly extraClass = input('', { alias: 'class' });
   readonly title      = input('');
 
@@ -62,22 +65,23 @@ export class HorizontalCarouselComponent implements AfterViewInit, OnDestroy {
   checkScroll() {
     const el = this.track()?.nativeElement;
     if (!el) return;
-    this.canScrollPrev.set(el.scrollLeft > 2);
-    this.canScrollNext.set(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+    const edges = inlineScrollState(el, this.writingDirection());
+    this.canScrollPrev.set(!edges.atStart);
+    this.canScrollNext.set(!edges.atEnd);
   }
 
   scrollNext() {
     if (!this.canScrollNext()) return;
     const el = this.track()?.nativeElement;
     const child = el?.firstElementChild as HTMLElement;
-    if (el && child) el.scrollBy({ left: child.offsetWidth + 16, behavior: 'smooth' });
+    if (el && child) scrollByInline(el, child.offsetWidth + 16, this.writingDirection());
   }
 
   scrollPrev() {
     if (!this.canScrollPrev()) return;
     const el = this.track()?.nativeElement;
     const child = el?.firstElementChild as HTMLElement;
-    if (el && child) el.scrollBy({ left: -(child.offsetWidth + 16), behavior: 'smooth' });
+    if (el && child) scrollByInline(el, -(child.offsetWidth + 16), this.writingDirection());
   }
 
   onMouseDown(e: MouseEvent) {
@@ -104,7 +108,9 @@ export class HorizontalCarouselComponent implements AfterViewInit, OnDestroy {
     const el = this.track()?.nativeElement;
     if (!el) return;
     e.preventDefault();
-    el.scrollLeft = this.scrollLeftPos - (e.pageX - el.offsetLeft - this.startX) * 1.5;
+    const delta = (e.pageX - el.offsetLeft - this.startX) * 1.5;
+    const sign = this.writingDirection() === 'rtl' ? 1 : -1;
+    el.scrollLeft = this.scrollLeftPos + sign * delta;
   }
 
   onTouchStart(e: TouchEvent) {
@@ -115,7 +121,10 @@ export class HorizontalCarouselComponent implements AfterViewInit, OnDestroy {
     if (e.changedTouches.length > 0) {
       this.touchEndX = e.changedTouches[0].screenX;
       const diff = this.touchStartX - this.touchEndX;
-      if (Math.abs(diff) > 50) { diff > 0 ? this.scrollNext() : this.scrollPrev(); }
+      if (Math.abs(diff) > 50) {
+        const towardEnd = this.writingDirection() === 'rtl' ? diff < 0 : diff > 0;
+        towardEnd ? this.scrollNext() : this.scrollPrev();
+      }
     }
   }
 }

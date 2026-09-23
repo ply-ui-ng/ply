@@ -15,12 +15,12 @@
         [disabled]="disabled()"
         (click)="toggleDropdown()"
         (keydown)="onComboboxKeydown($event)"
-        class="relative w-full h-9 pl-4 pr-8 text-left bg-[var(--ply-background)] border border-[var(--ply-border)] rounded-[var(--ply-radius)] shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-[var(--ply-ring)] focus:border-[var(--ply-ring)] text-sm transition-all duration-200"
+        class="relative w-full h-9 ps-4 pe-8 text-start bg-[var(--ply-background)] border border-[var(--ply-border)] rounded-[var(--ply-radius)] shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-[var(--ply-ring)] focus:border-[var(--ply-ring)] text-sm transition-all duration-200"
         [class.opacity-50]="disabled()" [class.cursor-not-allowed]="disabled()">
         <span class="block truncate">
             {{ selectedLabel() || placeholder() }}
         </span>
-        <span class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none" aria-hidden="true">
+        <span class="absolute inset-y-0 end-0 flex items-center pe-4 pointer-events-none" aria-hidden="true">
             <ply-icon name="chevron-down" class="w-4 h-4 stroke-slate-500 transition-transform duration-200"
                 [class.rotate-180]="isOpen()"></ply-icon>
         </span>
@@ -53,7 +53,7 @@
                 }
 
                 @if (isSelected(option)) {
-                <span class="absolute inset-y-0 right-0 flex items-center pr-0.75 text-[var(--ply-primary)]" aria-hidden="true">
+                <span class="absolute inset-y-0 end-0 flex items-center pe-0.75 text-[var(--ply-primary)]" aria-hidden="true">
                     <ply-icon name="check" class="w-1 h-1 stroke-current"></ply-icon>
                 </span>
                 }

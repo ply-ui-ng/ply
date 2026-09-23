@@ -20,7 +20,11 @@ export type BadgeColor =
 export type BadgeSize = 'sm' | 'md' | 'default' | 'lg' | 'xl';
 export type BadgeShape = 'rectangular' | 'circle' | 'rounded' | 'pill';
 export type CheckboxColor = 'primary' | 'danger' | 'success' | 'accent' | 'warning';
-export type DrawerPosition = 'left' | 'right' | 'top' | 'bottom';
+/**
+ * Screen edge for a drawer. `left` / `right` stay on that physical edge.
+ * `start` / `end` follow `dir` (`end` is the right in LTR and the left in RTL).
+ */
+export type DrawerPosition = 'left' | 'right' | 'top' | 'bottom' | 'start' | 'end';
 export type DrawerSize = 'sm' | 'md' | 'lg' | 'xl' | string;
 export type FileUploadVariant = 'input' | 'button' | 'dropzone' | 'icon';
 export type FileUploadButtonColor = 'primary' | 'danger' | 'success' | 'warning' | 'accent' | '';
@@ -140,7 +144,21 @@ export type ChipColor = '' | 'primary' | 'success' | 'danger' | 'warning' | 'acc
 export type ChipSize = 'sm' | 'md' | 'default' | 'lg';
 
 export type ToastColor = 'primary' | 'success' | 'danger' | 'warning' | 'accent';
-export type ToastPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+/**
+ * Viewport corner for a toast. `left` / `right` are physical.
+ * `start` / `end` follow `dir` (`top-end` is top-right in LTR, top-left in RTL).
+ */
+export type ToastPosition =
+  | 'top-right'
+  | 'top-left'
+  | 'bottom-right'
+  | 'bottom-left'
+  | 'top-center'
+  | 'bottom-center'
+  | 'top-start'
+  | 'top-end'
+  | 'bottom-start'
+  | 'bottom-end';
 
 /** Optional button rendered on a toast. `dismiss` defaults to true after click. */
 export interface ToastAction {
@@ -233,8 +251,19 @@ export type PopoverPlacement =
 /** 'auto' fits content, 'half'/'full' are viewport fractions, or pass a custom CSS height value (e.g. '420px'). */
 export type BottomSheetHeight = 'auto' | 'half' | 'full' | string;
 
-/** Corner placement for scroll-top / scroll-bottom FAB buttons. */
-export type ScrollButtonPosition = 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+/**
+ * Corner for scroll buttons and speed dials.
+ * `start` / `end` follow `dir`; `left` / `right` stay on that physical edge.
+ */
+export type ScrollButtonPosition =
+  | 'bottom-right'
+  | 'bottom-left'
+  | 'top-right'
+  | 'top-left'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'top-start'
+  | 'top-end';
 
 /** Direction actions expand from a speed-dial trigger. */
 export type SpeedDialDirection = 'up' | 'down' | 'left' | 'right';

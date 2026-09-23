@@ -3,7 +3,7 @@
   <!-- Background Icon for icon-top -->
   @if (variant() === 'icon-top') {
   <ply-icon name="quote"
-    class="w-16 h-16 opacity-30 text-slate-300 dark:text-slate-700 stroke-current absolute top-0 left-0 -z-10"></ply-icon>
+    class="w-16 h-16 opacity-30 text-slate-300 dark:text-slate-700 stroke-current absolute top-0 start-0 -z-10"></ply-icon>
   }
 
   <!-- Avatar Left Section -->
@@ -17,7 +17,7 @@
       <div class="text-xs font-bold mt-2 dark:text-white">{{ authorName() }}</div>
       }
       @if (authorRole()) {
-      <div class="text-xs text-slate-500 text-left">{{ authorRole() }}</div>
+      <div class="text-xs text-slate-500 text-start">{{ authorRole() }}</div>
       }
     </div>
   </div>
@@ -36,7 +36,7 @@
     <div [class]="authorClass()">
       <div class="font-bold text-slate-900 dark:text-white">{{ authorName() }}</div>
       @if (authorRole()) {
-      <div class="text-slate-500 text-left">{{ authorRole() }}</div>
+      <div class="text-slate-500 text-start">{{ authorRole() }}</div>
       }
     </div>
     }

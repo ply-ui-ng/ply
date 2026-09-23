@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TooltipPlacement } from '../types';
+import { injectElementDirection } from '../direction/inject-direction';
 import { OverlayPlacement, overlayPositions } from '../overlay-position/overlay-position';
 
 let tooltipIdCounter = 0;
@@ -37,6 +38,7 @@ let tooltipIdCounter = 0;
   selector: '[ply-tooltip]',
 })
 export class TooltipDirective implements OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   private el = inject(ElementRef);
   private renderer = inject(Renderer2);
   private overlay = inject(Overlay);
@@ -155,13 +157,14 @@ export class TooltipDirective implements OnDestroy {
   private attachOverlay(): void {
     const placement = this.placement() as OverlayPlacement;
     this.overlayRef = this.overlay.create({
+      direction: this.writingDirection(),
       hasBackdrop: false,
       positionStrategy: this.overlay
         .position()
         .flexibleConnectedTo(this.el)
         .withFlexibleDimensions(false)
         .withPush(true)
-        .withPositions(overlayPositions(placement, 10)),
+        .withPositions(overlayPositions(placement, 10, this.writingDirection())),
       scrollStrategy: this.overlay.scrollStrategies.close(),
       panelClass: 'ply-tooltip-overlay-pane',
     });
@@ -208,8 +211,8 @@ export class TooltipDirective implements OnDestroy {
         this.renderer.addClass(arrow, 'left-1/2');
         this.renderer.addClass(arrow, '-translate-x-1/2');
         this.renderer.addClass(arrow, 'border-t-slate-900');
-        this.renderer.addClass(arrow, 'border-l-transparent');
-        this.renderer.addClass(arrow, 'border-r-transparent');
+        this.renderer.addClass(arrow, 'border-s-transparent');
+        this.renderer.addClass(arrow, 'border-e-transparent');
         this.renderer.addClass(arrow, 'border-b-transparent');
         if (type === 'light') this.renderer.addClass(arrow, 'border-t-white');
         break;
@@ -219,8 +222,8 @@ export class TooltipDirective implements OnDestroy {
         this.renderer.addClass(arrow, 'left-1/2');
         this.renderer.addClass(arrow, '-translate-x-1/2');
         this.renderer.addClass(arrow, 'border-b-slate-900');
-        this.renderer.addClass(arrow, 'border-l-transparent');
-        this.renderer.addClass(arrow, 'border-r-transparent');
+        this.renderer.addClass(arrow, 'border-s-transparent');
+        this.renderer.addClass(arrow, 'border-e-transparent');
         this.renderer.addClass(arrow, 'border-t-transparent');
         if (type === 'light') this.renderer.addClass(arrow, 'border-b-white');
         break;
@@ -229,22 +232,22 @@ export class TooltipDirective implements OnDestroy {
         this.renderer.addClass(arrow, 'left-full');
         this.renderer.addClass(arrow, 'top-1/2');
         this.renderer.addClass(arrow, '-translate-y-1/2');
-        this.renderer.addClass(arrow, 'border-l-slate-900');
+        this.renderer.addClass(arrow, 'border-s-slate-900');
         this.renderer.addClass(arrow, 'border-t-transparent');
         this.renderer.addClass(arrow, 'border-b-transparent');
-        this.renderer.addClass(arrow, 'border-r-transparent');
-        if (type === 'light') this.renderer.addClass(arrow, 'border-l-white');
+        this.renderer.addClass(arrow, 'border-e-transparent');
+        if (type === 'light') this.renderer.addClass(arrow, 'border-s-white');
         break;
       case 'right':
         this.renderer.addClass(tooltip, '-translate-x-2');
         this.renderer.addClass(arrow, 'right-full');
         this.renderer.addClass(arrow, 'top-1/2');
         this.renderer.addClass(arrow, '-translate-y-1/2');
-        this.renderer.addClass(arrow, 'border-r-slate-900');
+        this.renderer.addClass(arrow, 'border-e-slate-900');
         this.renderer.addClass(arrow, 'border-t-transparent');
         this.renderer.addClass(arrow, 'border-b-transparent');
-        this.renderer.addClass(arrow, 'border-l-transparent');
-        if (type === 'light') this.renderer.addClass(arrow, 'border-r-white');
+        this.renderer.addClass(arrow, 'border-s-transparent');
+        if (type === 'light') this.renderer.addClass(arrow, 'border-e-white');
         break;
     }
 

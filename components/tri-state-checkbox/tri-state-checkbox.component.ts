@@ -108,7 +108,7 @@ export class TriStateCheckboxComponent implements ControlValueAccessor {
 
   readonly checkboxClasses = computed(() =>
     cn(
-      'peer mt-1 mr-2 h-4 w-4 min-w-4 max-w-4 cursor-pointer appearance-none rounded border border-slate-300 bg-slate-50 dark:border-slate-600 dark:bg-slate-800',
+      'peer mt-1 me-2 h-4 w-4 min-w-4 max-w-4 cursor-pointer appearance-none rounded border border-slate-300 bg-slate-50 dark:border-slate-600 dark:bg-slate-800',
       'hover:border-slate-400 dark:hover:border-slate-500',
       'disabled:cursor-default disabled:opacity-50 disabled:hover:border-slate-300 dark:disabled:hover:border-slate-600',
       {

@@ -109,14 +109,14 @@ export class SidenavComponent implements AfterViewInit {
     const open = this.navBarOpen();
     const mode = this.layout();
     const base =
-      'h-full w-60 min-w-60 max-w-60 shrink-0 overflow-y-auto border-r border-slate-200 bg-slate-50 py-4 transition-all duration-300 dark:border-slate-700 dark:bg-slate-900';
+      'h-full w-60 min-w-60 max-w-60 shrink-0 overflow-y-auto border-e border-slate-200 bg-slate-50 py-4 transition-all duration-300 dark:border-slate-700 dark:bg-slate-900';
     if (mode === 'desktop') {
-      return cn(base, 'ml-0');
+      return cn(base, 'ms-0');
     }
     if (mode === 'mobile') {
-      return cn(base, open ? 'ml-0' : '-ml-60');
+      return cn(base, open ? 'ms-0' : '-ms-60');
     }
-    return cn(base, open ? 'ml-0' : '-ml-60', 'lg:ml-0');
+    return cn(base, open ? 'ms-0' : '-ms-60', 'lg:ms-0');
   });
 
   readonly bodyClass = computed(() => {

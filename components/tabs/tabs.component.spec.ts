@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { DirectionRegistry } from '../direction/direction.service';
 import { TabsComponent } from './tabs.component';
 import { TabComponent } from './tab/tab.component';
 import { TabBodyComponent } from './tab-body/tab-body.component';
@@ -59,6 +60,23 @@ describe('TabsComponent a11y', () => {
 
     expect(tabs[1].getAttribute('aria-selected')).toBe('true');
     expect(tabs[0].getAttribute('aria-selected')).toBe('false');
+  });
+
+  it('moves backward when ArrowRight is pressed under dir=rtl', () => {
+    TestBed.inject(DirectionRegistry).setDocumentDirection('rtl');
+    fixture.detectChanges();
+
+    const tablist = fixture.nativeElement.querySelector('[role="tablist"]') as HTMLElement;
+    const tabs = Array.from(
+      fixture.nativeElement.querySelectorAll('[role="tab"]')
+    ) as HTMLButtonElement[];
+
+    tablist.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    fixture.detectChanges();
+
+    expect(tabs[2].getAttribute('aria-selected')).toBe('true');
+    expect(tabs[0].getAttribute('aria-selected')).toBe('false');
+    document.documentElement.removeAttribute('dir');
   });
 
   it('ignores ArrowDown on a horizontal tablist', () => {

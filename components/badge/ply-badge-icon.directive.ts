@@ -46,7 +46,7 @@ export class BaseBadgeIconDirective implements OnInit {
 
   ngOnInit() {
     const icon = this.el.nativeElement.classList;
-    icon.add('absolute', '-top-2', '-right-2');
+    icon.add('absolute', '-top-2', '-end-2');
 
     const colorClass = COLOR_CLASSES[this.color() ?? ''] ?? 'bg-red-500';
     this.renderer.addClass(this.el.nativeElement, colorClass);

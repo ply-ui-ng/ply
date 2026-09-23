@@ -3,7 +3,7 @@
   @if (showTip()) {
     <div
       [class]="tipClass()"
-      [style.left.%]="clamped()"
+      [style.inset-inline-start.%]="clamped()"
       aria-hidden="true"
     >
       <span [class]="tipBubbleClass()">{{ displayValue() }}</span>

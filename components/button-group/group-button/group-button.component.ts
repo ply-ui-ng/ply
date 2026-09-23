@@ -52,7 +52,7 @@ export class GroupButtonComponent {
   readonly size = input<GroupButtonSize | undefined>(undefined);
 
   protected readonly hostCls = computed(() =>
-    cn('border-r border-slate-300 dark:border-slate-700 last-of-type:border-r-0', this.extraClass())
+    cn('border-e border-slate-300 dark:border-slate-700 last-of-type:border-e-0', this.extraClass())
   );
 
   /** Resolved size: item override → parent group → default. */

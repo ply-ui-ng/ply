@@ -18,6 +18,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { isPlatformBrowser } from '@angular/common';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { A11yModule } from '@angular/cdk/a11y';
+import { injectElementDirection } from '../direction/inject-direction';
 import { overlayPositions } from '../overlay-position/overlay-position';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { cn } from '../tw-merge/tw-merge';
@@ -46,6 +47,7 @@ let popoverIdCounter = 0;
   host: { '[class]': 'hostCls()' },
 })
 export class PopoverComponent implements OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   /** Lifecycle owner for takeUntilDestroyed — see rxjs-interop. */
   private readonly destroyRef = inject(DestroyRef);
   private readonly isSsrSafeBrowser = isPlatformBrowser(inject(PLATFORM_ID));
@@ -154,6 +156,7 @@ export class PopoverComponent implements OnDestroy {
 
     const placement = this.runtimePlacement ?? this.placement();
     this.overlayRef = this.overlay.create({
+      direction: this.writingDirection(),
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-transparent-backdrop',
       positionStrategy: this.overlay
@@ -162,7 +165,7 @@ export class PopoverComponent implements OnDestroy {
         .withFlexibleDimensions(false)
         .withPush(true)
         .withViewportMargin(GAP)
-        .withPositions(overlayPositions(placement, GAP)),
+        .withPositions(overlayPositions(placement, GAP, this.writingDirection())),
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
       minWidth: this.minWidth(),
     });

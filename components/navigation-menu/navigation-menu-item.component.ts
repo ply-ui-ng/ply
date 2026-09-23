@@ -15,6 +15,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { IconComponent } from '../icon/icon.component';
 import { cn, FOCUS_RING } from '../tw-merge/tw-merge';
+import { injectElementDirection } from '../direction/inject-direction';
 import { overlayPositions } from '../overlay-position/overlay-position';
 
 /**
@@ -33,6 +34,7 @@ import { overlayPositions } from '../overlay-position/overlay-position';
   host: { '[class]': 'hostCls()' },
 })
 export class NavigationMenuItemComponent implements OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   private readonly overlay = inject(Overlay);
   private readonly vcr = inject(ViewContainerRef);
 
@@ -70,6 +72,7 @@ export class NavigationMenuItemComponent implements OnDestroy {
   private attach(): void {
     if (this.overlayRef) return;
     this.overlayRef = this.overlay.create({
+      direction: this.writingDirection(),
       hasBackdrop: true,
       backdropClass: 'bg-transparent',
       positionStrategy: this.overlay
@@ -77,7 +80,7 @@ export class NavigationMenuItemComponent implements OnDestroy {
         .flexibleConnectedTo(this.trigger())
         .withFlexibleDimensions(false)
         .withPush(true)
-        .withPositions(overlayPositions('bottom-start', 8)),
+        .withPositions(overlayPositions('bottom-start', 8, this.writingDirection())),
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
     });
     this.overlayRef.attach(new TemplatePortal(this.panelTpl(), this.vcr));

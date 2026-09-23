@@ -20,6 +20,7 @@ import { NgTemplateOutlet, isPlatformBrowser } from '@angular/common';
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { injectElementDirection } from '../direction/inject-direction';
 import { ComboboxOption } from '../types';
 import { cn, PRIMARY_SOFT } from '../tw-merge/tw-merge';
 import { BASE_UI_I18N } from '../i18n/i18n';
@@ -54,6 +55,7 @@ let comboboxIdCounter = 0;
   ],
 })
 export class ComboboxComponent implements ControlValueAccessor, OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   private readonly isSsrSafeBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly el = inject(ElementRef);
   private readonly overlay = inject(Overlay);
@@ -429,6 +431,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnDestroy {
 
     const width = origin.getBoundingClientRect().width;
     this.overlayRef = this.overlay.create({
+      direction: this.writingDirection(),
       positionStrategy: this.overlay
         .position()
         .flexibleConnectedTo(origin)

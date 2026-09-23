@@ -3,9 +3,9 @@
     [disabled]="isDisabled()" [checked]="checked()" [indeterminate]="indeterminate()" [class]="checkboxClasses()"
     [attr.aria-label]="ariaLabel()" [attr.aria-checked]="indeterminate() ? 'mixed' : null" (change)="onToggle($event)" />
   <ply-icon name="checkbox"
-    class="w-3 h-3 absolute left-0.5 invisible peer-checked:visible mt-1.5 disabled:cursor-default disabled:checked:cursor-default stroke-white"></ply-icon>
+    class="w-3 h-3 absolute start-0.5 invisible peer-checked:visible mt-1.5 disabled:cursor-default disabled:checked:cursor-default stroke-white"></ply-icon>
   <ply-icon name="minus"
-    class="w-3 h-3 absolute left-0.5 invisible peer-indeterminate:visible mt-1.5 disabled:cursor-default stroke-white"></ply-icon>
+    class="w-3 h-3 absolute start-0.5 invisible peer-indeterminate:visible mt-1.5 disabled:cursor-default stroke-white"></ply-icon>
 
   <span
     class="cursor-pointer peer-disabled:opacity-50 peer-disabled:cursor-default dark:text-slate-200"><ng-content></ng-content></span>

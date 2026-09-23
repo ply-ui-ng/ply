@@ -12,7 +12,7 @@
       <button type="button" (click)="selectPlan('starter')" [class.ring-2]="selectedPlan() === 'starter'"
         [class.ring-blue-500]="selectedPlan() === 'starter'" [class.bg-blue-50]="selectedPlan() === 'starter'"
         [class.dark:bg-blue-950]="selectedPlan() === 'starter'"
-        class="flex flex-col items-start p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-left transition-all hover:border-slate-300 dark:hover:border-slate-600 cursor-pointer min-w-36.5">
+        class="flex flex-col items-start p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-start transition-all hover:border-slate-300 dark:hover:border-slate-600 cursor-pointer min-w-36.5">
         <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center mb-3">
           <ply-icon name="zap" class="w-4 h-4 stroke-slate-500 dark:stroke-slate-400"></ply-icon>
         </div>
@@ -25,8 +25,8 @@
       <button type="button" (click)="selectPlan('pro')" [class.ring-2]="selectedPlan() === 'pro'"
         [class.ring-blue-500]="selectedPlan() === 'pro'" [class.bg-blue-50]="selectedPlan() === 'pro'"
         [class.dark:bg-blue-950]="selectedPlan() === 'pro'"
-        class="flex flex-col items-start p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-left transition-all hover:border-slate-300 dark:hover:border-slate-600 cursor-pointer relative min-w-36.5">
-        <div class="absolute top-3 right-3">
+        class="flex flex-col items-start p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-start transition-all hover:border-slate-300 dark:hover:border-slate-600 cursor-pointer relative min-w-36.5">
+        <div class="absolute top-3 end-3">
           <ply-badge color="primary" size="sm" shape="rectangular">Popular</ply-badge>
         </div>
         <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-3">
@@ -42,7 +42,7 @@
         [class.ring-blue-500]="selectedPlan() === 'enterprise'"
         [class.bg-blue-50]="selectedPlan() === 'enterprise'"
         [class.dark:bg-blue-950]="selectedPlan() === 'enterprise'"
-        class="flex flex-col items-start p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-left transition-all hover:border-slate-300 dark:hover:border-slate-600 cursor-pointer min-w-36.5">
+        class="flex flex-col items-start p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-start transition-all hover:border-slate-300 dark:hover:border-slate-600 cursor-pointer min-w-36.5">
         <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center mb-3">
           <ply-icon name="code" class="w-4 h-4 stroke-slate-500 dark:stroke-slate-400"></ply-icon>
         </div>
@@ -63,14 +63,14 @@
       </div>
       <div class="flex items-center gap-0 border border-slate-200 dark:border-slate-600 rounded-lg overflow-hidden">
         <button type="button" (click)="decrement()" [disabled]="seats() <= 1"
-          class="w-9 h-9 flex items-center justify-center bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed border-r border-slate-200 dark:border-slate-600">
+          class="w-9 h-9 flex items-center justify-center bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed border-e border-slate-200 dark:border-slate-600">
           <ply-icon name="minus" class="w-3.5 h-3.5 stroke-slate-500"></ply-icon>
         </button>
         <span
           class="w-12 text-center text-[13px] font-semibold text-slate-900 dark:text-white bg-white dark:bg-slate-800">{{
           seats() }}</span>
         <button type="button" (click)="increment()" [disabled]="seats() >= 100"
-          class="w-9 h-9 flex items-center justify-center bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed border-l border-slate-200 dark:border-slate-600">
+          class="w-9 h-9 flex items-center justify-center bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed border-s border-slate-200 dark:border-slate-600">
           <ply-icon name="plus" class="w-3.5 h-3.5 stroke-slate-500"></ply-icon>
         </button>
       </div>

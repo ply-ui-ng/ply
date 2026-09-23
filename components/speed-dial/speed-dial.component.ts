@@ -12,6 +12,8 @@ import {
 } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
+import { readingEdge, resolveCornerPosition } from '../direction/direction';
+import { injectElementDirection } from '../direction/inject-direction';
 import { IconButtonColor, IconButtonSize, SpeedDialDirection, SpeedDialPosition } from '../types';
 import { cn } from '../tw-merge/tw-merge';
 
@@ -62,6 +64,7 @@ export interface SpeedDialAction {
 })
 export class SpeedDialComponent {
   private readonly el = inject(ElementRef<HTMLElement>);
+  private readonly writingDirection = injectElementDirection();
 
   /**
    * Actions revealed when the dial is open.
@@ -85,7 +88,7 @@ export class SpeedDialComponent {
    * @example
    * <ply-speed-dial position="bottom-left" [actions]="actions"></ply-speed-dial>
    */
-  readonly position = input<SpeedDialPosition>('bottom-right');
+  readonly position = input<SpeedDialPosition>('bottom-end');
 
   /**
    * When true (default), uses `position: fixed`. Set false for `absolute` inside a `relative` parent.
@@ -187,8 +190,8 @@ export class SpeedDialComponent {
   readonly actionsGapClass = computed(() => 'gap-3');
 
   readonly labelSideClass = computed(() => {
-    const pos = this.position();
-    if (this.direction() === 'left' || this.direction() === 'right') {
+    const pos = resolveCornerPosition(this.position(), this.writingDirection());
+    if (this.expandDirection() === 'left' || this.expandDirection() === 'right') {
       return 'flex-col';
     }
     // Keep labels inward from the corner so they stay on-screen.
@@ -244,13 +247,21 @@ export class SpeedDialComponent {
     }
   }
 
+  /** `left` / `right` expansion follows the start/end edges. Up and down stay put. */
+  protected readonly expandDirection = computed((): SpeedDialDirection => {
+    const dir = this.direction();
+    if (dir === 'left' || dir === 'right') return readingEdge(dir, this.writingDirection());
+    return dir;
+  });
+
   private positionClasses(): string {
-    const map: Record<SpeedDialPosition, string> = {
+    const resolved = resolveCornerPosition(this.position(), this.writingDirection());
+    const map: Record<string, string> = {
       'bottom-right': 'bottom-6 right-6',
       'bottom-left': 'bottom-6 left-6',
       'top-right': 'top-6 right-6',
       'top-left': 'top-6 left-6',
     };
-    return map[this.position()] ?? map['bottom-right'];
+    return map[resolved] ?? map['bottom-right'];
   }
 }

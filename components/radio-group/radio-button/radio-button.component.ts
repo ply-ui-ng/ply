@@ -47,7 +47,7 @@ export class RadioButtonComponent {
 
   readonly radioClasses = computed(() => {
     return cn(
-      'w-4 h-4 appearance-none bg-slate-50 dark:bg-slate-600 border mt-0.5 border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-900 disabled:opacity-50 disabled:hover:border-slate-300 dark:disabled:hover:border-slate-700 mr-2 rounded-full cursor-pointer disabled:hover:cursor-default checked:hover:cursor-default transform translate-y-0.5 peer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900',
+      'w-4 h-4 appearance-none bg-slate-50 dark:bg-slate-600 border mt-0.5 border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-900 disabled:opacity-50 disabled:hover:border-slate-300 dark:disabled:hover:border-slate-700 me-2 rounded-full cursor-pointer disabled:hover:cursor-default checked:hover:cursor-default transform translate-y-0.5 peer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900',
       this.color() === 'primary' && 'checked:bg-blue-500! checked:border-blue-500! checked:hover:border-blue-600!',
       this.color() === 'danger' && 'checked:bg-red-500! checked:border-red-500! checked:hover:border-red-600!',
       this.color() === 'success' && 'checked:bg-green-500! checked:border-green-500! checked:hover:border-green-600!',

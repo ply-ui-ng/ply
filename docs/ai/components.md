@@ -53,6 +53,32 @@ export const appConfig: ApplicationConfig = {
 
 Install: `npx ply-ui-cli add i18n` (also pulled in by data-table, combobox, dialog, paginator). Per-instance inputs (`emptyMessage`, `emptyText`, `[ariaLabel]` on close) still win. Layout marketing copy is not in this dictionary.
 
+### Writing direction (RTL)
+
+Components follow the nearest `dir`. Set it on `<html>`, or on a section with `plyDir`.
+
+```html
+<html lang="ar" dir="rtl">
+  <section plyDir="rtl">…</section>
+  <section plyDir="auto">…</section>
+</html>
+```
+
+```ts
+import { PlyDirDirective } from './components/direction/ply-dir.directive';
+import { DirectionRegistry } from './components/direction/direction.service';
+
+const direction = inject(DirectionRegistry);
+direction.setDocumentDirection('rtl');
+```
+
+`plyDir="auto"` uses the document language (Arabic, Hebrew, Persian, Urdu, and the other RTL locales). Install: `npx ply-ui-cli add direction` (also pulled in by tabs, drawer, icon, and shell). Guide: https://ply-ui.com/getting-started/#rtl
+
+- `start` / `end` follow `dir`. `left` / `right` stay on those physical edges. In new markup use `ms-*` / `me-*`, `ps-*` / `pe-*`, `start-*` / `end-*`, `text-start` / `text-end`, `border-s` / `border-e`. Leave `left-1/2` + `-translate-x-1/2` centering alone.
+- Drawer default `end` is the right edge in LTR and the left edge in RTL. Toast defaults to `top-end`. Scroll-to-top and speed dial default to `bottom-end`. The shell `left` slot is the reading-start edge.
+- ArrowRight moves to the next item in LTR and the previous item in RTL. Trees and submenus open on the forward arrow.
+- `ply-icon` names containing `left` or `right` mirror when `mirror` is `auto` (the default). `mirror="off"` keeps a physical arrow. Charts, knobs, and rich-text align left/center/right stay physical.
+
 ### Icon sprites (`provideBaseUI`)
 
 `<ply-icon>` loads `assets/icons.svg` (outline) and `assets/icons-filled.svg` (solid). Override once in `app.config.ts`:

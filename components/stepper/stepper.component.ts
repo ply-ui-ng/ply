@@ -115,7 +115,7 @@ export class StepperComponent {
 
   getStepIndicatorClass(step: StepComponent, isActive: boolean, last: boolean) {
     return cn(
-      'relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 mr-3',
+      'relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 me-3',
       isActive && !(last && step.isCompleted()) && 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30',
       step.isCompleted() && (!isActive || last) && 'bg-green-500 border-green-500 text-white',
       !isActive && !step.isCompleted() && 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-400'

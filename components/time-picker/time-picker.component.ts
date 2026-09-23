@@ -21,6 +21,7 @@ import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { injectElementDirection } from '../direction/inject-direction';
 import { TimePickerHourCycle } from '../types';
 import { cn } from '../tw-merge/tw-merge';
 import { IconComponent } from '../icon/icon.component';
@@ -79,6 +80,7 @@ export function formatTimeValue(hours: number, minutes: number): string {
   ],
 })
 export class TimePickerComponent implements ControlValueAccessor, OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   /** Lifecycle owner for takeUntilDestroyed — see rxjs-interop. */
   private readonly destroyRef = inject(DestroyRef);
   private readonly isSsrSafeBrowser = isPlatformBrowser(inject(PLATFORM_ID));
@@ -291,6 +293,7 @@ export class TimePickerComponent implements ControlValueAccessor, OnDestroy {
     if (!origin || !template) return;
 
     this.overlayRef = this.overlay.create({
+      direction: this.writingDirection(),
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-transparent-backdrop',
       panelClass: 'ply-time-picker-overlay',

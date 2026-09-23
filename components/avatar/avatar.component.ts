@@ -48,8 +48,8 @@ export class AvatarComponent {
     return cn({
       'bg-green-500': this.status() === 'active',
       'bg-slate-400': this.status() === 'inactive',
-      'bottom-0 right-0': this.shape() === 'circle',
-      '-bottom-px -right-px': this.shape() !== 'circle'
+      'bottom-0 end-0': this.shape() === 'circle',
+      '-bottom-px -end-px': this.shape() !== 'circle'
     });
   });
 }

@@ -1,7 +1,7 @@
 <div class="carousel-inner relative w-full h-100 overflow-hidden" role="region" aria-roledescription="carousel" aria-label="Gallery slider">
   <div [class]="trackClass()"
        [style.width]="transition() === 'slide' ? (totalItems() * 100) + '%' : '100%'"
-       [style.transform]="transition() === 'slide' ? 'translateX(-' + (activeIndex() * (100 / totalItems())) + '%)' : 'none'">
+       [style.transform]="trackTransform()">
 
     <!-- Simple Slides (using slides input) -->
     @if (slides() && slides().length > 0 && items().length === 0) {
@@ -22,7 +22,7 @@
 
 <!-- Indicators -->
 @if ((items().length > 1 || (slides() && slides().length > 1))) {
-<div class="carousel-indicators absolute bottom-4 left-0 right-0 z-20 flex justify-center gap-2 px-0 mb-4 list-none">
+<div class="carousel-indicators absolute bottom-4 start-0 end-0 z-20 flex justify-center gap-2 px-0 mb-4 list-none">
   @for (item of (items().length > 0 ? items() : slides()); track $index; let i = $index) {
   <button type="button"
     [attr.aria-label]="'Go to slide ' + (i + 1)"
@@ -38,14 +38,14 @@
 <!-- Controls -->
 @if ((items().length > 1 || (slides() && slides().length > 1))) {
 <button ply-icon-button (click)="prev()" color="primary" size="sm" aria-label="Previous slide"
-  class="absolute! left-2 top-1/2 -translate-y-1/2 z-30 bg-white/20 dark:bg-black/20 hover:bg-white/40 dark:hover:bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+  class="absolute! start-2 top-1/2 -translate-y-1/2 z-30 bg-white/20 dark:bg-black/20 hover:bg-white/40 dark:hover:bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
   <div [class.invert]="dark()">
     <ply-icon name="chevron-left" class="w-6 h-6 stroke-slate-800 dark:stroke-slate-200"></ply-icon>
   </div>
 </button>
 
 <button ply-icon-button (click)="next()" color="primary" size="sm" aria-label="Next slide"
-  class="absolute! right-2 top-1/2 -translate-y-1/2 z-30 bg-white/20 dark:bg-black/20 hover:bg-white/40 dark:hover:bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+  class="absolute! end-2 top-1/2 -translate-y-1/2 z-30 bg-white/20 dark:bg-black/20 hover:bg-white/40 dark:hover:bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
   <div [class.invert]="dark()">
     <ply-icon name="chevron-right" class="w-6 h-6 stroke-slate-800 dark:stroke-slate-200"></ply-icon>
   </div>

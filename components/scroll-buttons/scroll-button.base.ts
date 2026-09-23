@@ -10,6 +10,8 @@ import {
   numberAttribute,
   signal,
 } from '@angular/core';
+import { resolveCornerPosition } from '../direction/direction';
+import { injectElementDirection } from '../direction/inject-direction';
 import { IconButtonColor, IconButtonSize, ScrollButtonPosition } from '../types';
 import {
   ScrollContainerTarget,
@@ -26,6 +28,7 @@ import { cn } from '../tw-merge/tw-merge';
 @Directive()
 export abstract class ScrollButtonBase implements OnDestroy {
   protected readonly host = inject(ElementRef<HTMLElement>);
+  private readonly writingDirection = injectElementDirection();
 
   /**
    * Scroll container: `'window'`, `'nearest'` (closest scrollable ancestor), or a CSS selector.
@@ -65,7 +68,7 @@ export abstract class ScrollButtonBase implements OnDestroy {
    * @example
    * <ply-scroll-top position="bottom-left"></ply-scroll-top>
    */
-  readonly position = input<ScrollButtonPosition>('bottom-right');
+  readonly position = input<ScrollButtonPosition>('bottom-end');
 
   /**
    * When true (default), uses `position: fixed` against the viewport.
@@ -154,11 +157,12 @@ export abstract class ScrollButtonBase implements OnDestroy {
   }
 
   private positionClasses(): string {
-    const map: Record<ScrollButtonPosition, string> = {'bottom-right': 'bottom-6 right-6',
+    const resolved = resolveCornerPosition(this.position(), this.writingDirection());
+    const map: Record<string, string> = {'bottom-right': 'bottom-6 right-6',
       'bottom-left': 'bottom-6 left-6',
       'top-right': 'top-6 right-6',
       'top-left': 'top-6 left-6',
     };
-    return map[this.position()] ?? map['bottom-right'];
+    return map[resolved] ?? map['bottom-right'];
   }
 }

@@ -9,6 +9,8 @@ import {
   input,
   signal,
 } from '@angular/core';
+import { inlineArrowDelta } from '../direction/direction';
+import { injectElementDirection } from '../direction/inject-direction';
 import { cn } from '../tw-merge/tw-merge';
 import { DropdownMenuStack } from '../dropdown-menu-stack/dropdown-menu-stack.service';
 import { MenubarMenuComponent } from './menubar-menu.component';
@@ -41,6 +43,7 @@ import { MenubarMenuComponent } from './menubar-menu.component';
 })
 export class MenubarComponent {
   private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly writingDirection = injectElementDirection();
   private readonly menuStack = inject(DropdownMenuStack);
 
   /**
@@ -147,7 +150,7 @@ export class MenubarComponent {
     if (key === 'Home') next = enabled[0];
     else if (key === 'End') next = enabled[enabled.length - 1];
     else {
-      const delta = key === 'ArrowRight' ? 1 : -1;
+      const delta = inlineArrowDelta(key, this.writingDirection()) ?? (key === 'ArrowRight' ? 1 : -1);
       next = enabled[(i + delta + enabled.length) % enabled.length];
     }
 

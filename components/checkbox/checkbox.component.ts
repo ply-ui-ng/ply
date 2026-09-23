@@ -73,7 +73,7 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   readonly checkboxClasses = computed(() => {
     return cn(
-      'w-4 min-w-4 max-w-4 h-4 appearance-none bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500 disabled:hover:border-slate-300 dark:disabled:hover:border-slate-600 disabled:opacity-50 mr-2 rounded cursor-pointer peer mt-1 disabled:hover:cursor-default disabled:checked:cursor-default',
+      'w-4 min-w-4 max-w-4 h-4 appearance-none bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500 disabled:hover:border-slate-300 dark:disabled:hover:border-slate-600 disabled:opacity-50 me-2 rounded cursor-pointer peer mt-1 disabled:hover:cursor-default disabled:checked:cursor-default',
       {
         'checked:bg-blue-500 checked:border-blue-500 checked:hover:border-blue-600 indeterminate:bg-blue-500 indeterminate:border-blue-500 indeterminate:hover:border-blue-600': this.color() === 'primary',
         'checked:bg-red-500 checked:border-red-500 checked:hover:border-red-600 indeterminate:bg-red-500 indeterminate:border-red-500 indeterminate:hover:border-red-600': this.color() === 'danger',

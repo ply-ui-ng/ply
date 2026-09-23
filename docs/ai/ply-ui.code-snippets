@@ -334,5 +334,25 @@
       "const dialog = await dialogs.getHarness(DialogHarness);"
     ],
     "description": "CDK ComponentHarness for copied Base UI data-table. Dialog overlays use documentRootLoader. Copied with the component — not a separate registry item."
+  },
+  "Ply RTL": {
+    "prefix": "ply-rtl",
+    "scope": "html",
+    "body": [
+      "<html lang=\"${1:ar}\" dir=\"rtl\">",
+      "  $0",
+      "</html>"
+    ],
+    "description": "Document-level RTL. Ply follows the nearest dir. Install: npx ply-ui-cli add direction --yes. See https://ply-ui.com/getting-started/#rtl"
+  },
+  "Ply dir": {
+    "prefix": "ply-dir",
+    "scope": "html",
+    "body": [
+      "<section plyDir=\"${1|rtl,ltr,auto|}\">",
+      "  $0",
+      "</section>"
+    ],
+    "description": "Subtree writing direction. auto follows the document language. Import PlyDirDirective from ./components/direction/ply-dir.directive"
   }
 }

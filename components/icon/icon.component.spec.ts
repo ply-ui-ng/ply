@@ -66,6 +66,16 @@ describe('IconComponent', () => {
     expect(el.className.split(/\s+/)).not.toContain('w-6');
   });
 
+  it('mirrors left and right icons and leaves other icons alone', () => {
+    fixture.componentRef.setInput('name', 'chevron-right');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.className).toContain('rtl:-scale-x-100');
+
+    fixture.componentRef.setInput('name', 'home');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.className).not.toContain('rtl:-scale-x-100');
+  });
+
   it('uses the default sprite path when path is omitted', () => {
     fixture.componentRef.setInput('name', 'home');
     fixture.detectChanges();

@@ -3,7 +3,7 @@
   @for (segment of segments(); track segment.label + $index) {
     @if (segment.widthPercent > 0) {
       <div
-        [class]="'h-full min-w-0 transition-[width] duration-300 first:rounded-l-full last:rounded-r-full ' + fillClass(segment.color)"
+        [class]="'h-full min-w-0 transition-[width] duration-300 first:rounded-s-full last:rounded-e-full ' + fillClass(segment.color)"
         [style.width.%]="segment.widthPercent"
         [attr.title]="segment.label + ': ' + segment.value"
         role="presentation">

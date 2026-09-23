@@ -44,6 +44,16 @@ You are generating Angular for a project that uses **Ply** at https://ply-ui.com
 - Button and input `class` values merge via `cn()`. `class="rounded-full"` and `class="absolute …"` override defaults. Existing `utility!` still works.
 - `<ply-icon>` outlines: `stroke-*`. Filled icons: `[filled]="true"` and `text-*` / `fill-*`.
 
+## Writing direction (RTL)
+
+- Set `<html lang="ar" dir="rtl">`. Switch at runtime with `inject(DirectionRegistry).setDocumentDirection('rtl')`. A section can use `plyDir="rtl"` or `plyDir="auto"` (Arabic, Hebrew, Persian, Urdu, and the other RTL locales). Guide: https://ply-ui.com/getting-started/#rtl
+- Install: `npx ply-ui-cli add direction --yes`. Tabs, drawer, icon, shell, and the other components that follow direction already depend on it.
+- Imports: `PlyDirDirective` from `./components/direction/ply-dir.directive`, `DirectionRegistry` from `./components/direction/direction.service`.
+- New layout uses logical utilities: `ms-*` / `me-*`, `ps-*` / `pe-*`, `start-*` / `end-*`, `text-start` / `text-end`, `border-s` / `border-e`, `rounded-s` / `rounded-e`. Leave `left-1/2` + `-translate-x-1/2` centering alone.
+- `left` and `right` stay on those physical edges. `start` and `end` follow `dir`. Drawer default is `end` (physical right in LTR). Toast default is `top-end`. Scroll-to-top and speed dial default to `bottom-end`. The shell `left` slot is the reading-start edge.
+- ArrowRight moves to the next item in LTR and the previous item in RTL. Trees and submenus open on the forward arrow (ArrowRight in LTR, ArrowLeft in RTL).
+- `ply-icon` names that contain `left` or `right` mirror under `dir="rtl"` when `mirror` is `auto` (the default). `mirror="off"` keeps a physical arrow. Charts, knobs, and rich-text align left/center/right stay physical.
+
 ## Async, overlays, SSR
 
 - `DialogService.open()` is a no-op during SSR. `DialogService.confirm()` emits `false` on the server. Toast and dialog hosts append via `DOCUMENT`.

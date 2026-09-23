@@ -44,7 +44,7 @@ export class AccordionItemComponent {
 
   readonly headerButtonClass = computed(() =>
     cn(
-      'h-14 w-full flex items-center justify-between px-4 border-[var(--ply-border)] -mt-px hover:bg-slate-50 dark:hover:bg-slate-900 cursor-pointer last-of-type:border-0 text-left bg-transparent',
+      'h-14 w-full flex items-center justify-between px-4 border-[var(--ply-border)] -mt-px hover:bg-slate-50 dark:hover:bg-slate-900 cursor-pointer last-of-type:border-0 text-start bg-transparent',
       FOCUS_RING_INSET,
       this.isOpen()
         ? 'bg-slate-100 hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-900 border-b'

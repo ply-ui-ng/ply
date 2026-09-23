@@ -54,6 +54,6 @@ export class AvatarGroupComponent {
   });
 
   readonly borderClasses = computed(() => {
-    return 'rounded-full border-2 border-white dark:border-slate-800 -ml-4 first:ml-0 group-hover:-ml-2 transition-[margin] duration-300 ease-in-out';
+    return 'rounded-full border-2 border-white dark:border-slate-800 -ms-4 first:ms-0 group-hover:-ms-2 transition-[margin] duration-300 ease-in-out';
   });
 }

@@ -1,9 +1,9 @@
 <div class="relative flex items-center group">
   @if (showLeftArrow()) {
   <button type="button" ply-icon-button color="transparent" size="sm"
-    class="absolute left-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-[2px_0_4px_-1px_rgba(0,0,0,0.1)]"
-    aria-label="Scroll tabs left"
-    (click)="scrollTabs('left')">
+    class="absolute start-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-[2px_0_4px_-1px_rgba(0,0,0,0.1)]"
+    aria-label="Scroll to previous tabs"
+    (click)="scrollTabs('start')">
     <ply-icon name="chevron-left" aria-hidden="true"></ply-icon>
   </button>
   }
@@ -38,9 +38,9 @@
 
   @if (showRightArrow()) {
   <button type="button" ply-icon-button color="transparent" size="sm"
-    class="absolute right-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-[-2px_0_4px_-1px_rgba(0,0,0,0.1)]"
-    aria-label="Scroll tabs right"
-    (click)="scrollTabs('right')">
+    class="absolute end-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-[-2px_0_4px_-1px_rgba(0,0,0,0.1)]"
+    aria-label="Scroll to next tabs"
+    (click)="scrollTabs('end')">
     <ply-icon name="chevron-right" aria-hidden="true"></ply-icon>
   </button>
   }

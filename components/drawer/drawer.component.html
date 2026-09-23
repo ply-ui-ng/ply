@@ -1,5 +1,5 @@
 <ng-template>
-  @if (position() === 'left') {
+  @if (edge() === 'left') {
   <div class="bg-white dark:bg-slate-900 p-4 fixed top-0 bottom-0 left-0 h-full max-w-[92vw] shadow-lg z-1000"
     [@slideLeft] cdkTrapFocus cdkTrapFocusAutoCapture
     role="dialog" aria-modal="true" [attr.aria-label]="drawerLabel()"
@@ -10,7 +10,7 @@
     <div class="relative w-full h-full">
       @if (close()) {
       <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
-        class="absolute! top-0 right-0 z-10" aria-label="Close drawer">
+        class="absolute! top-0 end-0 z-10" aria-label="Close drawer">
         <ply-icon name="close"></ply-icon>
       </button>
       }
@@ -19,7 +19,7 @@
   </div>
   }
 
-  @if (position() === 'right') {
+  @if (edge() === 'right') {
   <div class="bg-white dark:bg-slate-900 p-4 fixed top-0 bottom-0 right-0 h-full max-w-[92vw] shadow-lg z-1000"
     [@slideRight] cdkTrapFocus cdkTrapFocusAutoCapture
     role="dialog" aria-modal="true" [attr.aria-label]="drawerLabel()"
@@ -30,7 +30,7 @@
     <div class="relative w-full h-full">
       @if (close()) {
       <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
-        class="absolute! top-0 right-0 z-10" aria-label="Close drawer">
+        class="absolute! top-0 end-0 z-10" aria-label="Close drawer">
         <ply-icon name="close"></ply-icon>
       </button>
       }
@@ -39,7 +39,7 @@
   </div>
   }
 
-  @if (position() === 'top') {
+  @if (edge() === 'top') {
   <div class="bg-white dark:bg-slate-900 p-4 fixed top-0 left-0 right-0 w-screen shadow-lg z-1000" [@slideTop]
     cdkTrapFocus cdkTrapFocusAutoCapture
     role="dialog" aria-modal="true" [attr.aria-label]="drawerLabel()"
@@ -50,7 +50,7 @@
     <div class="relative w-full h-full">
       @if (close()) {
       <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
-        class="absolute! top-0 right-0 z-10" aria-label="Close drawer">
+        class="absolute! top-0 end-0 z-10" aria-label="Close drawer">
         <ply-icon name="close"></ply-icon>
       </button>
       }
@@ -59,7 +59,7 @@
   </div>
   }
 
-  @if (position() === 'bottom') {
+  @if (edge() === 'bottom') {
   <div class="bg-white dark:bg-slate-900 p-4 fixed bottom-0 left-0 right-0 w-screen shadow-lg z-1000" [@slideBottom]
     cdkTrapFocus cdkTrapFocusAutoCapture
     role="dialog" aria-modal="true" [attr.aria-label]="drawerLabel()"
@@ -70,7 +70,7 @@
     <div class="relative w-full h-full">
       @if (close()) {
       <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
-        class="absolute! top-0 right-0 z-10" aria-label="Close drawer">
+        class="absolute! top-0 end-0 z-10" aria-label="Close drawer">
         <ply-icon name="close"></ply-icon>
       </button>
       }

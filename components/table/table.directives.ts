@@ -136,7 +136,7 @@ export class TableHeadDirective {
 
   readonly classes = computed(() =>
     cn(
-      'h-10 px-4 text-left align-middle text-xs font-medium text-[var(--ply-muted-foreground)] [&:has([role=checkbox])]:pr-0',
+      'h-10 px-4 text-start align-middle text-xs font-medium text-[var(--ply-muted-foreground)] [&:has([role=checkbox])]:pe-0',
       this.extraClass(),
     ),
   );
@@ -157,7 +157,7 @@ export class TableTdDirective {
   readonly extraClass = input('', { alias: 'class' });
 
   readonly classes = computed(() =>
-    cn('p-4 align-middle [&:has([role=checkbox])]:pr-0', this.extraClass()),
+    cn('p-4 align-middle [&:has([role=checkbox])]:pe-0', this.extraClass()),
   );
 }
 

@@ -4,6 +4,8 @@ import { NgTemplateOutlet, DOCUMENT } from '@angular/common';
 import { TabComponent } from './tab/tab.component';
 import { IconComponent } from '../icon/icon.component';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
+import { inlineArrowDelta, inlineScrollState, scrollByInline } from '../direction/direction';
+import { injectElementDirection } from '../direction/inject-direction';
 import { cn, FOCUS_RING } from '../tw-merge/tw-merge';
 import { injectTimers } from '../safe-timer/safe-timer';
 
@@ -26,6 +28,7 @@ export class TabsComponent implements OnChanges {
   /** Timers cancelled automatically on destroy — see utils/safe-timer. */
   private readonly timers = injectTimers();
   private readonly ssrDocument = inject(DOCUMENT);
+  private readonly writingDirection = injectElementDirection();
 
   readonly extraClass      = input('', { alias: 'class' });
   readonly defaultTab      = input(0);
@@ -87,14 +90,15 @@ export class TabsComponent implements OnChanges {
   checkOverflow() {
     const container = this.tabListContainer()?.nativeElement;
     if (!container) return;
-    this.showLeftArrow.set(container.scrollLeft > 1);
-    this.showRightArrow.set(Math.ceil(container.scrollLeft + container.clientWidth) < container.scrollWidth - 1);
+    const edges = inlineScrollState(container, this.writingDirection());
+    this.showLeftArrow.set(!edges.atStart);
+    this.showRightArrow.set(!edges.atEnd);
   }
 
-  scrollTabs(dir: 'left' | 'right') {
+  scrollTabs(dir: 'start' | 'end') {
     const container = this.tabListContainer()?.nativeElement;
     if (!container) return;
-    container.scrollBy({ left: dir === 'left' ? -200 : 200, behavior: 'smooth' });
+    scrollByInline(container, dir === 'end' ? 200 : -200, this.writingDirection());
     this.timers.setTimeout(() => this.checkOverflow(), 300);
   }
 
@@ -131,12 +135,11 @@ export class TabsComponent implements OnChanges {
     let nextIndex = currentIndex;
     let handled = true;
 
+    const inline = inlineArrowDelta(event.key, this.writingDirection());
     switch (event.key) {
       case 'ArrowRight':
-        nextIndex = (currentIndex + 1) % tabItems.length;
-        break;
       case 'ArrowLeft':
-        nextIndex = (currentIndex - 1 + tabItems.length) % tabItems.length;
+        nextIndex = (currentIndex + (inline ?? 1) + tabItems.length) % tabItems.length;
         break;
       case 'Home':
         nextIndex = 0;
@@ -180,7 +183,7 @@ export class TabsComponent implements OnChanges {
         this.type() === 'underline' &&
         'text-[var(--ply-primary)]! shadow-[0_1px_0_var(--ply-primary)] hover:shadow-[0_1px_0_var(--ply-primary)] bg-transparent',
       this.type() === 'pills' &&
-        'bg-slate-100 dark:bg-slate-600 dark:text-slate-200 rounded-md! mr-2 last-of-type:mr-0 transition-color duration-300',
+        'bg-slate-100 dark:bg-slate-600 dark:text-slate-200 rounded-md! me-2 last-of-type:me-0 transition-color duration-300',
       this.activeTab() === item &&
         this.type() === 'pills' &&
         'text-[var(--ply-primary-foreground)]! bg-[var(--ply-primary)]! rounded-md',

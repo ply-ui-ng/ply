@@ -143,25 +143,25 @@ export const tabAnimation = trigger('tabAnimation', [
 export const buttonSlideRightToLeft = trigger('buttonSlideRightToLeft', [
   transition(':enter', [
     style({
-      marginRight: '-40px',
+      marginInlineEnd: '-40px',
       opacity: 0,
     }),
     animate(
       '.3s',
       style({
-        marginRight: '0',
+        marginInlineEnd: '0',
         opacity: 1,
       })
     )]),
   transition(':leave', [
     style({
-      marginRight: '0',
+      marginInlineEnd: '0',
       opacity: 1,
     }),
     animate(
       '.3s',
       style({
-        marginRight: '-40px',
+        marginInlineEnd: '-40px',
         opacity: 0,
       })
     )])]);

@@ -14,6 +14,7 @@ import { Component,
 import { isPlatformBrowser } from '@angular/common';
 import { Subject, Subscription, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { injectElementDirection } from '../direction/inject-direction';
 import { IconComponent } from '../icon/icon.component';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
 import { GALLERY_SLIDER_TOKEN } from './slider.tokens';
@@ -45,6 +46,7 @@ import { cn } from '../tw-merge/tw-merge';
   },
 })
 export class GallerySliderComponent implements AfterContentInit, OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   /** Additional CSS classes to merge into the host element. */
   readonly extraClass = input('', { alias: "class" });
 
@@ -92,6 +94,14 @@ export class GallerySliderComponent implements AfterContentInit, OnDestroy {
 
   readonly totalItems = computed(() => {
     return this.items().length > 0 ? this.items().length : (this.slides()?.length || 1);
+  });
+
+  /** Slide track moves toward the inline end, so RTL shifts the opposite way. */
+  readonly trackTransform = computed(() => {
+    if (this.transition() !== 'slide') return 'none';
+    const shift = this.activeIndex() * (100 / this.totalItems());
+    const sign = this.writingDirection() === 'rtl' ? 1 : -1;
+    return `translateX(${sign * shift}%)`;
   });
 
   readonly trackClass = computed(() => cn(
@@ -235,9 +245,10 @@ export class GallerySliderComponent implements AfterContentInit, OnDestroy {
     const deltaX = endX - this.startX;
     this.startX = null;
 
-    if (deltaX > this.threshold) {
+    const rtl = this.writingDirection() === 'rtl';
+    if ((rtl ? deltaX < -this.threshold : deltaX > this.threshold)) {
       this.prev();
-    } else if (deltaX < -this.threshold) {
+    } else if ((rtl ? deltaX > this.threshold : deltaX < -this.threshold)) {
       this.next();
     }
   }

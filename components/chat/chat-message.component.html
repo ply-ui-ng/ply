@@ -8,7 +8,7 @@
       [avatarUrl]="message().avatarUrl ?? ''"
       [initials]="initials()"
       class="mt-0.5 shrink-0"></ply-avatar>
-    <div class="min-w-0 max-w-[80%]" [class.ml-auto]="isUser()">
+    <div class="min-w-0 max-w-[80%]" [class.ms-auto]="isUser()">
       @if (isTool()) {
         <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/60">
           <div class="mb-1 flex items-center gap-2">
@@ -32,15 +32,15 @@
           class="rounded-2xl px-3.5 py-2 text-sm leading-relaxed"
           [class.bg-blue-500]="isUser()"
           [class.text-white]="isUser()"
-          [class.rounded-br-md]="isUser()"
+          [class.rounded-ee-md]="isUser()"
           [class.bg-slate-100]="!isUser()"
           [class.text-slate-800]="!isUser()"
           [class.dark:bg-slate-800]="!isUser()"
           [class.dark:text-slate-100]="!isUser()"
-          [class.rounded-bl-md]="!isUser()">
+          [class.rounded-es-md]="!isUser()">
           <span class="whitespace-pre-wrap">{{ message().content }}</span>
           @if (message().streaming) {
-            <span class="ml-0.5 inline-block h-3 w-1 animate-pulse bg-current align-middle" aria-hidden="true"></span>
+            <span class="ms-0.5 inline-block h-3 w-1 animate-pulse bg-current align-middle" aria-hidden="true"></span>
           }
         </div>
       }

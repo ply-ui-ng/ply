@@ -12,11 +12,11 @@
   >
     @if (showTip()) {
       <div class="relative mb-2 h-7">
-        <div [class]="tipVisibleClass()" [style.left.%]="startPercent()" aria-hidden="true">
+        <div [class]="tipVisibleClass()" [style.inset-inline-start.%]="startPercent()" aria-hidden="true">
           <span [class]="tipBubbleClass()">{{ displayStart() }}</span>
           <span [class]="tipCaretClass()"></span>
         </div>
-        <div [class]="tipVisibleClass()" [style.left.%]="endPercent()" aria-hidden="true">
+        <div [class]="tipVisibleClass()" [style.inset-inline-start.%]="endPercent()" aria-hidden="true">
           <span [class]="tipBubbleClass()">{{ displayEnd() }}</span>
           <span [class]="tipCaretClass()"></span>
         </div>
@@ -32,7 +32,7 @@
       <!-- Selected span -->
       <div
         [class]="fillClass()"
-        [style.left.%]="startPercent()"
+        [style.inset-inline-start.%]="startPercent()"
         [style.width.%]="rangePercent()"
       ></div>
 
@@ -80,7 +80,7 @@
 
   @if (showValue()) {
     <span
-      class="min-w-16 text-right text-sm font-medium tabular-nums text-slate-700 dark:text-slate-300"
+      class="min-w-16 text-end text-sm font-medium tabular-nums text-slate-700 dark:text-slate-300"
     >
       {{ displayRange() }}
     </span>

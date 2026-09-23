@@ -31,13 +31,13 @@
       @if (!arrows()) {
       <li>
         <button type="button"
-          class="h-9 px-3 flex items-center justify-center border border-slate-300 dark:border-slate-600 text-sm rounded-l-xl hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-300 transition-colors"
+          class="h-9 px-3 flex items-center justify-center border border-slate-300 dark:border-slate-600 text-sm rounded-s-xl hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-300 transition-colors"
           [attr.aria-label]="i18n.previousPage">{{ i18n.previous }}</button>
       </li>
       } @else {
       <li>
         <button type="button"
-          class="h-9 w-9 flex items-center justify-center border border-slate-300 dark:border-slate-600 rounded-l-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          class="h-9 w-9 flex items-center justify-center border border-slate-300 dark:border-slate-600 rounded-s-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           [attr.aria-label]="i18n.previousPage">
           <ply-icon name="chevron-left" class="stroke-slate-800 dark:stroke-slate-100 w-4 h-4" aria-hidden="true"></ply-icon>
         </button>
@@ -49,7 +49,7 @@
       @if (arrows()) {
       <li>
         <button type="button"
-          class="h-9 w-9 flex items-center justify-center border border-slate-300 dark:border-slate-600 rounded-r-xl -ml-px hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          class="h-9 w-9 flex items-center justify-center border border-slate-300 dark:border-slate-600 rounded-e-xl -ms-px hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           [attr.aria-label]="i18n.nextPage">
           <ply-icon name="chevron-right" class="stroke-slate-800 dark:stroke-slate-100 w-4 h-4" aria-hidden="true"></ply-icon>
         </button>
@@ -57,7 +57,7 @@
       } @else {
       <li>
         <button type="button"
-          class="h-9 px-3 flex items-center justify-center border border-slate-300 dark:border-slate-600 text-sm rounded-r-xl -ml-px hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-300 transition-colors"
+          class="h-9 px-3 flex items-center justify-center border border-slate-300 dark:border-slate-600 text-sm rounded-e-xl -ms-px hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-300 transition-colors"
           [attr.aria-label]="i18n.nextPage">{{ i18n.next }}</button>
       </li>
       }

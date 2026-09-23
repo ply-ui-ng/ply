@@ -55,7 +55,7 @@ export class BaseGroupButtonDirective implements OnInit {
         break;
       case 'transparent':
         classes =
-          'text-slate-800 dark:text-slate-300 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-700 active:bg-slate-200 dark:active:bg-slate-600 dark:active:hover:bg-slate-600 border-r border-slate-200 dark:border-slate-700 last-of-type:border-0 disabled:hover:bg-transparent disabled:cursor-not-allowed disabled:opacity-50';
+          'text-slate-800 dark:text-slate-300 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-700 active:bg-slate-200 dark:active:bg-slate-600 dark:active:hover:bg-slate-600 border-e border-slate-200 dark:border-slate-700 last-of-type:border-0 disabled:hover:bg-transparent disabled:cursor-not-allowed disabled:opacity-50';
         iconClass = 'stroke-slate-800 dark:stroke-slate-300';
         break;
       default:

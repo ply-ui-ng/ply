@@ -115,7 +115,7 @@ export class AlertComponent implements OnInit, OnDestroy {
   });
 
   readonly closeButtonClasses = computed(() => {
-    const base = 'w-7 h-7 min-w-7 flex justify-center items-center rounded-md -mr-2 -mt-2 transition-colors duration-200 cursor-pointer';
+    const base = 'w-7 h-7 min-w-7 flex justify-center items-center rounded-md -me-2 -mt-2 transition-colors duration-200 cursor-pointer';
     if (this.variant() === 'solid') return `${base} hover:bg-white/20`;
     const hoverMap: Record<AlertColor, string> = {
       '': 'hover:bg-slate-200 dark:hover:bg-slate-700',

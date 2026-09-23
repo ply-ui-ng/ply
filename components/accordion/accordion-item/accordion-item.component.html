@@ -1,7 +1,7 @@
 <h4 class="m-0!">
   <button type="button" [id]="headerId" [class]="headerButtonClass()" [attr.aria-expanded]="isOpen()"
     [attr.aria-controls]="panelId" [disabled]="disabled()" (click)="toggle()">
-    <span class="flex-1 text-left font-semibold">
+    <span class="flex-1 text-start font-semibold">
       <ng-content select="ply-accordion-item-header"></ng-content>
     </span>
     <ply-icon [name]="!isOpen() ? 'chevron-down' : 'chevron-up'" aria-hidden="true"

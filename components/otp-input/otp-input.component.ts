@@ -11,6 +11,8 @@ import { Component,
   ChangeDetectionStrategy, booleanAttribute } from '@angular/core';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
+import { inlineArrowDelta } from '../direction/direction';
+import { injectElementDirection } from '../direction/inject-direction';
 import { cn } from '../tw-merge/tw-merge';
 
 /**
@@ -30,6 +32,7 @@ import { cn } from '../tw-merge/tw-merge';
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => OtpInputComponent), multi: true }]
 })
 export class OtpInputComponent implements ControlValueAccessor, OnChanges {
+  private readonly writingDirection = injectElementDirection();
   readonly extraClass   = input('', { alias: 'class' });
   readonly length       = input(6);
   readonly mask = input(false, { transform: booleanAttribute });
@@ -96,8 +99,8 @@ export class OtpInputComponent implements ControlValueAccessor, OnChanges {
       if (index > 0) this.focusBox(index - 1);
       return;
     }
-    if (event.key === 'ArrowLeft'  && index > 0)                this.focusBox(index - 1);
-    if (event.key === 'ArrowRight' && index < this.length() - 1) this.focusBox(index + 1);
+    const step = inlineArrowDelta(event.key, this.writingDirection());
+    if (step) this.focusBox(Math.min(this.length() - 1, Math.max(0, index + step)));
   }
 
   onPaste(event: ClipboardEvent) {

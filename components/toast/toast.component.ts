@@ -12,6 +12,8 @@ import {
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { ToastItem } from './toast.service';
+import { resolveCornerPosition } from '../direction/direction';
+import { injectElementDirection } from '../direction/inject-direction';
 import { ToastPosition } from '../types';
 import { injectTimers } from '../safe-timer/safe-timer';
 
@@ -48,6 +50,7 @@ interface ToastGroup {
   templateUrl: './toast.component.html',
 })
 export class ToastComponent {
+  private readonly writingDirection = injectElementDirection();
   /** Timers cancelled automatically on destroy — see utils/safe-timer. */
   private readonly timers = injectTimers();
   private readonly host = inject(ElementRef<HTMLElement>);
@@ -231,7 +234,8 @@ export class ToastComponent {
       : this.isTop(position)
         ? 'fixed z-[1200] flex flex-col-reverse gap-2 pointer-events-none w-full max-w-sm'
         : 'fixed z-[1200] flex flex-col gap-2 pointer-events-none w-full max-w-sm';
-    const positionMap: Record<ToastPosition, string> = {
+    const resolved = resolveCornerPosition(position, this.writingDirection());
+    const positionMap: Record<string, string> = {
       'top-right': 'top-6 right-6 items-end',
       'top-left': 'top-6 left-6 items-start',
       'top-center': 'top-6 left-1/2 -translate-x-1/2 items-center',
@@ -239,7 +243,7 @@ export class ToastComponent {
       'bottom-left': 'bottom-6 left-6 items-start',
       'bottom-center': 'bottom-6 left-1/2 -translate-x-1/2 items-center',
     };
-    return `${layout} ${positionMap[position]}`;
+    return `${layout} ${positionMap[resolved] ?? positionMap['top-right']}`;
   }
 
   getContainerStyle(group: ToastGroup): Record<string, string> | null {
@@ -481,8 +485,9 @@ export class ToastComponent {
     const absY = Math.abs(dy);
     if (absX < 8 && absY < 8) return false;
 
+    const edge = resolveCornerPosition(position, this.writingDirection());
     const towardEdgeX =
-      position.endsWith('right') ? dx > 0 : position.endsWith('left') ? dx < 0 : absX > absY;
+      edge.endsWith('right') ? dx > 0 : edge.endsWith('left') ? dx < 0 : absX > absY;
     const towardEdgeY = this.isTop(position) ? dy < 0 : dy > 0;
 
     return towardEdgeX || towardEdgeY;

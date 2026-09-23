@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Overlay, OverlayModule, OverlayRef } from '@angular/cdk/overlay';
+import { injectElementDirection } from '../direction/inject-direction';
 import { overlayPositions } from '../overlay-position/overlay-position';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { cn } from '../tw-merge/tw-merge';
@@ -43,6 +44,7 @@ let hoverCardIdCounter = 0;
   host: { '[class]': 'hostCls()' },
 })
 export class HoverCardComponent implements OnDestroy {
+  private readonly writingDirection = injectElementDirection();
   private readonly isSsrSafeBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly overlay = inject(Overlay);
   private readonly viewContainerRef = inject(ViewContainerRef);
@@ -210,6 +212,7 @@ export class HoverCardComponent implements OnDestroy {
     if (!origin || !template) return;
 
     this.overlayRef = this.overlay.create({
+      direction: this.writingDirection(),
       hasBackdrop: false,
       positionStrategy: this.overlay
         .position()
@@ -217,7 +220,7 @@ export class HoverCardComponent implements OnDestroy {
         .withFlexibleDimensions(false)
         .withPush(true)
         .withViewportMargin(GAP)
-        .withPositions(overlayPositions(this.placement(), GAP)),
+        .withPositions(overlayPositions(this.placement(), GAP, this.writingDirection())),
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
       minWidth: this.minWidth(),
     });

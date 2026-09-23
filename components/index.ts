@@ -36,6 +36,7 @@ export const PLY_FREE_ITEMS = [
   "current-screen-size",
   "custom-select",
   "dialog",
+  "direction",
   "divider",
   "drawer",
   "dropdown",

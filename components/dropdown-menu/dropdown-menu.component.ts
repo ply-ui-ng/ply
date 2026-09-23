@@ -11,6 +11,8 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DropdownPanel } from './dropdown-panel';
+import { isInlineBackwardKey, isInlineForwardKey } from '../direction/direction';
+import { injectElementDirection } from '../direction/inject-direction';
 import { focusMenuItem, focusMenuItemEdge, focusMenuItemTypeahead } from '../a11y-keyboard/a11y-keyboard';
 import { injectTimers } from '../safe-timer/safe-timer';
 import { DropdownMenuStack } from '../dropdown-menu-stack/dropdown-menu-stack.service';
@@ -36,6 +38,7 @@ let dropdownMenuIdCounter = 0;
 export class DropdownMenuComponent<T> implements DropdownPanel<T> {
   /** Timers cancelled automatically on destroy — see utils/safe-timer. */
   private readonly timers = injectTimers();
+  private readonly writingDirection = injectElementDirection();
   private readonly menuStack = inject(DropdownMenuStack);
 
   /** Optional custom width size for the dropdown container. */
@@ -92,22 +95,21 @@ export class DropdownMenuComponent<T> implements DropdownPanel<T> {
         event.preventDefault();
         this.closed.emit();
         break;
-      case 'ArrowRight': {
-        // Open cascading submenu when the focused item is a submenu trigger
-        const trigger = active?.closest('[role^="menuitem"]') as HTMLElement | null;
-        if (trigger?.getAttribute('aria-haspopup') === 'menu') {
-          event.preventDefault();
-          trigger.click();
-        }
-        break;
-      }
-      case 'ArrowLeft':
-        // Unwind one cascade level when this panel is a nested submenu
-        if (this.menuStack.size > 1) {
+      case 'ArrowRight':
+      case 'ArrowLeft': {
+        const dir = this.writingDirection();
+        if (isInlineForwardKey(event.key, dir)) {
+          const trigger = active?.closest('[role^="menuitem"]') as HTMLElement | null;
+          if (trigger?.getAttribute('aria-haspopup') === 'menu') {
+            event.preventDefault();
+            trigger.click();
+          }
+        } else if (isInlineBackwardKey(event.key, dir) && this.menuStack.size > 1) {
           event.preventDefault();
           this.closed.emit();
         }
         break;
+      }
       case 'Tab':
         this.menuStack.closeAll(true);
         break;

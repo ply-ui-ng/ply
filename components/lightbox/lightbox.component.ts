@@ -19,6 +19,8 @@ import {
 } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
+import { inlineArrowDelta } from '../direction/direction';
+import { injectElementDirection } from '../direction/inject-direction';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
 import { cn } from '../tw-merge/tw-merge';
 import { IconComponent } from '../icon/icon.component';
@@ -62,6 +64,7 @@ const fade = trigger('fade', [
   animations: [fade],
 })
 export class LightboxComponent {
+  private readonly writingDirection = injectElementDirection();
   /**
    * Classes for the thumbs layout wrapper (e.g. `grid grid-cols-3 gap-2`).
    * Applied to an inner container so projected thumbs participate in that layout.
@@ -362,13 +365,13 @@ export class LightboxComponent {
         this.close();
         break;
       case 'ArrowRight':
+      case 'ArrowLeft': {
         event.preventDefault();
-        this.next();
+        const step = inlineArrowDelta(event.key, this.writingDirection());
+        if (step === 1) this.next();
+        else if (step === -1) this.prev();
         break;
-      case 'ArrowLeft':
-        event.preventDefault();
-        this.prev();
-        break;
+      }
       case '+':
       case '=':
         event.preventDefault();
