@@ -3,13 +3,15 @@ import path from 'path';
 import { ora, prompts } from '../vendor';
 import { SITE_URL } from '../registry';
 import { LOCKFILE_NAME, readLockFile, writeLockFile } from '../lockfile';
-import { CODE_SNIPPETS, CURSOR_RULE } from '../templates/editor-kit.generated';
+import { CODE_SNIPPETS, CURSOR_RULE, DESIGN_SKILL_FILES } from '../templates/editor-kit.generated';
 import { CLI_NPX } from '../brand';
 import {
   CONFIG_FILE,
   CSS_FILE,
   CURSOR_RULE_REL,
+  DESIGN_SKILL_DIR,
   DOCS_CURSOR_RULE,
+  DOCS_DESIGN_SKILL,
   DOCS_SNIPPETS,
   LEGACY_CSS_FILE,
   SNIPPETS_REL,
@@ -195,14 +197,14 @@ async function downloadSprite(name: string, targetDir: string): Promise<boolean>
   }
 }
 
-function writeEditorFile(dest: string, content: string, label: string): void {
+function writeEditorFile(dest: string, content: string, label: string, docsPath = DOCS_CURSOR_RULE): void {
   if (fs.existsSync(dest)) return;
   try {
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.writeFileSync(dest, content, 'utf8');
   } catch (err: any) {
     console.warn(
-      `\n⚠ Could not write ${label} (${err.message}). Copy it from ${SITE_URL}/${label.endsWith('.code-snippets') ? DOCS_SNIPPETS : DOCS_CURSOR_RULE}.`,
+      `\n⚠ Could not write ${label} (${err.message}). Copy it from ${SITE_URL}/${docsPath}.`,
     );
   }
 }
@@ -354,17 +356,27 @@ export async function init(options: InitOptions = {}) {
     await downloadSprite(sprite, assetsDir);
   }
 
-  spinner.text = 'Writing editor rules and snippets...';
+  spinner.text = 'Writing editor rules, snippets, and the UI design skill...';
   writeEditorFile(
     path.resolve(process.cwd(), CURSOR_RULE_REL),
     CURSOR_RULE,
     CURSOR_RULE_REL,
+    DOCS_CURSOR_RULE,
   );
   writeEditorFile(
     path.resolve(process.cwd(), SNIPPETS_REL),
     CODE_SNIPPETS,
     SNIPPETS_REL,
+    DOCS_SNIPPETS,
   );
+  for (const [name, content] of Object.entries(DESIGN_SKILL_FILES)) {
+    writeEditorFile(
+      path.resolve(process.cwd(), DESIGN_SKILL_DIR, name),
+      content,
+      `${DESIGN_SKILL_DIR}/${name}`,
+      `${DOCS_DESIGN_SKILL}/${name}`,
+    );
+  }
 
   spinner.succeed(`Project initialized! Add your first component with "${CLI_NPX} add button".`);
 }

@@ -66,4 +66,5 @@ You are generating Angular for a project that uses **Ply** at https://ply-ui.com
 
 - MCP optional: `.cursor/mcp.json` → `npx -y ply-ui-mcp` with `PLY_CWD` = this app root.
 - Facts: https://ply-ui.com/llms.txt · catalog: https://ply-ui.com/docs/ai/components.md
+- UI design skill: https://ply-ui.com/docs/ai/skills/ply-ui-design/SKILL.md — copy to `.cursor/skills/ply-ui-design/` (`init` writes it when missing).
 - Usage snippets (VS Code / Cursor): `.vscode/ply-ui.code-snippets` — expand prefixes like `ply-card` after the CLI has copied the component in.

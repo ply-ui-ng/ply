@@ -10,8 +10,12 @@ Also published at [https://ply-ui.com/changelog](https://ply-ui.com/changelog).
 
 ## September 2026
 
-- **Features** — add collapsible and navigation-menu; stop CLI `carousel` from installing slider; move dialog and tooltip onto CDK Overlay; accordion, tabs, and toast a11y nits.
+- **Features** — **cli:** install a UI design skill for AI agents on init
+- **Other** — Follow writing direction in layout, keyboard, and overlays, and document RTL.
+- **Other** — Ship the free-tier quality pass, Ply OG cards, and the 127-item catalog.
+- **Other** — Open the docs site onto the MIT repo and one brand color. (#172)
 - **Features** — **cli:** Print MIT source URLs after add. Free items are MIT at github.com/ply-ui-ng/ply. Removing license headers from free files may show a header-only diff in `ply-ui-cli update` on previously installed copies.
+- **Other** — Let Theme Studio recolor tabs, selects, and overlays via --ply-*.
 - **Other** — Rename CLI identifiers and directive files to ply-*.
 - **Features** — ship ply-ui-cli, ply-ui-mcp, and ply-* selectors.
 - **Features** — Motif Polar, overlay keyboard, and a push-smooth shell drawer.
