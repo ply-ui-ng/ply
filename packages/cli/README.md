@@ -5,7 +5,7 @@ CLI for **Ply** at [ply-ui.com](https://ply-ui.com) — Angular + Tailwind CSS c
 📝 **Changelog**: [ply-ui.com/changelog](https://ply-ui.com/changelog) · [CHANGELOG.md](https://github.com/ply-ui-ng/ply/blob/main/CHANGELOG.md)  
 ♿ **Accessibility (ACR)**: [ply-ui.com/accessibility](https://ply-ui.com/accessibility)  
 🖥️ **SSR-safe**: the docs site prerenders every catalog route, enforced by a blocking CI job · [how we verify it](https://ply-ui.com/learn/angular-ssr-safe-component-library/)  
-🎨 **Figma Design System**: [Figma Community File](https://www.figma.com/community/file/1662825988518656661)  
+🎨 **Figma Design System**: [Ply Design System](https://www.figma.com/design/hsUvEI3YXLCqrlwo6ENY4f/Ply-Design-System)  
 ✨ **See what you can build for free**: [Live Admin Dashboard Demo](https://demo.ply-ui.com/app/dashboard) (Source code: [ply-free-dashboard](https://github.com/ply-ui-ng/ply-free-dashboard))
 
 ```bash

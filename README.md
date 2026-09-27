@@ -15,7 +15,7 @@
 ♿ **Accessibility (ACR)**: [ply-ui.com/accessibility](https://ply-ui.com/accessibility) · `npm run test:a11y`  
 🖥️ **SSR-safe**: the docs site prerenders every catalog route, enforced by a blocking CI job · [how we verify it](https://ply-ui.com/learn/angular-ssr-safe-component-library/)  
 🤖 **AI agents (MCP)**: [ply-ui.com/getting-started#ai-agents-mcp](https://ply-ui.com/getting-started#ai-agents-mcp) · `ply-ui-mcp` · [why copy-in UI works better with LLMs](https://ply-ui.com/learn/why-llms-write-better-code-with-copy-in-ui/) · [token walkthrough: rich text editor](https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/)  
-🎨 **Figma Design System**: [Figma Community File](https://www.figma.com/community/file/1662825988518656661)  
+🎨 **Figma Design System**: [Ply Design System](https://www.figma.com/design/hsUvEI3YXLCqrlwo6ENY4f/Ply-Design-System)  
 ✨ **See what you can build for free**: [Live Admin Dashboard Demo](https://demo.ply-ui.com/app/dashboard) (Source code: [ply-free-dashboard](https://github.com/ply-ui-ng/ply-free-dashboard))
 
 ---
