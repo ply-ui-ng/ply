@@ -343,7 +343,7 @@
       "  $0",
       "</html>"
     ],
-    "description": "Document-level RTL. Ply follows the nearest dir. Install: npx ply-ui-cli add direction --yes. See https://ply-ui.com/getting-started/#rtl"
+    "description": "Document-level RTL. Ply follows the nearest dir. Install: npx ply-ui-cli add direction --yes. See https://ply-ui.com/configuration/#rtl"
   },
   "Ply dir": {
     "prefix": "ply-dir",

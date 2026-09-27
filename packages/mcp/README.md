@@ -12,7 +12,7 @@ Docs: [Getting started — AI agents](https://ply-ui.com/getting-started/#ai-age
 
 ## Setup (stdio)
 
-Use this in Cursor, Claude Code / Desktop, Kimi, VS Code, Windsurf, and other local MCP hosts:
+Cursor, Windsurf, Claude Desktop, Antigravity, and most other local hosts read this `mcpServers` block:
 
 ```json
 {
@@ -28,16 +28,34 @@ Use this in Cursor, Claude Code / Desktop, Kimi, VS Code, Windsurf, and other lo
 }
 ```
 
-| Client | Where to put it |
-|--------|-----------------|
-| **Cursor** | `.cursor/mcp.json` or `~/.cursor/mcp.json` |
-| **VS Code / Copilot** | `.vscode/mcp.json` or MCP settings |
-| **Windsurf** | MCP / Cascade settings |
-| **Claude Desktop** | Claude Desktop MCP config |
-| **Claude Code** | `claude mcp add --transport stdio ply -- npx -y ply-ui-mcp` |
-| **Kimi Code CLI** | `kimi mcp add --transport stdio ply -- npx -y ply-ui-mcp` |
+VS Code uses `servers` instead of `mcpServers` and needs a `type`. It starts the server in the workspace folder, so `PLY_CWD` is optional:
 
-Set `PLY_CWD` to the **app root** (the folder with `ply-ui.json`), not this library’s repo. For `add` / `init` / `update` / `doctor` / `diff`, run `npx ply-ui-cli init --yes` in that app first.
+```json
+{
+  "servers": {
+    "ply": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "ply-ui-mcp"]
+    }
+  }
+}
+```
+
+| Client | Setup |
+|--------|-------|
+| **Cursor** | `.cursor/mcp.json` or `~/.cursor/mcp.json` |
+| **VS Code / Copilot** | `.vscode/mcp.json` (the `servers` block above) |
+| **Claude Code** | `claude mcp add --transport stdio ply -- npx -y ply-ui-mcp` |
+| **Codex** | `codex mcp add ply -- npx -y ply-ui-mcp` |
+| **Antigravity** (replaces Gemini CLI) | `.agents/mcp_config.json` in the app, or `~/.gemini/config/mcp_config.json` |
+| **Grok Build** | `grok mcp add ply -- npx -y ply-ui-mcp` (also reads `.cursor/mcp.json` and `.mcp.json`) |
+| **Kimi Code CLI** | `kimi mcp add --transport stdio ply -- npx -y ply-ui-mcp` |
+| **Qwen Code** | `qwen mcp add ply npx -y ply-ui-mcp` |
+| **Windsurf** | `~/.codeium/windsurf/mcp_config.json` |
+| **Claude Desktop** | `claude_desktop_config.json` |
+
+Set `PLY_CWD` to the **app root** (the folder with `ply-ui.json`), not this library’s repo. `${workspaceFolder}` works in Cursor and VS Code; Windsurf and Claude Desktop need an absolute path. Terminal agents (Claude Code, Codex, Grok Build, Kimi, Qwen) start the server in the folder you run them in, so run them from the app root. For `add` / `init` / `update` / `doctor` / `diff`, run `npx ply-ui-cli init --yes` in that app first.
 
 ## Streamable HTTP
 
@@ -45,7 +63,7 @@ ChatGPT and Gemini chat apps need a URL, not stdio. The hosted catalog is:
 
 **`https://mcp.ply-ui.com/mcp`**
 
-Health is `GET https://mcp.ply-ui.com/`. Catalog tools only (`list` / `search` / `get`). This host cannot install into a repo — it returns `installCommand` (`npx ply-ui-cli add <name>`). Attach the connector in **each new ChatGPT chat** (`+` → More → Developer mode → Ply).
+Health is `GET https://mcp.ply-ui.com/`. Catalog tools only (`list` / `search` / `get`). This host cannot install into a repo — it returns `installCommand` (`npx ply-ui-cli add <name>`). Set it up with [ChatGPT developer mode](https://developers.openai.com/api/docs/guides/developer-mode) or as a [Gemini custom app](https://support.google.com/gemini/answer/17209137).
 
 Self-host the same process:
 
@@ -179,7 +197,7 @@ Run npx ply-ui-cli doctor. It checks ply-ui.json, the Angular workspace, @angula
 Open Theme Studio at https://ply-ui.com/theme/ or the docs customizer, pick a preset or hue, then copy the Tailwind v4 @theme block into src/tailwind.css. ply-ui.css points --ply-primary and Tailwind blue-* utilities at that palette (--ply-brand and --ply-scale-*). The live preview shows buttons, tabs, forms, and overlays together.
 
 **Can AI agents install Ply?**  
-Yes. npx -y ply-ui-mcp is stdio for Cursor, Claude (Code/Desktop), Kimi, VS Code, Windsurf, and other local hosts. ChatGPT and Gemini chat apps use the Streamable HTTP connector at https://mcp.ply-ui.com/mcp (catalog tools) or a local npx -y ply-ui-mcp --http without --read-only so add/init/update can see the project. Pro add uses PLY_LICENSE_KEY on the MCP process. Editors that skip MCP can copy the Cursor rule and snippet pack from https://ply-ui.com/getting-started/#editor-rules.
+Yes. npx -y ply-ui-mcp runs over stdio in Cursor, VS Code, Claude Code, Claude Desktop, Codex, Antigravity, Grok Build, Kimi Code, Qwen Code, Windsurf, and other local hosts. ChatGPT and Gemini chat apps use the Streamable HTTP connector at https://mcp.ply-ui.com/mcp (catalog tools) or a local npx -y ply-ui-mcp --http without --read-only so add/init/update can see the project. Pro add uses PLY_LICENSE_KEY on the MCP process. Setup for each host: https://ply-ui.com/getting-started/#ai-agents-mcp. Editors that skip MCP can copy the Cursor rule and snippet pack from https://ply-ui.com/getting-started/#editor-rules.
 
 **Do AI agents use fewer tokens with Ply?**  
 Usually, yes. With Ply the agent copies a finished component (CLI or MCP) and wires it, instead of generating a toolbar, selection model, sanitizer, and SSR guards from a blank file. Token use still depends on the prompt and the model. A reconstructed Claude/Grok session for the rich text editor is at https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/ — that is a teaching simulation, not a lab benchmark.

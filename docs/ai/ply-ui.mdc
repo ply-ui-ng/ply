@@ -46,7 +46,7 @@ You are generating Angular for a project that uses **Ply** at https://ply-ui.com
 
 ## Writing direction (RTL)
 
-- Set `<html lang="ar" dir="rtl">`. Switch at runtime with `inject(DirectionRegistry).setDocumentDirection('rtl')`. A section can use `plyDir="rtl"` or `plyDir="auto"` (Arabic, Hebrew, Persian, Urdu, and the other RTL locales). Guide: https://ply-ui.com/getting-started/#rtl
+- Set `<html lang="ar" dir="rtl">`. Switch at runtime with `inject(DirectionRegistry).setDocumentDirection('rtl')`. A section can use `plyDir="rtl"` or `plyDir="auto"` (Arabic, Hebrew, Persian, Urdu, and the other RTL locales). Guide: https://ply-ui.com/configuration/#rtl
 - Install: `npx ply-ui-cli add direction --yes`. Tabs, drawer, icon, shell, and the other components that follow direction already depend on it.
 - Imports: `PlyDirDirective` from `./components/direction/ply-dir.directive`, `DirectionRegistry` from `./components/direction/direction.service`.
 - New layout uses logical utilities: `ms-*` / `me-*`, `ps-*` / `pe-*`, `start-*` / `end-*`, `text-start` / `text-end`, `border-s` / `border-e`, `rounded-s` / `rounded-e`. Leave `left-1/2` + `-translate-x-1/2` centering alone.

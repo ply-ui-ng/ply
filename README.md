@@ -30,31 +30,30 @@ The free tier is production-ready with no account or license: **all primitives**
 npx ply-ui-cli init
 ```
 
-This writes `ply-ui.json`, creates `ply-ui.css` (CDK overlay styles, keyframes, autofill fixes) imported from your global stylesheet, and downloads the icon sprites into your assets folder. Use `--yes` to accept defaults non-interactively.
+This writes `ply-ui.json`, creates `ply-ui.css` (CDK overlay styles, keyframes, autofill fixes) imported from your global stylesheet, and downloads the icon sprites into your assets folder. Use `--yes` to accept defaults non-interactively. It does not install npm packages, so add the Angular CDK yourself: `npm install @angular/cdk`.
 
 ### 2. Configure Tailwind CSS
 
 Ply works with **standard Tailwind CSS 4** — no custom theme file required.
 
-1. Install Tailwind CSS 4 and PostCSS ([installation guide](https://tailwindcss.com/docs/installation)).
-2. Create `src/tailwind.css`, register it in `angular.json` **before** global SCSS, and point `@source` at your templates:
+1. Install Tailwind CSS 4 and PostCSS ([Angular guide](https://tailwindcss.com/docs/installation/framework-guides/angular)).
+2. Create `src/tailwind.css`, register it in `angular.json` **before** global SCSS, and point `@source` at your templates. `@source` paths are relative to the CSS file:
 
 ```css
 @import "tailwindcss";
 
-@source "./src/**/*.{html,ts}";
+@source "./**/*.{html,ts}";
 ```
 
 Buttons, inputs, folder/underline/pills tabs, selects, combobox, toast, accordion, and the command palette read `--ply-primary` from `ply-ui.css`. That file aliases `--color-blue-*` to the same scale, so `blue-*` widgets follow it. A Theme Studio export sets `--ply-brand` and `--ply-scale-*`.
 
-**Optional — custom brand color:** override `--ply-primary` in `:root` after `ply-ui.css`, or copy a Theme Studio export:
+**Optional — custom brand color:** set `--ply-brand` in any stylesheet (load order does not matter), or copy a Theme Studio export:
 
 ```css
 :root {
-  --ply-primary: rgb(124 58 237);
-  --ply-primary-hover: rgb(109 40 217);
-  --ply-primary-active: rgb(91 33 182);
-  --ply-ring: rgb(124 58 237);
+  --ply-brand: #7c3aed;
+  --ply-brand-hover: #6d28d9;
+  --ply-brand-active: #5b21b6;
 }
 ```
 
@@ -227,7 +226,7 @@ Run npx ply-ui-cli doctor. It checks ply-ui.json, the Angular workspace, @angula
 Open Theme Studio at https://ply-ui.com/theme/ or the docs customizer, pick a preset or hue, then copy the Tailwind v4 @theme block into src/tailwind.css. ply-ui.css points --ply-primary and Tailwind blue-* utilities at that palette (--ply-brand and --ply-scale-*). The live preview shows buttons, tabs, forms, and overlays together.
 
 **Can AI agents install Ply?**  
-Yes. npx -y ply-ui-mcp is stdio for Cursor, Claude (Code/Desktop), Kimi, VS Code, Windsurf, and other local hosts. ChatGPT and Gemini chat apps use the Streamable HTTP connector at https://mcp.ply-ui.com/mcp (catalog tools) or a local npx -y ply-ui-mcp --http without --read-only so add/init/update can see the project. Pro add uses PLY_LICENSE_KEY on the MCP process. Editors that skip MCP can copy the Cursor rule and snippet pack from https://ply-ui.com/getting-started/#editor-rules.
+Yes. npx -y ply-ui-mcp runs over stdio in Cursor, VS Code, Claude Code, Claude Desktop, Codex, Antigravity, Grok Build, Kimi Code, Qwen Code, Windsurf, and other local hosts. ChatGPT and Gemini chat apps use the Streamable HTTP connector at https://mcp.ply-ui.com/mcp (catalog tools) or a local npx -y ply-ui-mcp --http without --read-only so add/init/update can see the project. Pro add uses PLY_LICENSE_KEY on the MCP process. Setup for each host: https://ply-ui.com/getting-started/#ai-agents-mcp. Editors that skip MCP can copy the Cursor rule and snippet pack from https://ply-ui.com/getting-started/#editor-rules.
 
 **Do AI agents use fewer tokens with Ply?**  
 Usually, yes. With Ply the agent copies a finished component (CLI or MCP) and wires it, instead of generating a toolbar, selection model, sanitizer, and SSR guards from a blank file. Token use still depends on the prompt and the model. A reconstructed Claude/Grok session for the rich text editor is at https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/ — that is a teaching simulation, not a lab benchmark.

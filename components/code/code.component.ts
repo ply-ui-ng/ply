@@ -1,6 +1,7 @@
 import {
   Component,
   DOCUMENT,
+  booleanAttribute,
   ElementRef,
   OnDestroy,
   PLATFORM_ID,
@@ -48,6 +49,12 @@ export class CodeComponent implements OnDestroy {
 
   /** If true, the code block is expanded and visible by default. If false, it starts collapsed. */
   readonly showCode = model(false);
+
+  /**
+   * Shows the show/hide toggle. Set to false with `[showCode]="true"` for short
+   * snippets that should always stay open. A collapsed block keeps its toggle.
+   */
+  readonly collapsible = input(true, { transform: booleanAttribute });
 
   readonly contentRef = viewChild<ElementRef>('content');
 
@@ -158,7 +165,7 @@ export class CodeComponent implements OnDestroy {
     if (!target) {
       target = this.document.createElement('pre');
       target.setAttribute('data-ply-code-highlighted', 'true');
-      target.className = 'm-0! p-0! bg-transparent! text-inherit! font-inherit whitespace-pre-wrap';
+      target.className = 'm-0! p-0! bg-transparent! text-inherit! font-inherit whitespace-pre overflow-x-auto';
       el.appendChild(target);
     }
     if (source) source.style.display = 'none';

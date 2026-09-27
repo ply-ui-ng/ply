@@ -72,7 +72,7 @@ const direction = inject(DirectionRegistry);
 direction.setDocumentDirection('rtl');
 ```
 
-`plyDir="auto"` uses the document language (Arabic, Hebrew, Persian, Urdu, and the other RTL locales). Install: `npx ply-ui-cli add direction` (also pulled in by tabs, drawer, icon, and shell). Guide: https://ply-ui.com/getting-started/#rtl
+`plyDir="auto"` uses the document language (Arabic, Hebrew, Persian, Urdu, and the other RTL locales). Install: `npx ply-ui-cli add direction` (also pulled in by tabs, drawer, icon, and shell). Guide: https://ply-ui.com/configuration/#rtl
 
 - `start` / `end` follow `dir`. `left` / `right` stay on those physical edges. In new markup use `ms-*` / `me-*`, `ps-*` / `pe-*`, `start-*` / `end-*`, `text-start` / `text-end`, `border-s` / `border-e`. Leave `left-1/2` + `-translate-x-1/2` centering alone.
 - Drawer default `end` is the right edge in LTR and the left edge in RTL. Toast defaults to `top-end`. Scroll-to-top and speed dial default to `bottom-end`. The shell `left` slot is the reading-start edge.
@@ -115,7 +115,7 @@ const dialogs = TestbedHarnessEnvironment.documentRootLoader(fixture);
 const dialog = await dialogs.getHarness(DialogHarness);
 ```
 
-Dialog overlays are appended to `document.body`, so `loader(fixture)` cannot see them — use `documentRootLoader`. See `/getting-started/#testing`.
+Dialog overlays are appended to `document.body`, so `loader(fixture)` cannot see them — use `documentRootLoader`. See `/configuration/#testing`.
 
 ### Closing popovers and drawers on navigation
 
@@ -3452,6 +3452,9 @@ A component to display formatted code blocks with syntax highlighting and a copy
 |------|------|---------|-------------|
 | language | `string` | '' | The programming language of the code (e.g. 'HTML', 'TypeScript', 'Bash'). Used for syntax highlighting. |
 | showCode | `boolean` | false | If true, the code block is expanded and visible by default. |
+| collapsible | `boolean` | true | Shows the show/hide toggle. Set to false with `[showCode]="true"` for snippets that should always stay open. |
+
+Long lines scroll horizontally instead of wrapping.
 
 ---
 
