@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.ply-ui-ng/ply-ui",
+  "title": "Ply UI",
+  "description": "List, search, and inspect Ply Angular + Tailwind copy-in components.",
+  "version": "0.1.22",
+  "websiteUrl": "https://ply-ui.com/getting-started/#ai-agents-mcp",
+  "repository": {
+    "url": "https://github.com/ply-ui-ng/ply",
+    "source": "github",
+    "id": "1339636614",
+    "subfolder": "packages/mcp"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.ply-ui.com/mcp"
+    }
+  ]
+}
