@@ -8,7 +8,7 @@ The CLI remains the installer: `npx ply-ui-cli`. This server wraps that CLI and 
 
 The old npm name `base-ui-ng-mcp` is **deprecated** (name collision with [MUI Base UI](https://base-ui.com)). Use `npx -y ply-ui-mcp`.
 
-Docs: [Getting started — AI agents](https://ply-ui.com/getting-started/#ai-agents-mcp) · [token walkthrough](https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/)
+Docs: [Getting started — AI agents](https://ply-ui.com/getting-started/#ai-agents-mcp) · [token walkthrough](https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/) · [design skill on init](https://ply-ui.com/learn/ply-ui-design-skill/)
 
 ## Setup (stdio)
 
@@ -198,6 +198,9 @@ Open Theme Studio at https://ply-ui.com/theme/ or the docs customizer, pick a pr
 
 **Can AI agents install Ply?**  
 Yes. npx -y ply-ui-mcp runs over stdio in Cursor, VS Code, Claude Code, Claude Desktop, Codex, Antigravity, Grok Build, Kimi Code, Qwen Code, Windsurf, and other local hosts. ChatGPT and Gemini chat apps use the Streamable HTTP connector at https://mcp.ply-ui.com/mcp (catalog tools) or a local npx -y ply-ui-mcp --http without --read-only so add/init/update can see the project. Pro add uses PLY_LICENSE_KEY on the MCP process. Setup for each host: https://ply-ui.com/getting-started/#ai-agents-mcp. Editors that skip MCP can copy the Cursor rule and snippet pack from https://ply-ui.com/getting-started/#editor-rules.
+
+**What does init install for AI agents?**  
+npx ply-ui-cli init writes ply-ui.json, ply-ui.css, icon sprites, .cursor/rules/ply-ui.mdc, .vscode/ply-ui.code-snippets, and the UI design skill at .cursor/skills/ply-ui-design/ (SKILL.md, reference.md, examples.md) when those files are missing. The skill tells the agent to reuse ply-button, ply-card, and ply-input-group, keep one accent, and include loading, error, empty, and data states. It does not install components. Published copy: https://ply-ui.com/docs/ai/skills/ply-ui-design/SKILL.md. Walkthrough: https://ply-ui.com/learn/ply-ui-design-skill/.
 
 **Do AI agents use fewer tokens with Ply?**  
 Usually, yes. With Ply the agent copies a finished component (CLI or MCP) and wires it, instead of generating a toolbar, selection model, sanitizer, and SSR guards from a blank file. Token use still depends on the prompt and the model. A reconstructed Claude/Grok session for the rich text editor is at https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/ — that is a teaching simulation, not a lab benchmark.
