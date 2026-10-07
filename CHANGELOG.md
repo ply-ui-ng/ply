@@ -8,6 +8,11 @@ Demo-site, SEO, analytics, and AI-doc tooling commits are omitted.
 
 Also published at [https://ply-ui.com/changelog](https://ply-ui.com/changelog).
 
+## October 2026
+
+- **Bug Fixes** — --yes leaves existing components, ply-ui.json, and ply-ui.css in place. Init discovers the stylesheet and inserts @source. Doctor fails when that wiring is missing.
+- **Documentation** — **cli:** Point the design skill installed by init at the walkthrough (https://ply-ui.com/learn/ply-ui-design-skill/).
+
 ## September 2026
 
 - **Features** — **cli:** install a UI design skill for AI agents on init

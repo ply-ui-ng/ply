@@ -146,7 +146,13 @@ export async function add(components: string[], options: AddOptions = {}) {
   for (const name of requested) {
     const targetDir = path.join(componentsRoot, name);
     if (!fs.existsSync(targetDir)) continue;
-    if (options.overwrite || options.yes) continue;
+    if (options.overwrite) continue;
+    // --yes skips prompts. It does not replace a component the project already has.
+    if (options.yes) {
+      toInstall.delete(name);
+      console.log(`  Skipped ${name} (already exists; pass --overwrite to replace it).`);
+      continue;
+    }
     const res = await prompts({
       type: 'confirm',
       name: 'overwrite',

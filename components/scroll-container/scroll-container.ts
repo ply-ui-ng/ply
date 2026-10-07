@@ -7,18 +7,26 @@ export interface ScrollMetrics {
   clientHeight: number;
 }
 
+function browserWindow(): Window | null {
+  return typeof window === 'undefined' ? null : window;
+}
+
 /**
  * Resolves the element (or window) that should be scrolled.
  * - `window` — document viewport
  * - `nearest` — closest scrollable ancestor of `host`
  * - CSS selector — first matching element
+ * On the server, returns `host` so callers never touch `window` or `document`.
  */
 export function resolveScrollContainer(
   target: ScrollContainerTarget,
   host: HTMLElement
 ): HTMLElement | Window {
+  const view = browserWindow();
+  if (!view) return host;
+
   if (!target || target === 'window') {
-    return window;
+    return view;
   }
 
   if (target === 'nearest') {
@@ -31,28 +39,32 @@ export function resolveScrollContainer(
       if (scrollable) return el;
       el = el.parentElement;
     }
-    return window;
+    return view;
   }
 
-  const found = document.querySelector(target);
-  return found instanceof HTMLElement ? found : window;
+  const found = view.document.querySelector(target);
+  return found instanceof HTMLElement ? found : view;
 }
 
 export function getScrollMetrics(container: HTMLElement | Window): ScrollMetrics {
-  if (container === window) {
-    const doc = document.documentElement;
+  const view = browserWindow();
+  if (view && container === view) {
+    const doc = view.document.documentElement;
     return {
-      scrollTop: window.scrollY || doc.scrollTop,
+      scrollTop: view.scrollY || doc.scrollTop,
       scrollHeight: doc.scrollHeight,
-      clientHeight: window.innerHeight,
+      clientHeight: view.innerHeight,
     };
   }
 
-  const el = container as HTMLElement;
+  if (!(container instanceof HTMLElement)) {
+    return { scrollTop: 0, scrollHeight: 0, clientHeight: 0 };
+  }
+
   return {
-    scrollTop: el.scrollTop,
-    scrollHeight: el.scrollHeight,
-    clientHeight: el.clientHeight,
+    scrollTop: container.scrollTop,
+    scrollHeight: container.scrollHeight,
+    clientHeight: container.clientHeight,
   };
 }
 
@@ -61,32 +73,38 @@ export function scrollContainerTo(
   top: number,
   behavior: ScrollBehavior
 ): void {
-  if (container === window) {
-    window.scrollTo({ top, behavior });
+  const view = browserWindow();
+  if (view && container === view) {
+    view.scrollTo({ top, behavior });
     return;
   }
-  (container as HTMLElement).scrollTo({ top, behavior });
+  if (container instanceof HTMLElement) {
+    container.scrollTo({ top, behavior });
+  }
 }
 
 export function listenScroll(
   container: HTMLElement | Window,
   handler: () => void
 ): () => void {
+  const view = browserWindow();
+  if (!view) return () => undefined;
+
   const opts: AddEventListenerOptions = { passive: true };
-  if (container === window) {
-    window.addEventListener('scroll', handler, opts);
-    window.addEventListener('resize', handler, opts);
+  if (container === view) {
+    view.addEventListener('scroll', handler, opts);
+    view.addEventListener('resize', handler, opts);
     return () => {
-      window.removeEventListener('scroll', handler, opts);
-      window.removeEventListener('resize', handler, opts);
+      view.removeEventListener('scroll', handler, opts);
+      view.removeEventListener('resize', handler, opts);
     };
   }
 
   const el = container as HTMLElement;
   el.addEventListener('scroll', handler, opts);
-  window.addEventListener('resize', handler, opts);
+  view.addEventListener('resize', handler, opts);
   return () => {
     el.removeEventListener('scroll', handler, opts);
-    window.removeEventListener('resize', handler, opts);
+    view.removeEventListener('resize', handler, opts);
   };
 }

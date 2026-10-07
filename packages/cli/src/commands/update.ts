@@ -242,7 +242,10 @@ export async function update(components: string[], options: UpdateOptions = {}) 
   }
   if (conflictsToUpstream) console.log(`↑ ${conflictsToUpstream} conflict${conflictsToUpstream === 1 ? '' : 's'} resolved by taking upstream.`);
   if (conflictsSavedAside) console.log(`⇄ ${conflictsSavedAside} conflict${conflictsSavedAside === 1 ? '' : 's'} saved as .upstream for manual merge.`);
-  if (conflictsSkipped) console.log(`= ${conflictsSkipped} conflict${conflictsSkipped === 1 ? '' : 's'} skipped (kept local). Re-run without --yes, or with --force, to resolve.`);
+  if (conflictsSkipped) {
+    console.log(`= ${conflictsSkipped} conflict${conflictsSkipped === 1 ? '' : 's'} skipped (kept local). Re-run without --yes, or with --force, to resolve.`);
+    process.exitCode = 1;
+  }
   if (!updated && !added && !overwrittenLocal && !conflictsToUpstream && !conflictsSavedAside && !conflictsSkipped && !conflictsMerged && !conflictsMergeDirty) {
     console.log('Everything is up to date.');
   }

@@ -24,7 +24,7 @@ export interface ToastConfig {
   duration?: number;
   /** `ply-icon` name. Defaults from `color` when omitted. */
   icon?: string;
-  /** Viewport corner. Defaults to `top-right`. */
+  /** Viewport corner. Defaults to `top-end` (the inline end, so it follows `dir`). */
   position?: ToastPosition;
   /** Optional inline button (e.g. Undo). `{ label, onClick, dismiss? }`. */
   action?: ToastAction;

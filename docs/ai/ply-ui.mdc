@@ -9,7 +9,7 @@ You are generating Angular for a project that uses **Ply** at https://ply-ui.com
 
 ## Install, don't invent
 
-- Install with `npx ply-ui-cli add <name> --yes`. Source lands in `src/app/components/<name>/`. Humans can run `npx ply-ui-cli add` with no name to pick from the catalog. Never use `add --yes` without a name.
+- Install with `npx ply-ui-cli add <name> --yes`. Source lands under `aliases.components` in `ply-ui.json` (default `src/app/components/<name>/`). `--yes` skips a folder that already exists; add `--overwrite` to replace it. Humans can run `npx ply-ui-cli add` with no name to pick from the catalog. Never use `add --yes` without a name.
 - Import from that local path. Never `from 'base-ui'` / `@base-ui/*`.
 - Prefer an existing registry item over a custom control. Check `npx ply-ui-cli list`, https://ply-ui.com/llms.txt, or MCP (`npx -y ply-ui-mcp`) before building a dialog, table, combobox, or form control.
 - If components look unstyled or icons are missing, run `npx ply-ui-cli doctor` (read-only). It checks `ply-ui.json`, Angular CDK, Tailwind v4 `@source` paths, `ply-ui.css`, and icon sprites.
@@ -39,7 +39,7 @@ You are generating Angular for a project that uses **Ply** at https://ply-ui.com
 ## Tailwind v4
 
 - Style with utilities. Pair light and `dark:` variants (`bg-white dark:bg-slate-800`). Dark mode is the `dark` class on `<html>`.
-- Prefer pixel arbitrary values in new UI (`p-[16px]`, `gap-[8px]`) so spacing does not depend on a custom theme.
+- Spacing uses the standard scale (`p-4`, `gap-2`, `w-64`). Do not use `[Npx]` for padding, margin, or gap. A fixed control size that is not on the scale (a drawer width) may stay a pixel value.
 - `color="primary"` reads `--ply-primary` from `ply-ui.css`. That file aliases `--color-blue-*` to the same scale. Theme Studio sets `--ply-brand` and `--ply-scale-*`. Live preview: https://ply-ui.com/theme/.
 - Button and input `class` values merge via `cn()`. `class="rounded-full"` and `class="absolute …"` override defaults. Existing `utility!` still works.
 - `<ply-icon>` outlines: `stroke-*`. Filled icons: `[filled]="true"` and `text-*` / `fill-*`.

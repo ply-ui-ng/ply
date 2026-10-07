@@ -17,8 +17,8 @@ Commands:
   doctor               Check that your project is set up correctly for Ply
 
 Options:
-  -y, --yes            Skip prompts
-  -o, --overwrite      Overwrite components that already exist (add)
+  -y, --yes            Skip prompts. Leaves existing components, ply-ui.json, and ply-ui.css in place
+  -o, --overwrite      Replace components that already exist (add)
   -f, --force          On conflict, take the upstream version (update)
       --overwrite-local  On update, also revert files you edited that upstream did not change
       --merge            On conflict, 3-way merge using the installed snapshot as ancestor

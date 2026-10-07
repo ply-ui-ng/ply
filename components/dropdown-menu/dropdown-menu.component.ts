@@ -8,8 +8,9 @@ import {
   ChangeDetectionStrategy,
   ElementRef,
   inject,
+  PLATFORM_ID,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { DropdownPanel } from './dropdown-panel';
 import { isInlineBackwardKey, isInlineForwardKey } from '../direction/direction';
 import { injectElementDirection } from '../direction/inject-direction';
@@ -38,6 +39,7 @@ let dropdownMenuIdCounter = 0;
 export class DropdownMenuComponent<T> implements DropdownPanel<T> {
   /** Timers cancelled automatically on destroy — see utils/safe-timer. */
   private readonly timers = injectTimers();
+  private readonly isSsrSafeBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly writingDirection = injectElementDirection();
   private readonly menuStack = inject(DropdownMenuStack);
 
@@ -69,6 +71,7 @@ export class DropdownMenuComponent<T> implements DropdownPanel<T> {
   }
 
   onMenuKeydown(event: KeyboardEvent): void {
+    if (!this.isSsrSafeBrowser) return;
     const root = this.menuRoot()?.nativeElement;
     if (!root) return;
 

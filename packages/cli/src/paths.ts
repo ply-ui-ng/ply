@@ -39,3 +39,12 @@ export function lockfilePath(cwd = process.cwd()): string {
 export function cssImportCandidates(): string[] {
   return [`@import './${CSS_FILE}'`, `@import './${LEGACY_CSS_FILE}'`];
 }
+
+/** True when a Tailwind `@source` path covers `targetDir` (the components alias). */
+export function sourceDirectiveCovers(source: string, tailwindDir: string, targetDir: string): boolean {
+  const raw = source.replace(/[*?[\]{}].*$/, '');
+  const resolved = path.resolve(tailwindDir, raw);
+  const resolvedDir =
+    raw.endsWith('/') || raw.endsWith('\\') || path.extname(raw) === '' ? resolved : path.dirname(resolved);
+  return targetDir === resolvedDir || targetDir.startsWith(resolvedDir + path.sep);
+}

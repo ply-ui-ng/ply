@@ -1,4 +1,5 @@
-import { Directive, ElementRef, HostListener, inject, input } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, input, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 /**
  * A behavior directive that smoothly scrolls the window to a target element when the host is clicked.
@@ -14,9 +15,11 @@ export class ScrollToDirective {
   readonly target = input('', { alias: "plyScrollTo" });
   
   private el = inject(ElementRef);
+  private readonly isSsrSafeBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   @HostListener('click', ['$event'])
   onClick(event: Event) {
+    if (!this.isSsrSafeBrowser) return;
     const target = this.target();
     if (!target) return;
     

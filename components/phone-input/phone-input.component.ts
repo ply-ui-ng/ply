@@ -91,7 +91,7 @@ export class PhoneInputComponent implements ControlValueAccessor, OnDestroy {
   private openDropdownTimeout?: number;
 
   private openDropdown() {
-    if (this.isDisabled()) return;
+    if (!this.isSsrSafeBrowser || this.isDisabled()) return;
     this.dropdownOpen.set(true);
     window.clearTimeout(this.openDropdownTimeout);
     this.openDropdownTimeout = window.setTimeout(() => {
@@ -103,6 +103,10 @@ export class PhoneInputComponent implements ControlValueAccessor, OnDestroy {
   }
 
   private closeDropdown() {
+    if (!this.isSsrSafeBrowser) {
+      this.dropdownOpen.set(false);
+      return;
+    }
     window.clearTimeout(this.openDropdownTimeout);
     this.dropdownOpen.set(false);
     this.panelStyle.set({
@@ -117,6 +121,7 @@ export class PhoneInputComponent implements ControlValueAccessor, OnDestroy {
   private reposition = () => { if (this.dropdownOpen()) this.calcPosition(); };
 
   private calcPosition() {
+    if (!this.isSsrSafeBrowser) return;
     const btn = this.buttonSlot()?.nativeElement;
     if (!btn) return;
     const rect = btn.getBoundingClientRect();

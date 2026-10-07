@@ -220,5 +220,6 @@ describe('update --merge', () => {
 
     await update([], { yes: true, merge: true });
     expect(fs.readFileSync(file, 'utf8')).toBe('LOCAL');
+    expect(process.exitCode).toBe(1);
   });
 });

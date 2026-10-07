@@ -84,7 +84,7 @@ export class ColorPickerComponent implements OnDestroy {
   toggle() { this.isOpen() ? this.close() : this.open(); }
 
   open() {
-    if (this.isDisabled()) return;
+    if (!this.isSsrSafeBrowser || this.isDisabled()) return;
     this.isOpen.set(true);
     this.calcPosition();
     window.addEventListener('scroll', this.onScrollResize, true);
@@ -93,6 +93,7 @@ export class ColorPickerComponent implements OnDestroy {
 
   close() {
     this.isOpen.set(false);
+    if (!this.isSsrSafeBrowser) return;
     window.removeEventListener('scroll', this.onScrollResize, true);
     window.removeEventListener('resize', this.onScrollResize);
   }
@@ -100,6 +101,7 @@ export class ColorPickerComponent implements OnDestroy {
   private onScrollResize = () => { if (this.isOpen()) this.calcPosition(); };
 
   private calcPosition() {
+    if (!this.isSsrSafeBrowser) return;
     const btn = this.trigger()?.nativeElement;
     if (!btn) return;
     const rect = btn.getBoundingClientRect();

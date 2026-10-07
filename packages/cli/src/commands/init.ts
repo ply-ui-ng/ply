@@ -15,6 +15,8 @@ import {
   DOCS_SNIPPETS,
   LEGACY_CSS_FILE,
   SNIPPETS_REL,
+  configFilePath,
+  sourceDirectiveCovers,
 } from '../paths';
 
 /**
@@ -184,12 +186,14 @@ function pickAngularProject(angularJson: any): { name: string; project: any } | 
 }
 
 async function downloadSprite(name: string, targetDir: string): Promise<boolean> {
+  const dest = path.join(targetDir, name);
+  if (fs.existsSync(dest)) return true;
   try {
     const res = await fetch(`${SITE_URL}/assets/${name}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const body = Buffer.from(await res.arrayBuffer());
     fs.mkdirSync(targetDir, { recursive: true });
-    fs.writeFileSync(path.join(targetDir, name), body);
+    fs.writeFileSync(dest, body);
     return true;
   } catch (err: any) {
     console.warn(`\n⚠ Could not download ${name} (${err.message}). Download it manually from ${SITE_URL}/assets/${name} into ${targetDir}.`);
@@ -219,53 +223,165 @@ const INIT_DEFAULTS = {
   tailwind: 'src/tailwind.css',
 };
 
+const STYLE_EXTENSIONS = new Set(['.css', '.scss', '.sass', '.less']);
+
+interface DiscoveredLayout {
+  componentsAlias: string;
+  styles: string;
+  tailwind: string;
+}
+
+function hasTailwindImport(content: string): boolean {
+  return content.includes('@import "tailwindcss"') || content.includes("@import 'tailwindcss'");
+}
+
+function listedStyleFiles(angularJson: any): string[] {
+  const picked = pickAngularProject(angularJson);
+  const styles: any[] = picked?.project?.architect?.build?.options?.styles || [];
+  const files: string[] = [];
+  for (const entry of styles) {
+    if (typeof entry === 'string') files.push(entry);
+    else if (entry && typeof entry.input === 'string') files.push(entry.input);
+  }
+  return files
+    .map((file) => file.replace(/\\/g, '/'))
+    .filter((file) => STYLE_EXTENSIONS.has(path.extname(file).toLowerCase()));
+}
+
+function toPosix(filePath: string): string {
+  return filePath.replace(/\\/g, '/');
+}
+
+/** Paths init should record when ply-ui.json is not already present. */
+export function discoverProjectLayout(cwd: string): DiscoveredLayout {
+  let componentsAlias = INIT_DEFAULTS.componentsAlias;
+  let listed: string[] = [];
+
+  const angularPath = path.resolve(cwd, 'angular.json');
+  if (fs.existsSync(angularPath)) {
+    try {
+      const angularJson = JSON.parse(fs.readFileSync(angularPath, 'utf8'));
+      listed = listedStyleFiles(angularJson);
+      const sourceRoot = pickAngularProject(angularJson)?.project?.sourceRoot;
+      if (typeof sourceRoot === 'string' && sourceRoot.trim()) {
+        const root = toPosix(sourceRoot).replace(/\/+$/, '');
+        componentsAlias = `${root}/app/components`;
+      }
+    } catch {
+      // Keep the defaults when angular.json cannot be parsed.
+    }
+  }
+
+  const candidates = [...listed];
+  for (const extra of ['src/tailwind.css', 'src/styles.css', 'src/styles.scss']) {
+    if (!candidates.includes(extra)) candidates.push(extra);
+  }
+
+  let tailwindFound: string | null = null;
+  for (const rel of candidates) {
+    const abs = path.resolve(cwd, rel);
+    if (!fs.existsSync(abs)) continue;
+    if (hasTailwindImport(fs.readFileSync(abs, 'utf8'))) {
+      tailwindFound = toPosix(rel);
+      break;
+    }
+  }
+
+  const existingStyles = listed.find((rel) => fs.existsSync(path.resolve(cwd, rel)));
+  const styles = existingStyles ? toPosix(existingStyles) : tailwindFound || INIT_DEFAULTS.styles;
+  const tailwind = tailwindFound || (fs.existsSync(path.resolve(cwd, INIT_DEFAULTS.tailwind))
+    ? INIT_DEFAULTS.tailwind
+    : styles);
+
+  return { componentsAlias, styles, tailwind };
+}
+
+/**
+ * Append `@source` for the components directory when no existing directive covers it.
+ * Returns the file contents unchanged when the alias is already scanned.
+ */
+export function insertComponentSource(css: string, cssFile: string, componentsDir: string): { content: string; inserted: boolean } {
+  const cssDir = path.dirname(cssFile);
+  const matches = css.match(/@source\s+["']([^"']+)["']/g) || [];
+  const covers = matches.some((match) => {
+    const raw = match.match(/@source\s+["']([^"']+)["']/)?.[1];
+    return !!raw && sourceDirectiveCovers(raw, cssDir, componentsDir);
+  });
+  if (covers) return { content: css, inserted: false };
+
+  let rel = path.relative(cssDir, componentsDir);
+  if (!rel.startsWith('.')) rel = `.${path.sep}${rel}`;
+  rel = toPosix(rel);
+  const line = `@source "${rel}";`;
+  const content = css.endsWith('\n') || css.length === 0 ? `${css}${line}\n` : `${css}\n${line}\n`;
+  return { content, inserted: true };
+}
+
 export async function init(options: InitOptions = {}) {
-  const response = options.yes
-    ? { ...INIT_DEFAULTS }
-    : await prompts([
+  const cwd = process.cwd();
+  const discovered = discoverProjectLayout(cwd);
+  const existingConfigPath = configFilePath(cwd);
+  let response: DiscoveredLayout;
+  let writeConfig = true;
+
+  if (existingConfigPath) {
+    writeConfig = false;
+    const existing = JSON.parse(fs.readFileSync(existingConfigPath, 'utf8'));
+    response = {
+      componentsAlias: existing?.aliases?.components || discovered.componentsAlias,
+      styles: existing?.tailwind?.css || discovered.styles,
+      tailwind: existing?.tailwind?.config || discovered.tailwind,
+    };
+  } else if (options.yes) {
+    response = discovered;
+  } else {
+    response = await prompts([
         {
           type: 'text',
           name: 'componentsAlias',
           message: 'Configure the import alias for components:',
-          initial: INIT_DEFAULTS.componentsAlias,
+          initial: discovered.componentsAlias,
         },
         {
           type: 'text',
           name: 'styles',
           message: 'Where is your global CSS file?',
-          initial: INIT_DEFAULTS.styles,
+          initial: discovered.styles,
         },
         {
           type: 'text',
           name: 'tailwind',
           message: 'Path to your Tailwind CSS entry file:',
-          initial: INIT_DEFAULTS.tailwind,
+          initial: discovered.tailwind,
         }
       ]);
+  }
 
   if (!response.componentsAlias) {
     console.log('Initialization cancelled.');
     return;
   }
 
-  const spinner = ora(`Writing ${CONFIG_FILE}...`).start();
-  const configPath = path.resolve(process.cwd(), CONFIG_FILE);
+  const spinner = ora(writeConfig ? `Writing ${CONFIG_FILE}...` : `Keeping ${path.basename(existingConfigPath!)}...`).start();
+  const configPath = existingConfigPath || path.resolve(cwd, CONFIG_FILE);
 
-  const config = {
-    $schema: 'https://ply-ui.com/schema.json',
-    style: 'scss',
-    tailwind: {
-      config: response.tailwind,
-      css: response.styles,
-      baseColor: 'slate',
-      cssVariables: true,
-    },
-    aliases: {
-      components: response.componentsAlias,
-    },
-  };
-
-  fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf8');
+  if (writeConfig) {
+    const styleExt = path.extname(response.styles).replace('.', '');
+    const config = {
+      $schema: 'https://ply-ui.com/schema.json',
+      style: styleExt === 'css' || styleExt === 'scss' ? styleExt : 'scss',
+      tailwind: {
+        config: response.tailwind,
+        css: response.styles,
+        baseColor: 'slate',
+        cssVariables: true,
+      },
+      aliases: {
+        components: response.componentsAlias,
+      },
+    };
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf8');
+  }
 
   // ─── Lockfile ─────────────────────────────────────────────────
   // Tracks per-file content hashes for installed components so `diff`/
@@ -279,15 +395,20 @@ export async function init(options: InitOptions = {}) {
 
   // ─── Global styles ────────────────────────────────────────────
   // Write ply-ui.css next to the user's global stylesheet and import it.
-  spinner.text = 'Writing global styles...';
-  const stylesPath = path.resolve(process.cwd(), response.styles);
+  // An existing ply-ui.css (Theme Studio export or hand edit) is left alone.
+  spinner.text = fs.existsSync(path.resolve(path.dirname(path.resolve(cwd, response.styles)), CSS_FILE))
+    ? `Keeping ${CSS_FILE}...`
+    : 'Writing global styles...';
+  const stylesPath = path.resolve(cwd, response.styles);
   const stylesDir = path.dirname(stylesPath);
   const cssPath = path.join(stylesDir, CSS_FILE);
   const importLine = `@import './${CSS_FILE}';`;
   const legacyImport = `@import './${LEGACY_CSS_FILE}';`;
   try {
     fs.mkdirSync(stylesDir, { recursive: true });
-    fs.writeFileSync(cssPath, BASE_CSS, 'utf8');
+    if (!fs.existsSync(cssPath)) {
+      fs.writeFileSync(cssPath, BASE_CSS, 'utf8');
+    }
     if (fs.existsSync(stylesPath)) {
       let stylesContent = fs.readFileSync(stylesPath, 'utf8');
       if (stylesContent.includes(legacyImport) && !stylesContent.includes(importLine)) {
@@ -302,6 +423,15 @@ export async function init(options: InitOptions = {}) {
     }
   } catch (error: any) {
     console.warn(`\n⚠ Could not update global styles (${error.message}). Add "${importLine}" to ${response.styles} manually and create ${CSS_FILE} next to it.`);
+  }
+
+  const tailwindPath = path.resolve(cwd, response.tailwind);
+  if (fs.existsSync(tailwindPath)) {
+    const current = fs.readFileSync(tailwindPath, 'utf8');
+    const next = insertComponentSource(current, tailwindPath, path.resolve(cwd, response.componentsAlias));
+    if (next.inserted) fs.writeFileSync(tailwindPath, next.content, 'utf8');
+  } else {
+    console.warn(`\n⚠ ${response.tailwind} was not found, so @source was not inserted. Create that Tailwind entry and re-run init.`);
   }
 
   // ─── Icon sprites ─────────────────────────────────────────────

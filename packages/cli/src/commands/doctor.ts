@@ -10,6 +10,7 @@ import {
   LEGACY_CSS_FILE,
   configFilePath,
   cssImportCandidates,
+  sourceDirectiveCovers,
 } from '../paths';
 
 type CheckStatus = 'ok' | 'warn' | 'error';
@@ -72,12 +73,39 @@ function readTextSafe(filePath: string): string | null {
   }
 }
 
-function sourceCovers(source: string, tailwindDir: string, targetDir: string): boolean {
-  const raw = source.replace(/[*?[\]{}].*$/, '');
-  const resolved = path.resolve(tailwindDir, raw);
-  const resolvedDir =
-    raw.endsWith('/') || raw.endsWith('\\') || path.extname(raw) === '' ? resolved : path.dirname(resolved);
-  return targetDir === resolvedDir || targetDir.startsWith(resolvedDir + path.sep);
+const NODE_BAR = 'Node.js 22.22+ or 24.15+';
+
+/** Documented runtime bar from llms.txt. Newer majors than 24 pass. */
+export function nodeMeetsDocumentedBar(version: string): boolean {
+  const [major, minor] = version.split('.').map((part) => Number(part));
+  if (!Number.isFinite(major) || !Number.isFinite(minor)) return false;
+  if (major > 24) return true;
+  if (major === 24) return minor >= 15;
+  if (major === 22) return minor >= 22;
+  return false;
+}
+
+/** Major from a package.json range such as ^22.2.1 or ~21.0.0. */
+export function angularMajorFromRange(range: string | undefined): number | null {
+  if (!range) return null;
+  const match = range.match(/(\d+)\./);
+  return match ? Number(match[1]) : null;
+}
+
+function listedStyleFiles(angularJson: any): string[] {
+  const picked = pickAngularProject(angularJson);
+  const styles: any[] = picked?.project?.architect?.build?.options?.styles || [];
+  const files: string[] = [];
+  for (const entry of styles) {
+    if (typeof entry === 'string') files.push(entry);
+    else if (entry && typeof entry.input === 'string') files.push(entry.input);
+  }
+  return files;
+}
+
+function stylesArrayIncludes(cwd: string, listed: string[], stylesPath: string): boolean {
+  const target = path.resolve(stylesPath);
+  return listed.some((rel) => path.resolve(cwd, rel) === target);
 }
 
 export interface DoctorOptions {
@@ -176,6 +204,42 @@ export async function doctor(options: DoctorOptions = {}): Promise<void> {
         message: `@angular/cdk ${deps['@angular/cdk']} installed.`,
       });
     }
+
+    const angularMajor = angularMajorFromRange(deps['@angular/core']);
+    if (angularMajor === null) {
+      checks.push({
+        name: 'Angular',
+        status: 'error',
+        message: '@angular/core is not installed. Ply expects Angular 22.',
+      });
+    } else if (angularMajor !== 22) {
+      checks.push({
+        name: 'Angular',
+        status: 'error',
+        message: `@angular/core ${deps['@angular/core']} is Angular ${angularMajor}. Ply expects Angular 22.`,
+      });
+    } else {
+      checks.push({
+        name: 'Angular',
+        status: 'ok',
+        message: `@angular/core ${deps['@angular/core']} is Angular 22.`,
+      });
+    }
+  }
+
+  const nodeVersion = process.versions.node;
+  if (nodeMeetsDocumentedBar(nodeVersion)) {
+    checks.push({
+      name: 'Node.js',
+      status: 'ok',
+      message: `Node.js ${nodeVersion} meets ${NODE_BAR}.`,
+    });
+  } else {
+    checks.push({
+      name: 'Node.js',
+      status: 'warn',
+      message: `Node.js ${nodeVersion} is outside ${NODE_BAR}.`,
+    });
   }
 
   // 4. Tailwind CSS entry
@@ -214,8 +278,8 @@ export async function doctor(options: DoctorOptions = {}): Promise<void> {
     if (!sourceMatches.length) {
       checks.push({
         name: '@source paths',
-        status: 'warn',
-        message: `No @source directives found in ${relative(tailwindPath)}. Components may not be scanned for classes.`,
+        status: 'error',
+        message: `No @source directives found in ${relative(tailwindPath)}. Components will not be scanned for classes.`,
       });
     } else {
       const componentsAlias = config?.aliases?.components || 'src/app/components';
@@ -224,14 +288,14 @@ export async function doctor(options: DoctorOptions = {}): Promise<void> {
       const hasComponentSource = sourceMatches.some((m) => {
         const raw = m.match(/@source\s+["']([^"']+)["']/)?.[1];
         if (!raw) return false;
-        return sourceCovers(raw, tailwindDir, componentsDir);
+        return sourceDirectiveCovers(raw, tailwindDir, componentsDir);
       });
 
       if (!hasComponentSource) {
         checks.push({
           name: '@source paths',
-          status: 'warn',
-          message: `@source directives exist but none point to ${componentsAlias}. Component classes may be missing.`,
+          status: 'error',
+          message: `@source directives exist but none point to ${componentsAlias}. Component classes will be missing.`,
         });
       } else {
         checks.push({
@@ -285,6 +349,23 @@ export async function doctor(options: DoctorOptions = {}): Promise<void> {
         status: 'ok',
         message: `${relative(resolvedCss)} exists.`,
       });
+    }
+
+    if (angularJson && pickAngularProject(angularJson)) {
+      const listed = listedStyleFiles(angularJson);
+      if (!stylesArrayIncludes(cwd, listed, stylesPath)) {
+        checks.push({
+          name: 'angular.json styles',
+          status: 'error',
+          message: `${relative(stylesPath)} is not in the angular.json styles array, so the global stylesheet is not built.`,
+        });
+      } else {
+        checks.push({
+          name: 'angular.json styles',
+          status: 'ok',
+          message: `${relative(stylesPath)} is listed in angular.json styles.`,
+        });
+      }
     }
   }
 

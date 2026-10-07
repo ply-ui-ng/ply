@@ -7,7 +7,10 @@ import {
   computed,
   ChangeDetectionStrategy,
   ElementRef,
+  inject,
+  PLATFORM_ID,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { ContextMenuPanel } from './context-menu-panel';
 import { focusMenuItem, focusMenuItemEdge, focusMenuItemTypeahead } from '../a11y-keyboard/a11y-keyboard';
 import { injectTimers } from '../safe-timer/safe-timer';
@@ -32,6 +35,7 @@ let contextMenuIdCounter = 0;
 export class ContextMenuComponent<T> implements ContextMenuPanel<T> {
   /** Timers cancelled automatically on destroy — see utils/safe-timer. */
   private readonly timers = injectTimers();
+  private readonly isSsrSafeBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   /**
    * Optional custom width for the context menu container.
    *
@@ -70,6 +74,7 @@ export class ContextMenuComponent<T> implements ContextMenuPanel<T> {
   }
 
   onMenuKeydown(event: KeyboardEvent): void {
+    if (!this.isSsrSafeBrowser) return;
     const root = this.menuRoot()?.nativeElement;
     if (!root) return;
 

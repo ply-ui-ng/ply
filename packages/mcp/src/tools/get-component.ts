@@ -54,7 +54,7 @@ export async function getComponent(args: { name: string; includeSource?: boolean
       keywords: entry.keywords || [],
       dependencies: entry.dependencies,
       registryDependencies: entry.registryDependencies,
-      docsUrl: `${SITE_URL}`,
+      docsUrl: `${SITE_URL}/base-elements/${entry.name}/`,
       pricingUrl: `${SITE_URL}/pricing`,
     };
 

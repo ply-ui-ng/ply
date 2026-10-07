@@ -1,6 +1,6 @@
 # Component Catalog
 
-> Auto-generated component reference for the `base-theme` Angular library.
+> Component reference for Ply (ply-ui.com), the Angular + Tailwind copy-in library.
 > All components, directives, pipes, and services are standalone by default.
 
 ---
@@ -696,6 +696,28 @@ Static 640px-wide dialog opened from the landing page's "Watch Demo" buttons. Re
 420px-wide signup dialog with a reactive form (`name` required, `email` required + email-validated, `company` optional) rendered with `ply-input-group` fields and inline error messages shown once a control is touched. Injects `DialogContext<unknown, SignupResult>`; on submit, an invalid form is marked all-touched, while a valid form closes the dialog with a `SignupResult` (`{ name, email, company }`) that the opener receives. Cancel and the header close button dismiss without a result. No inputs or outputs.
 
 ## Data Display
+
+### ChartComponent
+**Selector:** `ply-chart`
+**Standalone:** true
+**Tier:** Pro
+
+SVG chart. `type` is `'line' | 'bar' | 'donut' | 'sparkline'`.
+
+**Inputs:** `type` (default `bar`), `data`, `color`, `height`, `showLabels`, `showGrid`, `showLegend`, `fillArea`, `centerLabel`, `centerValue`, `ariaLabel`, `class`.
+
+---
+
+### VirtualScrollComponent
+**Selector:** `ply-virtual-scroll`
+**Standalone:** true
+**Tier:** Pro
+
+Windowed list. Project each row with `[plyVirtualScrollItem]`.
+
+**Inputs:** `items`, `itemSize` (default `48`), `minBufferPx` (default `200`), `maxBufferPx` (default `400`), `class`.
+
+---
 
 ### AvatarComponent
 **Selector:** `ply-avatar`
