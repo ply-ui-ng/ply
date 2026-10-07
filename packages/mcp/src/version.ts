@@ -1,4 +1,4 @@
-declare const __MCP_VERSION__: string;
+import packageJson from '../package.json' with { type: 'json' };
 
-/** Stamped from packages/mcp/package.json by tsup and vitest. */
-export const PACKAGE_VERSION = __MCP_VERSION__;
+/** Bundled from packages/mcp/package.json by tsup and by the Workers deploy. */
+export const PACKAGE_VERSION: string = packageJson.version;

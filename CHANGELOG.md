@@ -11,6 +11,7 @@ Also published at [https://ply-ui.com/changelog](https://ply-ui.com/changelog).
 ## October 2026
 
 - **Bug Fixes** — --yes leaves existing components, ply-ui.json, and ply-ui.css in place. Init discovers the stylesheet and inserts @source. Doctor fails when that wiring is missing.
+- **Bug Fixes** — **mcp:** bundle the package version so the hosted worker can start
 - **Documentation** — **cli:** Point the design skill installed by init at the walkthrough (https://ply-ui.com/learn/ply-ui-design-skill/).
 
 ## September 2026
