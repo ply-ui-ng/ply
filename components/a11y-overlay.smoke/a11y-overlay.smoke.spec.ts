@@ -15,6 +15,15 @@ import { DialogHeaderComponent } from '../dialog/dialog-header/dialog-header.com
 import { DialogBodyComponent } from '../dialog/dialog-body/dialog-body.component';
 import { DialogCloseDirective } from '../dialog/dialog-close.directive';
 import { DialogService } from '../dialog/dialog.service';
+import { CustomSelectComponent } from '../custom-select/custom-select.component';
+import { ContextMenuComponent } from '../context-menu/context-menu.component';
+import { ContextMenuDirective } from '../context-menu/context-menu.directive';
+import { BaseContextMenuItemDirective } from '../ply-context-menu-item/ply-context-menu-item.directive';
+import { PopoverComponent } from '../popover/popover.component';
+import { HoverCardComponent } from '../hover-card/hover-card.component';
+import { DrawerComponent } from '../drawer/drawer.component';
+import { DrawerDirective } from '../drawer/drawer.directive';
+import { BottomSheetComponent } from '../bottom-sheet/bottom-sheet.component';
 
 /**
  * Axe-core against **open** free overlays. Companion to a11y.smoke.spec.ts
@@ -93,6 +102,104 @@ class OpenMenubarHostComponent {}
   `,
 })
 class OverlayA11yDialogComponent {}
+
+@Component({
+  standalone: true,
+  imports: [CustomSelectComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div lang="en">
+      <h1>Open select</h1>
+      <ply-custom-select label="Fruit" [options]="options"></ply-custom-select>
+    </div>
+  `,
+})
+class OpenCustomSelectHostComponent {
+  readonly options = [
+    { label: 'Apple', value: 'apple' },
+    { label: 'Banana', value: 'banana' },
+  ];
+}
+
+@Component({
+  standalone: true,
+  imports: [ContextMenuDirective, ContextMenuComponent, BaseContextMenuItemDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div lang="en">
+      <h1>Open context menu</h1>
+      <button type="button" [ply-context-menu-trigger]="menu">File actions</button>
+      <ply-context-menu #menu>
+        <button ply-context-menu-item type="button">Copy</button>
+        <button ply-context-menu-item type="button">Delete</button>
+      </ply-context-menu>
+    </div>
+  `,
+})
+class OpenContextMenuHostComponent {}
+
+@Component({
+  standalone: true,
+  imports: [PopoverComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div lang="en">
+      <h1>Open popover</h1>
+      <ply-popover label="Account">
+        <button popover-trigger type="button">Account</button>
+        <p>Signed in as Ada.</p>
+      </ply-popover>
+    </div>
+  `,
+})
+class OpenPopoverHostComponent {}
+
+@Component({
+  standalone: true,
+  imports: [HoverCardComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div lang="en">
+      <h1>Open hover card</h1>
+      <ply-hover-card label="Ada Lovelace">
+        <button hover-card-trigger type="button">Ada Lovelace</button>
+        <p>Mathematician and first programmer.</p>
+      </ply-hover-card>
+    </div>
+  `,
+})
+class OpenHoverCardHostComponent {}
+
+@Component({
+  standalone: true,
+  imports: [DrawerDirective, DrawerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div lang="en">
+      <h1>Open drawer</h1>
+      <button type="button" [ply-drawer]="panel">Open drawer</button>
+      <ply-drawer #panel drawerLabel="Filters">
+        <p>Choose a filter.</p>
+      </ply-drawer>
+    </div>
+  `,
+})
+class OpenDrawerHostComponent {}
+
+@Component({
+  standalone: true,
+  imports: [BottomSheetComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div lang="en">
+      <h1>Open bottom sheet</h1>
+      <ply-bottom-sheet [open]="true" sheetLabel="Share">
+        <p>Share this page.</p>
+      </ply-bottom-sheet>
+    </div>
+  `,
+})
+class OpenBottomSheetHostComponent {}
 
 function removeFloatingUi(): void {
   document.querySelectorAll('.cdk-overlay-container, ply-dialog-container').forEach((el) => el.remove());
@@ -174,5 +281,88 @@ describe('a11y smoke — open overlays (axe-core)', () => {
     expect(dialog!.getAttribute('aria-labelledby')).toBe(heading.id);
     expect(dialog!.getAttribute('aria-label')).toBeNull();
     await expectNoA11yViolations(dialog!);
+  });
+
+  it('has no WCAG 2.x A/AA violations on an open custom select', async () => {
+    await TestBed.configureTestingModule({ imports: [OpenCustomSelectHostComponent] }).compileComponents();
+    fixture = TestBed.createComponent(OpenCustomSelectHostComponent);
+    fixture.detectChanges();
+    const select = fixture.debugElement.query(By.directive(CustomSelectComponent))
+      .componentInstance as CustomSelectComponent;
+    select.openDropdown();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[role="listbox"]')).toBeTruthy();
+    await expectNoA11yViolations(fixture.nativeElement);
+  });
+
+  it('has no WCAG 2.x A/AA violations on an open context menu', async () => {
+    await TestBed.configureTestingModule({ imports: [OpenContextMenuHostComponent] }).compileComponents();
+    fixture = TestBed.createComponent(OpenContextMenuHostComponent);
+    fixture.detectChanges();
+    const menu = fixture.debugElement.query(By.directive(ContextMenuDirective))
+      .injector.get(ContextMenuDirective);
+    menu.open({ x: 8, y: 8 });
+    fixture.detectChanges();
+    const pane = document.querySelector('.cdk-overlay-pane');
+    expect(pane?.querySelector('[role="menu"]')).toBeTruthy();
+    await expectNoA11yViolations(fixture.nativeElement);
+    await expectNoA11yViolations(pane!);
+  });
+
+  it('has no WCAG 2.x A/AA violations on an open popover', async () => {
+    await TestBed.configureTestingModule({ imports: [OpenPopoverHostComponent] }).compileComponents();
+    fixture = TestBed.createComponent(OpenPopoverHostComponent);
+    fixture.detectChanges();
+    const popover = fixture.debugElement.query(By.directive(PopoverComponent))
+      .componentInstance as PopoverComponent;
+    popover.open();
+    fixture.detectChanges();
+    const pane = document.querySelector('.cdk-overlay-pane');
+    expect(pane?.querySelector('[role="dialog"]')).toBeTruthy();
+    await expectNoA11yViolations(fixture.nativeElement);
+    await expectNoA11yViolations(pane!);
+  });
+
+  it('has no WCAG 2.x A/AA violations on an open hover card', async () => {
+    await TestBed.configureTestingModule({ imports: [OpenHoverCardHostComponent] }).compileComponents();
+    fixture = TestBed.createComponent(OpenHoverCardHostComponent);
+    fixture.detectChanges();
+    const card = fixture.debugElement.query(By.directive(HoverCardComponent))
+      .componentInstance as HoverCardComponent;
+    card.open();
+    fixture.detectChanges();
+    const pane = document.querySelector('.cdk-overlay-pane');
+    expect(pane?.querySelector('[role="dialog"]')).toBeTruthy();
+    await expectNoA11yViolations(fixture.nativeElement);
+    await expectNoA11yViolations(pane!);
+  });
+
+  it('has no WCAG 2.x A/AA violations on an open drawer', async () => {
+    await TestBed.configureTestingModule({
+      imports: [OpenDrawerHostComponent],
+      providers: [provideNoopAnimations()],
+    }).compileComponents();
+    fixture = TestBed.createComponent(OpenDrawerHostComponent);
+    fixture.detectChanges();
+    const drawer = fixture.debugElement.query(By.directive(DrawerDirective))
+      .injector.get(DrawerDirective);
+    drawer.openDrawer();
+    fixture.detectChanges();
+    const pane = document.querySelector('.cdk-overlay-pane');
+    expect(pane?.querySelector('[role="dialog"]')).toBeTruthy();
+    await expectNoA11yViolations(fixture.nativeElement);
+    await expectNoA11yViolations(pane!);
+  });
+
+  it('has no WCAG 2.x A/AA violations on an open bottom sheet', async () => {
+    await TestBed.configureTestingModule({
+      imports: [OpenBottomSheetHostComponent],
+      providers: [provideNoopAnimations()],
+    }).compileComponents();
+    fixture = TestBed.createComponent(OpenBottomSheetHostComponent);
+    fixture.detectChanges();
+    const dialog = fixture.nativeElement.querySelector('[role="dialog"]') as HTMLElement | null;
+    expect(dialog?.textContent).toContain('Share this page');
+    await expectNoA11yViolations(fixture.nativeElement);
   });
 });

@@ -7,6 +7,7 @@ import {
   ViewContainerRef,
   ChangeDetectionStrategy,
   computed,
+  effect,
   inject,
   input,
   output,
@@ -67,6 +68,13 @@ export class HoverCardComponent implements OnDestroy {
   readonly minWidth = input('240px');
 
   /**
+   * Accessible name for the hover-card dialog.
+   * @example
+   * <ply-hover-card label="Ada Lovelace"></ply-hover-card>
+   */
+  readonly label = input('Hover card');
+
+  /**
    * Preferred placement relative to the trigger. Flips when there is not enough room.
    * @example
    * <ply-hover-card placement="top"></ply-hover-card>
@@ -100,6 +108,17 @@ export class HoverCardComponent implements OnDestroy {
   protected readonly hostCls = computed(() => cn('inline-block relative', this.extraClass()));
 
   readonly isOpen = signal(false);
+
+  constructor() {
+    // aria-expanded belongs on the projected trigger (link or button), not the
+    // generic wrapper span.
+    effect(() => {
+      const trigger = this.triggerSlot()?.nativeElement.querySelector('[hover-card-trigger]');
+      if (!(trigger instanceof HTMLElement)) return;
+      trigger.setAttribute('aria-expanded', String(this.isOpen()));
+      trigger.setAttribute('aria-controls', this.panelId);
+    });
+  }
 
   private overlayRef: OverlayRef | null = null;
   private openTimer: ReturnType<typeof setTimeout> | undefined;

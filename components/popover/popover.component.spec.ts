@@ -29,7 +29,7 @@ describe('PopoverComponent a11y', () => {
   });
 
   it('exposes expanded state and controls on the trigger', () => {
-    const trigger = fixture.nativeElement.querySelector('[popover-trigger]')?.parentElement as HTMLElement;
+    const trigger = fixture.nativeElement.querySelector('[popover-trigger]') as HTMLElement;
     expect(trigger.getAttribute('aria-haspopup')).toBe('true');
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
     expect(trigger.getAttribute('aria-controls')).toBe(popover.panelId);

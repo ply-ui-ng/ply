@@ -44,6 +44,11 @@ describe('DialogContainerComponent a11y', () => {
     expect(component.context.close).toHaveBeenCalled();
   });
 
+  it('closes when Escape is dispatched on the document', () => {
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(component.context.close).toHaveBeenCalled();
+  });
+
   it('sets aria-labelledby when a heading is present', () => {
     const dialog = fixture.nativeElement.querySelector('[role="dialog"]') as HTMLElement;
     const heading = document.createElement('h2');

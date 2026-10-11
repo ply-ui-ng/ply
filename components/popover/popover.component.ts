@@ -71,6 +71,13 @@ export class PopoverComponent implements OnDestroy {
   readonly minWidth = input('200px');
 
   /**
+   * Accessible name for the popover dialog.
+   * @example
+   * <ply-popover label="Account menu"></ply-popover>
+   */
+  readonly label = input('Popover');
+
+  /**
    * Preferred placement relative to the trigger. Flips when there is not enough room.
    * @example
    * <ply-popover placement="top-end"></ply-popover>
@@ -78,21 +85,29 @@ export class PopoverComponent implements OnDestroy {
   readonly placement = input<PopoverPlacement>('bottom-start');
 
   readonly triggerSlot = viewChild<ElementRef<HTMLElement>>('triggerSlot');
-
-  constructor() {
-    // The wrapper is the accessible trigger (role=button + tabindex=0), so the
-    // projected native button must not create a second keyboard stop.
-    effect(() => {
-      const slot = this.triggerSlot();
-      if (!slot) return;
-      slot.nativeElement.querySelector('[popover-trigger]')?.setAttribute('tabindex', '-1');
-    });
-  }
   readonly panelTpl = viewChild<TemplateRef<unknown>>('panelTemplate');
 
   protected readonly hostCls = computed(() => cn('inline-block relative', this.extraClass()));
 
   readonly isOpen = signal(false);
+
+  constructor() {
+    // The projected trigger is the control. A role=button wrapper around a
+    // native button is a nested interactive control.
+    effect(() => {
+      const open = this.isOpen();
+      const trigger = this.triggerSlot()?.nativeElement.querySelector('[popover-trigger]');
+      if (!(trigger instanceof HTMLElement)) return;
+      const named = trigger.matches('button, a, input, select, textarea, summary, [role="button"]');
+      if (!named) {
+        trigger.setAttribute('role', 'button');
+        if (!trigger.hasAttribute('tabindex')) trigger.setAttribute('tabindex', '0');
+      }
+      trigger.setAttribute('aria-haspopup', 'true');
+      trigger.setAttribute('aria-expanded', String(open));
+      trigger.setAttribute('aria-controls', this.panelId);
+    });
+  }
 
   private overlayRef: OverlayRef | null = null;
   private openTimeout?: number;

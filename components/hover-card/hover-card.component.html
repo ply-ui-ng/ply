@@ -4,9 +4,7 @@
   (pointerenter)="onTriggerEnter()"
   (pointerleave)="onTriggerLeave()"
   (focusin)="onTriggerEnter()"
-  (focusout)="onTriggerFocusOut($event)"
-  [attr.aria-expanded]="isOpen()"
-  [attr.aria-controls]="panelId">
+  (focusout)="onTriggerFocusOut($event)">
   <ng-content select="[hover-card-trigger]"></ng-content>
 </span>
 
@@ -14,6 +12,7 @@
   <div
     [id]="panelId"
     role="dialog"
+    [attr.aria-label]="label()"
     [attr.aria-hidden]="!isOpen()"
     class="not-prose rounded-xl border border-slate-200 bg-white p-4 shadow-2xl dark:border-slate-700 dark:bg-slate-800"
     [style.min-width]="minWidth()"

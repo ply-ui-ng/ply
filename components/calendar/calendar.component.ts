@@ -75,6 +75,16 @@ export class CalendarComponent implements OnInit {
 
   readonly viewDate = signal(new Date());
   readonly days = signal<CalendarDate[]>([]);
+
+  /** Week rows. The grid's children must be `role="row"`. */
+  readonly weeks = computed(() => {
+    const days = this.days();
+    const rows: CalendarDate[][] = [];
+    for (let i = 0; i < days.length; i += 7) {
+      rows.push(days.slice(i, i + 7));
+    }
+    return rows;
+  });
   readonly focusedDate = signal<Date | null>(null);
   weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   months = [

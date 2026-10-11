@@ -2,7 +2,7 @@ import { Directive, computed, input } from '@angular/core';
 import { LinkColor, LinkSize } from "../types";
 
 /**
- * A link directive applying Lussos theme styles.
+ * A link directive applying Ply theme styles.
  * Use this to style inline anchors and links.
  * 
  * @example

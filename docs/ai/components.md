@@ -2127,13 +2127,14 @@ Cmd+K style command palette: when `open` is true it renders a full-screen backdr
 **Selector:** `ply-popover`
 **Standalone:** true
 
-Self-contained popover with a trigger slot and a panel slot: project the trigger element into `[popover-trigger]` and the panel content as default children. The panel is a CDK overlay on the viewport (not `position: fixed` inside the host), so it stays next to the trigger even inside `overflow: hidden` cards. Placement (`bottom-start` default) flips when there is not enough room. Opens/closes on trigger click, Enter, or Space; closes on backdrop click and Escape; on open it moves focus to the first focusable element inside the panel and restores focus on close. The trigger wrapper carries `role="button"` and `aria-haspopup`/`aria-expanded`/`aria-controls`; the panel has `role="dialog"`.
+Self-contained popover with a trigger slot and a panel slot: project the trigger element into `[popover-trigger]` and the panel content as default children. The panel is a CDK overlay on the viewport (not `position: fixed` inside the host), so it stays next to the trigger even inside `overflow: hidden` cards. Placement (`bottom-start` default) flips when there is not enough room. Opens/closes on trigger click, Enter, or Space; closes on backdrop click and Escape; on open it moves focus to the first focusable element inside the panel and restores focus on close. The projected trigger carries `aria-haspopup`, `aria-expanded`, and `aria-controls`. The panel is `role="dialog"` named by `label`.
 
 **Inputs:**
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | class | `string` | '' | Extra Tailwind classes merged into the host element via `cn()`. |
 | minWidth | `string` | '200px' | CSS min-width applied to the panel. |
+| label | `string` | 'Popover' | Accessible name for the popover dialog. |
 | placement | `PopoverPlacement` | 'bottom-start' | Preferred panel position relative to the trigger; may be overridden at runtime by an external trigger directive. |
 
 ### PopoverTriggerDirective
@@ -2154,13 +2155,14 @@ Alternative external trigger for `ply-popover`, for when the trigger button must
 **Selector:** `ply-hover-card`
 **Standalone:** true
 
-Rich preview panel that opens when the pointer (or keyboard focus) rests on the trigger. Unlike `ply-popover`, there is no backdrop — the pointer can move into the panel. Closes after `closeDelay` on leave, on outside pointer down, and on Escape. Project the trigger into `[hover-card-trigger]` and panel content as default children. The panel is a CDK overlay on the viewport so it is not clipped by `overflow: hidden` parents.
+Rich preview panel that opens when the pointer (or keyboard focus) rests on the trigger. Unlike `ply-popover`, there is no backdrop — the pointer can move into the panel. Closes after `closeDelay` on leave, on outside pointer down, and on Escape. Project the trigger into `[hover-card-trigger]` and panel content as default children. The projected trigger carries `aria-expanded` and `aria-controls`. The panel is `role="dialog"` named by `label`, and it is a CDK overlay on the viewport so it is not clipped by `overflow: hidden` parents.
 
 **Inputs:**
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | class | `string` | '' | Extra Tailwind classes merged into the host element via `cn()`. |
 | minWidth | `string` | '240px' | CSS min-width applied to the panel. |
+| label | `string` | 'Hover card' | Accessible name for the hover-card dialog. |
 | placement | `PopoverPlacement` | 'bottom-start' | Preferred panel position relative to the trigger; flips when there is not enough room. |
 | openDelay | `number` | 200 | Milliseconds to wait after pointer enter / focus before opening. |
 | closeDelay | `number` | 150 | Milliseconds to wait after pointer leave before closing. |

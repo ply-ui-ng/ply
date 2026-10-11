@@ -30,9 +30,8 @@ describe('HoverCardComponent', () => {
 
   afterEach(() => fixture?.destroy());
 
-  it('exposes expanded state and controls on the trigger wrapper', () => {
-    const trigger = fixture.nativeElement.querySelector('[hover-card-trigger]')
-      ?.parentElement as HTMLElement;
+  it('exposes expanded state and controls on the trigger', () => {
+    const trigger = fixture.nativeElement.querySelector('[hover-card-trigger]') as HTMLElement;
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
     expect(trigger.getAttribute('aria-controls')).toBe(card.panelId);
 
