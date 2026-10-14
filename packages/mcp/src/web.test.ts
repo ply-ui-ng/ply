@@ -23,11 +23,29 @@ describe('Web-standard MCP fetch', () => {
     expect(html).toContain('https://mcp.ply-ui.com/mcp');
   });
 
+  it('publishes protected-resource metadata with no authorization server', async () => {
+    const res = await handleMcpFetch(
+      new Request('https://mcp.ply-ui.com/.well-known/oauth-protected-resource')
+    );
+    expect(res.status).toBe(200);
+    const json = (await res.json()) as {
+      resource: string;
+      authorization_servers: string[];
+      resource_documentation: string;
+    };
+    expect(json.resource).toBe('https://mcp.ply-ui.com/mcp');
+    expect(json.authorization_servers).toEqual([]);
+    expect(json.resource_documentation).toBe('https://ply-ui.com/auth.md');
+  });
+
   it('requires a bearer token on /mcp when configured', async () => {
     const denied = await handleMcpFetch(new Request('https://mcp.ply-ui.com/mcp', { method: 'POST', body: '{}' }), {
       authToken: 'secret',
     });
     expect(denied.status).toBe(401);
+    expect(denied.headers.get('WWW-Authenticate')).toContain(
+      'resource_metadata="https://mcp.ply-ui.com/.well-known/oauth-protected-resource"'
+    );
 
     const allowed = await handleMcpFetch(
       new Request('https://mcp.ply-ui.com/mcp', {

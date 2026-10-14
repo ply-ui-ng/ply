@@ -2,6 +2,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { createMcpServer, PACKAGE_VERSION } from './server';
 import { MCP_PACKAGE } from './brand';
+import { mcpProtectedResource, wwwAuthenticate } from './auth-metadata';
 
 export interface HttpOptions {
   host: string;
@@ -19,9 +20,12 @@ function setCors(res: ServerResponse): void {
   );
 }
 
-function unauthorized(res: ServerResponse): void {
+function unauthorized(res: ServerResponse, resourceMetadataUrl: string): void {
   setCors(res);
-  res.writeHead(401, { 'Content-Type': 'application/json' });
+  res.writeHead(401, {
+    'Content-Type': 'application/json',
+    'WWW-Authenticate': wwwAuthenticate(resourceMetadataUrl),
+  });
   res.end(JSON.stringify({ error: 'Unauthorized' }));
 }
 
@@ -74,6 +78,17 @@ export function startHttpServer(options: HttpOptions): ReturnType<typeof createS
         return;
       }
 
+      if (url.pathname === '/.well-known/oauth-protected-resource' && req.method === 'GET') {
+        setCors(res);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(
+          JSON.stringify(
+            mcpProtectedResource(new URL('/mcp', url.origin).href, Boolean(options.authToken))
+          )
+        );
+        return;
+      }
+
       if (url.pathname !== '/mcp') {
         setCors(res);
         res.writeHead(404, { 'Content-Type': 'application/json' });
@@ -82,7 +97,7 @@ export function startHttpServer(options: HttpOptions): ReturnType<typeof createS
       }
 
       if (!checkAuth(req, options.authToken)) {
-        unauthorized(res);
+        unauthorized(res, new URL('/.well-known/oauth-protected-resource', url.origin).href);
         return;
       }
 

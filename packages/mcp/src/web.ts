@@ -2,6 +2,7 @@ import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/
 import { createCatalogMcpServer } from './catalog';
 import { PACKAGE_VERSION } from './version';
 import { CLI_NPX, MCP_PACKAGE, MCP_NPX } from './brand';
+import { mcpProtectedResource, wwwAuthenticate } from './auth-metadata';
 
 export interface McpFetchOptions {
   authToken?: string;
@@ -23,11 +24,11 @@ function withCors(res: Response): Response {
   return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
 }
 
-function json(body: unknown, status = 200): Response {
+function json(body: unknown, status = 200, extra?: Record<string, string>): Response {
   return withCors(
     new Response(JSON.stringify(body), {
       status,
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      headers: { 'Content-Type': 'application/json; charset=utf-8', ...extra },
     })
   );
 }
@@ -94,6 +95,10 @@ export async function handleMcpFetch(
     return json(HEALTH);
   }
 
+  if (url.pathname === '/.well-known/oauth-protected-resource' && request.method === 'GET') {
+    return json(mcpProtectedResource(new URL('/mcp', url.origin).href, Boolean(options.authToken?.trim())));
+  }
+
   if (url.pathname !== '/mcp') {
     return json({ error: 'Not found. MCP is POST/GET /mcp.' }, 404);
   }
@@ -111,7 +116,10 @@ export async function handleMcpFetch(
   if (token) {
     const header = request.headers.get('authorization');
     if (header !== `Bearer ${token}`) {
-      return json({ error: 'Unauthorized' }, 401);
+      const metadataUrl = new URL('/.well-known/oauth-protected-resource', url.origin).href;
+      return json({ error: 'Unauthorized' }, 401, {
+        'WWW-Authenticate': wwwAuthenticate(metadataUrl),
+      });
     }
   }
 
