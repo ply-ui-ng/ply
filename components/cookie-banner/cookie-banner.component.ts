@@ -16,6 +16,7 @@ import { StrokedButtonDirective } from '../button/ply-stroked-button.directive';
 import { IconComponent } from '../icon/icon.component';
 import { CookieConsent } from '../types';
 import { cn } from '../tw-merge/tw-merge';
+import { BASE_UI_I18N } from '../i18n/i18n';
 
 /**
  * Consent banner. Fixed to the viewport by default; pass `inline` to render
@@ -34,6 +35,7 @@ import { cn } from '../tw-merge/tw-merge';
   host: { '[class]': 'hostCls()' },
 })
 export class CookieBannerComponent {
+  protected readonly i18n = inject(BASE_UI_I18N);
   private readonly isSsrSafeBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   /**

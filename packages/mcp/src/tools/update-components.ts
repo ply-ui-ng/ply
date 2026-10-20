@@ -1,8 +1,16 @@
 import { z } from 'zod';
 import { resolveProjectCwd, runCli } from '../cli';
 import { isSafeItemName } from '../registry';
+import { parseUpdateFiles, updateOutput } from '../cli-report';
+import { resolveReplace, type ReplaceDecision } from '../elicit';
 import { failJson, okJson } from '../result';
 import { CLI_BIN } from '../brand';
+
+export { updateOutput };
+
+export interface UpdateComponentsHooks {
+  confirmReplace?: (message: string) => Promise<ReplaceDecision>;
+}
 
 export const updateComponentsInput = {
   names: z
@@ -51,7 +59,8 @@ export async function updateComponents(
     force?: boolean;
     overwriteLocal?: boolean;
     merge?: boolean;
-  } = {}
+  } = {},
+  hooks: UpdateComponentsHooks = {},
 ) {
   try {
     const cwd = resolveProjectCwd(args.cwd);
@@ -62,19 +71,37 @@ export async function updateComponents(
       }
     }
 
+    const target = names.length ? names.join(', ') : 'tracked components';
+    const replace = await resolveReplace(
+      Boolean(args.force || args.overwriteLocal),
+      hooks.confirmReplace,
+      `Replace local files while updating ${target}? This overwrites copies already in the project.`,
+    );
     const cliArgs = ['update', ...names, '--yes'];
-    if (args.force) cliArgs.push('--force');
-    if (args.overwriteLocal) cliArgs.push('--overwrite-local');
+    if (args.force && replace.apply) cliArgs.push('--force');
+    if (args.overwriteLocal && replace.apply) cliArgs.push('--overwrite-local');
     if (args.merge) cliArgs.push('--merge');
 
     const result = await runCli(cliArgs, { cwd });
+    const stdout = result.stdout.trim();
+    const files = parseUpdateFiles(stdout);
+    const note = [
+      `Files were written by ${CLI_BIN} (canonical updater). MCP does not replace the CLI.`,
+      replace.confirmation === 'declined'
+        ? 'Replace was not confirmed. Conflicts and local-only edits were left in place.'
+        : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
     if (!result.ok) {
       return failJson(`${CLI_BIN} update failed.`, {
         cwd,
         names,
         exitCode: result.code,
-        stdout: result.stdout.trim(),
+        stdout,
         stderr: result.stderr.trim(),
+        files,
+        ...(replace.confirmation ? { confirmation: replace.confirmation } : {}),
         hint: 'Run diff_components first. Conflicts need --force; local-only edits need overwriteLocal.',
       });
     }
@@ -83,13 +110,15 @@ export async function updateComponents(
       ok: true,
       cwd,
       names: names.length ? names : 'all-tracked',
-      force: Boolean(args.force),
-      overwriteLocal: Boolean(args.overwriteLocal),
+      force: Boolean(args.force && replace.apply),
+      overwriteLocal: Boolean(args.overwriteLocal && replace.apply),
       merge: Boolean(args.merge),
       cli: [CLI_BIN, ...cliArgs].join(' '),
-      stdout: result.stdout.trim(),
+      stdout,
       stderr: result.stderr.trim() || undefined,
-      note: `Files were written by ${CLI_BIN} (canonical updater). MCP does not replace the CLI.`,
+      files,
+      ...(replace.confirmation ? { confirmation: replace.confirmation } : {}),
+      note,
     });
   } catch (err: any) {
     return failJson(err.message || String(err));

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { discoverProjectLayout, insertComponentSource } from './init';
+import { discoverProjectLayout, insertComponentSource, writeEditorKit } from './init';
 
 function tempDir(): string {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'ply-ui-init-'));
@@ -57,6 +57,28 @@ describe('discoverProjectLayout', () => {
       styles: 'src/styles.scss',
       tailwind: 'src/tailwind.css',
     });
+  });
+});
+
+describe('writeEditorKit', () => {
+  it('writes the skill to Cursor and .agents, and refreshes a rule that is already there', () => {
+    const cwd = tempDir();
+    const rule = path.join(cwd, '.cursor/rules/ply-ui.mdc');
+    fs.mkdirSync(path.dirname(rule), { recursive: true });
+    fs.writeFileSync(rule, 'stale\n', 'utf8');
+
+    writeEditorKit(cwd);
+    expect(fs.readFileSync(rule, 'utf8')).toBe('stale\n');
+    expect(fs.existsSync(path.join(cwd, '.cursor/skills/ply-ui-design/SKILL.md'))).toBe(true);
+    expect(fs.existsSync(path.join(cwd, '.agents/skills/ply-ui-design/SKILL.md'))).toBe(true);
+
+    writeEditorKit(cwd, { refresh: true });
+    const refreshed = fs.readFileSync(rule, 'utf8');
+    expect(refreshed).not.toBe('stale\n');
+    expect(refreshed).toContain('Ply');
+    expect(fs.readFileSync(path.join(cwd, '.agents/skills/ply-ui-design/SKILL.md'), 'utf8')).toContain(
+      'ply-ui-design',
+    );
   });
 });
 

@@ -35,7 +35,7 @@ The drawer animates with `@angular/animations` triggers. Without a provider, ope
 
 ### Chrome strings (`provideBaseUiI18n`)
 
-Empty states, paginator labels, and `ply-dialog-close` aria-labels default to English. Register overrides in `app.config.ts`:
+Empty states, paginator labels, close / previous / next, toolbar labels, and the command palette default to English. Register overrides in `app.config.ts`:
 
 ```ts
 import { provideBaseUiI18n } from './components/i18n/i18n';
@@ -51,7 +51,7 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-Install: `npx ply-ui-cli add i18n` (also pulled in by data-table, combobox, dialog, paginator). Per-instance inputs (`emptyMessage`, `emptyText`, `[ariaLabel]` on close) still win. Layout marketing copy is not in this dictionary.
+Install: `npx ply-ui-cli add i18n` (also pulled in by data-table, combobox, dialog, paginator, and any primitive that injects it). Per-instance inputs (`emptyMessage`, `emptyText`, `[ariaLabel]` on close) still win. Layout and form-block marketing copy stays out of this dictionary.
 
 ### Writing direction (RTL)
 
@@ -4101,7 +4101,7 @@ Merges Tailwind classes safely, resolving conflicts using `tailwind-merge` and `
 provideBaseUiI18n(overrides?: Partial<BaseUiI18n>): EnvironmentProviders
 ```
 
-Chrome-string dictionary for empty states, paginator labels, dialog close/confirm, and password show/hide. Register once in `app.config.ts`. English defaults apply when omitted. Per-instance inputs (`emptyMessage`, `emptyText`) still win. Install: `npx ply-ui-cli add i18n`.
+Chrome-string dictionary for empty states, paginator labels, close / previous / next, toolbar labels, the command palette, dialog close/confirm, and password show/hide. Register once in `app.config.ts`. English defaults apply when omitted. Per-instance inputs (`emptyMessage`, `emptyText`) still win. Layout and form-block marketing copy stays out of this dictionary. Install: `npx ply-ui-cli add i18n`.
 
 ### provideBaseUI()
 ```

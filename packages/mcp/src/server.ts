@@ -1,10 +1,11 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { createCatalogMcpServer } from './catalog';
-import { addComponents, addComponentsInput } from './tools/add-components';
+import { confirmReplace } from './elicit';
+import { addComponents, addComponentsInput, addOutput } from './tools/add-components';
 import { diffComponents, diffComponentsInput } from './tools/diff-components';
-import { doctor, doctorInput } from './tools/doctor';
+import { doctor, doctorInput, doctorOutput } from './tools/doctor';
 import { initProject, initProjectInput } from './tools/init-project';
-import { updateComponents, updateComponentsInput } from './tools/update-components';
+import { updateComponents, updateComponentsInput, updateOutput } from './tools/update-components';
 import { CLI_BIN } from './brand';
 
 export { PACKAGE_VERSION } from './version';
@@ -37,11 +38,15 @@ export function createMcpServer(options: CreateMcpServerOptions = {}): McpServer
       {
         title: 'Add Ply components',
         description:
-          `Install registry components by shelling to \`${CLI_BIN} add --yes\`. --yes leaves an existing component in place; pass overwrite to replace it. Pro names require PLY_LICENSE_KEY (or licenseKey). Project must already have ply-ui.json.`,
+          `Install registry components by shelling to \`${CLI_BIN} add --yes\`. --yes leaves an existing component in place; pass overwrite to replace it. Hosts that can ask confirm that overwrite first. Pro names require PLY_LICENSE_KEY (or licenseKey). Project must already have ply-ui.json. structuredContent includes missingPackages and installCommand.`,
         inputSchema: addComponentsInput,
+        outputSchema: addOutput,
         annotations: writeAnnotations,
       },
-      async (args) => addComponents(args)
+      async (args) =>
+        addComponents(args, {
+          confirmReplace: (message) => confirmReplace(server, message),
+        })
     );
 
     server.registerTool(
@@ -49,7 +54,7 @@ export function createMcpServer(options: CreateMcpServerOptions = {}): McpServer
       {
         title: 'Initialize Ply in a project',
         description:
-          `Run \`${CLI_BIN} init --yes\` in the target directory. Writes ply-ui.json, ply-ui.css, and icon sprites only when those files are missing, discovers the stylesheet already listed in angular.json, and inserts @source when it is absent. Always non-interactive.`,
+          `Run \`${CLI_BIN} init --yes\` in the target directory. Writes ply-ui.json, ply-ui.css, and icon sprites only when those files are missing, discovers the stylesheet already listed in angular.json, and inserts @source when it is absent. Writes the design skill to .cursor/skills and .agents/skills when those files are missing. Pass refreshEditorKit to replace an existing editor kit. Always non-interactive.`,
         inputSchema: initProjectInput,
         annotations: writeAnnotations,
       },
@@ -61,8 +66,9 @@ export function createMcpServer(options: CreateMcpServerOptions = {}): McpServer
       {
         title: 'Verify Ply project setup',
         description:
-          `Run \`${CLI_BIN} doctor\` (read-only). Returns isError when the CLI exits non-zero.`,
+          `Run \`${CLI_BIN} doctor\` (read-only). structuredContent.checks lists each ✔/⚠/✖ line. Returns isError when the CLI exits non-zero.`,
         inputSchema: doctorInput,
+        outputSchema: doctorOutput,
         annotations: readOnlyAnnotations,
       },
       async (args) => doctor(args)
@@ -85,11 +91,15 @@ export function createMcpServer(options: CreateMcpServerOptions = {}): McpServer
       {
         title: 'Update installed Ply components',
         description:
-          `Run \`${CLI_BIN} update --yes\`. Untouched files take upstream. Conflicts stay local and the CLI exits non-zero unless force or merge. Local-only edits skip unless overwriteLocal.`,
+          `Run \`${CLI_BIN} update --yes\`. Untouched files take upstream. Conflicts stay local and the CLI exits non-zero unless force or merge. Local-only edits skip unless overwriteLocal. Hosts that can ask confirm force and overwriteLocal before those flags replace files. structuredContent.files is one result per file line.`,
         inputSchema: updateComponentsInput,
+        outputSchema: updateOutput,
         annotations: writeAnnotations,
       },
-      async (args) => updateComponents(args)
+      async (args) =>
+        updateComponents(args, {
+          confirmReplace: (message) => confirmReplace(server, message),
+        })
     );
   }
 

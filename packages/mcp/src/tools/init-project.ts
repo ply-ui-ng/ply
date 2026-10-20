@@ -10,12 +10,21 @@ export const initProjectInput = {
     .describe(
       'Project root to initialize (defaults to MCP process cwd / PLY_CWD). Always non-interactive (`init --yes`).'
     ),
+  refreshEditorKit: z
+    .boolean()
+    .optional()
+    .default(false)
+    .describe(
+      'Replace an editor kit that is already there (Cursor rule, snippets, and the design skill in .cursor/skills and .agents/skills). Maps to `init --refresh-editor-kit`.'
+    ),
 };
 
-export async function initProject(args: { cwd?: string } = {}) {
+export async function initProject(args: { cwd?: string; refreshEditorKit?: boolean } = {}) {
   try {
     const cwd = resolveProjectCwd(args.cwd);
-    const result = await runCli(['init', '--yes'], { cwd });
+    const cliArgs = ['init', '--yes'];
+    if (args.refreshEditorKit) cliArgs.push('--refresh-editor-kit');
+    const result = await runCli(cliArgs, { cwd });
     if (!result.ok) {
       return failJson(`${CLI_BIN} init failed.`, {
         cwd,
@@ -28,7 +37,7 @@ export async function initProject(args: { cwd?: string } = {}) {
     return okJson({
       ok: true,
       cwd,
-      cli: `${CLI_BIN} init --yes`,
+      cli: [CLI_BIN, ...cliArgs].join(' '),
       stdout: result.stdout.trim(),
       stderr: result.stderr.trim() || undefined,
     });

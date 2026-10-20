@@ -25,7 +25,7 @@
         type="button"
         ply-addon-end
         class="block h-5 w-5 cursor-pointer"
-        [attr.aria-label]="'Open time picker' + (label() ? ' for ' + label() : '')"
+        [attr.aria-label]="i18n.openTimePicker(label())"
         [attr.aria-expanded]="isOpen()"
         [attr.aria-controls]="listboxId"
         (click)="toggle($event)">
@@ -44,7 +44,7 @@
     [id]="listboxId"
     [attr.role]="inline() ? 'group' : 'dialog'"
     tabindex="-1"
-    aria-label="Time picker"
+    [attr.aria-label]="i18n.timePicker"
     class="not-prose flex w-max flex-col items-center gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-lg dark:border-slate-700 dark:bg-slate-900"
     [class.w-full]="inline()"
     [class.border-0]="inline()"
@@ -57,17 +57,17 @@
       class="tabular-nums text-2xl font-semibold tracking-tight text-slate-900 dark:text-white"
       aria-live="polite"
       aria-atomic="true"
-      [attr.aria-label]="'Selected time ' + displayClock()">
+      [attr.aria-label]="i18n.selectedTime(displayClock())">
       {{ displayClock() }}
     </div>
 
     <div class="flex items-center gap-2">
       <!-- Hours stepper -->
-      <div class="flex flex-col items-center gap-1" role="group" aria-label="Hours">
+      <div class="flex flex-col items-center gap-1" role="group" [attr.aria-label]="i18n.hours">
         <button
           type="button"
           class="flex h-8 w-12 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none dark:hover:bg-slate-800 dark:hover:text-slate-200"
-          aria-label="Increase hour"
+          [attr.aria-label]="i18n.increaseHour"
           (click)="stepHour(1)">
           <ply-icon name="chevron-up" class="h-4 w-4 stroke-current"></ply-icon>
         </button>
@@ -78,7 +78,7 @@
         <button
           type="button"
           class="flex h-8 w-12 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none dark:hover:bg-slate-800 dark:hover:text-slate-200"
-          aria-label="Decrease hour"
+          [attr.aria-label]="i18n.decreaseHour"
           (click)="stepHour(-1)">
           <ply-icon name="chevron-down" class="h-4 w-4 stroke-current"></ply-icon>
         </button>
@@ -88,11 +88,11 @@
       <div class="flex h-10 select-none items-center text-lg font-semibold text-slate-300 dark:text-slate-600">:</div>
 
       <!-- Minutes stepper -->
-      <div class="flex flex-col items-center gap-1" role="group" aria-label="Minutes">
+      <div class="flex flex-col items-center gap-1" role="group" [attr.aria-label]="i18n.minutes">
         <button
           type="button"
           class="flex h-8 w-12 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none dark:hover:bg-slate-800 dark:hover:text-slate-200"
-          aria-label="Increase minutes"
+          [attr.aria-label]="i18n.increaseMinutes"
           (click)="stepMinute(1)">
           <ply-icon name="chevron-up" class="h-4 w-4 stroke-current"></ply-icon>
         </button>
@@ -103,7 +103,7 @@
         <button
           type="button"
           class="flex h-8 w-12 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none dark:hover:bg-slate-800 dark:hover:text-slate-200"
-          aria-label="Decrease minutes"
+          [attr.aria-label]="i18n.decreaseMinutes"
           (click)="stepMinute(-1)">
           <ply-icon name="chevron-down" class="h-4 w-4 stroke-current"></ply-icon>
         </button>
@@ -111,13 +111,13 @@
 
       <!-- AM/PM group switch (12h cycle only) -->
       @if (hourCycle() === '12') {
-        <div class="flex items-center" role="group" aria-label="AM or PM">
+        <div class="flex items-center" role="group" [attr.aria-label]="i18n.amOrPm">
           <ply-button-group
             size="sm"
             [ngModel]="isPm() ? 'pm' : 'am'"
             (ngModelChange)="onPeriodChange($event)">
-            <ply-group-button-item value="am">AM</ply-group-button-item>
-            <ply-group-button-item value="pm">PM</ply-group-button-item>
+            <ply-group-button-item value="am">{{ i18n.am }}</ply-group-button-item>
+            <ply-group-button-item value="pm">{{ i18n.pm }}</ply-group-button-item>
           </ply-button-group>
         </div>
       }

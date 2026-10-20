@@ -8,7 +8,7 @@
       <ng-content></ng-content>
     </div>
     @if (close()) {
-    <button type="button" [class]="closeButtonClasses()" (click)="handleClose()" aria-label="Close alert">
+    <button type="button" [class]="closeButtonClasses()" (click)="handleClose()" [attr.aria-label]="i18n.closeAlert">
       <ply-icon name="close" [class]="closeIconClasses()"></ply-icon>
     </button>
     }

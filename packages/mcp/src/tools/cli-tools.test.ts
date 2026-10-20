@@ -29,6 +29,13 @@ describe('MCP Week 2 CLI tools', () => {
     expect(body(result).cli).toBe('ply-ui-cli init --yes');
   });
 
+  it('init_project can refresh an editor kit that is already there', async () => {
+    await initProject({ cwd: '/apps/shop', refreshEditorKit: true });
+    expect(runCli).toHaveBeenCalledWith(['init', '--yes', '--refresh-editor-kit'], {
+      cwd: '/apps/shop',
+    });
+  });
+
   it('doctor is an error when the CLI exits non-zero', async () => {
     runCli.mockResolvedValue({
       ok: false,
@@ -39,7 +46,23 @@ describe('MCP Week 2 CLI tools', () => {
     const result = await doctor({ cwd: '/apps/shop' });
     expect(result.isError).toBe(true);
     expect(body(result).exitCode).toBe(1);
+    expect(body(result).checks).toEqual([]);
+    expect(result.structuredContent).toMatchObject({ exitCode: 1, checks: [] });
     expect(runCli).toHaveBeenCalledWith(['doctor'], { cwd: '/apps/shop' });
+  });
+
+  it('doctor structuredContent lists each check', async () => {
+    runCli.mockResolvedValue({
+      ok: true,
+      code: 0,
+      stdout: '✔ ply-ui.json: Found\n3 checks: 1 passed, 0 warnings, 0 errors.\n',
+      stderr: '',
+    });
+    const result = await doctor({ cwd: '/apps/shop' });
+    expect(result.structuredContent).toMatchObject({
+      ok: true,
+      checks: [{ name: 'ply-ui.json', status: 'ok', message: 'Found' }],
+    });
   });
 
   it('diff_components with no names diffs every tracked component', async () => {
@@ -64,6 +87,29 @@ describe('MCP Week 2 CLI tools', () => {
       ['update', 'button', '--yes', '--force', '--overwrite-local'],
       { cwd: '/apps/shop' }
     );
+  });
+
+  it('update_components drops replace flags when the host declines', async () => {
+    const result = await updateComponents(
+      { names: ['button'], force: true, overwriteLocal: true },
+      { confirmReplace: async () => 'keep' },
+    );
+    expect(runCli).toHaveBeenCalledWith(['update', 'button', '--yes'], { cwd: '/tmp/app' });
+    expect(body(result).confirmation).toBe('declined');
+    expect(body(result).files).toEqual([]);
+  });
+
+  it('update_components structuredContent lists each file', async () => {
+    runCli.mockResolvedValue({
+      ok: true,
+      code: 0,
+      stdout: '  ↑ button/button.component.ts\n',
+      stderr: '',
+    });
+    const result = await updateComponents({ names: ['button'] });
+    expect(result.structuredContent).toMatchObject({
+      files: [{ path: 'button/button.component.ts', action: 'updated' }],
+    });
   });
 
   it('update_components passes --merge', async () => {

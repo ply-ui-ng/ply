@@ -97,6 +97,33 @@ describe('add_components Pro + aliases', () => {
     });
   });
 
+  it('returns missing packages and the exact install command', async () => {
+    runCli.mockResolvedValue({
+      ok: true,
+      code: 0,
+      stdout: '\nInstall missing npm dependency:\n  npm install @angular/cdk\n\n✔ Added 1 component: button\n',
+      stderr: '',
+    });
+    const result = await addComponents({ names: ['button'] });
+    expect(result.structuredContent).toMatchObject({
+      ok: true,
+      missingPackages: ['@angular/cdk'],
+      installCommand: 'npm install @angular/cdk',
+    });
+  });
+
+  it('does not pass --overwrite when the host declines', async () => {
+    const result = await addComponents(
+      { names: ['button'], overwrite: true },
+      { confirmReplace: async () => 'keep' },
+    );
+    expect(runCli).toHaveBeenCalledWith(['add', 'button', '--yes'], {
+      cwd: '/tmp/app',
+      env: undefined,
+    });
+    expect(body(result).confirmation).toBe('declined');
+  });
+
   it('resolves sheet → drawer before install', async () => {
     await addComponents({ names: ['sheet'] });
     expect(runCli).toHaveBeenCalledWith(['add', 'drawer', '--yes'], {

@@ -116,7 +116,7 @@ Metadata always. Free source only when `includeSource` is true. Pro source is ne
 { "names": ["button", "card"], "cwd": "/path/to/your-app" }
 ```
 
-Runs `ply-ui-cli add --yes`. Pro names need `PLY_LICENSE_KEY` on the MCP process (or `licenseKey` on the tool).
+Runs `ply-ui-cli add --yes`. Pro names need `PLY_LICENSE_KEY` on the MCP process (or `licenseKey` on the tool). The result includes `missingPackages` and, when something is missing, `installCommand`. `overwrite: true` asks the host to confirm before any file is replaced.
 
 ### `init_project`
 
@@ -124,7 +124,7 @@ Runs `ply-ui-cli add --yes`. Pro names need `PLY_LICENSE_KEY` on the MCP process
 { "cwd": "/path/to/your-app" }
 ```
 
-Runs `ply-ui-cli init --yes`. Writes `ply-ui.json`, styles, icons, and editor rules when those files are missing.
+Runs `ply-ui-cli init --yes`. Writes `ply-ui.json`, styles, icons, the Cursor rule, snippets, and the UI design skill at `.cursor/skills/ply-ui-design/` and `.agents/skills/ply-ui-design/` when those files are missing. `refreshEditorKit: true` replaces a kit that is already there.
 
 ### `doctor`
 
@@ -132,7 +132,7 @@ Runs `ply-ui-cli init --yes`. Writes `ply-ui.json`, styles, icons, and editor ru
 { "cwd": "/path/to/your-app" }
 ```
 
-Read-only. `isError` is set when `ply-ui-cli doctor` exits non-zero.
+Read-only. The result lists each check. `isError` is set when `ply-ui-cli doctor` exits non-zero.
 
 ### `diff_components`
 
@@ -148,7 +148,7 @@ Omit `names` (or pass `[]`) to diff every tracked component. Read-only.
 { "names": ["card"], "cwd": "/path/to/your-app", "force": false, "overwriteLocal": false, "merge": false }
 ```
 
-Runs `ply-ui-cli update --yes`. `force` takes upstream on conflicts. `merge` applies a 3-way merge. `overwriteLocal` reverts files you edited that upstream did not change.
+Runs `ply-ui-cli update --yes`. The result lists one row per file. `force` takes upstream on conflicts. `merge` applies a 3-way merge. `overwriteLocal` reverts files you edited that upstream did not change. `force` or `overwriteLocal` asks the host to confirm before replace.
 
 ## Resources
 
@@ -197,10 +197,10 @@ Run npx ply-ui-cli doctor. It checks ply-ui.json, the Angular workspace, @angula
 Open Theme Studio at https://ply-ui.com/theme/ or the docs customizer, pick a preset or hue, then copy the Tailwind v4 @theme block into src/tailwind.css. ply-ui.css points --ply-primary and Tailwind blue-* utilities at that palette (--ply-brand and --ply-scale-*). The live preview shows buttons, tabs, forms, and overlays together.
 
 **Can AI agents install Ply?**  
-Yes. npx -y ply-ui-mcp runs over stdio in Cursor, VS Code, Claude Code, Claude Desktop, Codex, Antigravity, Grok Build, Kimi Code, Qwen Code, Windsurf, and other local hosts. ChatGPT and Gemini chat apps use the Streamable HTTP connector at https://mcp.ply-ui.com/mcp (catalog tools) or a local npx -y ply-ui-mcp --http without --read-only so add/init/update can see the project. Pro add uses PLY_LICENSE_KEY on the MCP process. Setup for each host: https://ply-ui.com/getting-started/#ai-agents-mcp. Editors that skip MCP can copy the Cursor rule and snippet pack from https://ply-ui.com/getting-started/#editor-rules.
+Yes. npx -y ply-ui-mcp runs over stdio in Cursor, VS Code, Claude Code, Claude Desktop, Codex, Antigravity, Grok Build, Kimi Code, Qwen Code, Windsurf, and other local hosts. ChatGPT and Gemini chat apps use the Streamable HTTP connector at https://mcp.ply-ui.com/mcp (catalog tools) or a local npx -y ply-ui-mcp --http without --read-only so add/init/update can see the project. doctor, add_components, and update_components return structuredContent: checks, missing packages with the install command, and one result per file. Hosts that can ask confirm an overwrite before replace. init_project accepts refreshEditorKit. When PLY_LICENSE_KEY is already set, leave it in the environment and out of the tool call. Setup for each host: https://ply-ui.com/getting-started/#ai-agents-mcp. Editors that skip MCP can copy the Cursor rule and snippet pack from https://ply-ui.com/getting-started/#editor-rules.
 
 **What does init install for AI agents?**  
-npx ply-ui-cli init writes ply-ui.json, ply-ui.css, icon sprites, .cursor/rules/ply-ui.mdc, .vscode/ply-ui.code-snippets, and the UI design skill at .cursor/skills/ply-ui-design/ (SKILL.md, reference.md, examples.md) when those files are missing. The skill tells the agent to reuse ply-button, ply-card, and ply-input-group, keep one accent, and include loading, error, empty, and data states. It does not install components. Published copy: https://ply-ui.com/docs/ai/skills/ply-ui-design/SKILL.md. Walkthrough: https://ply-ui.com/learn/ply-ui-design-skill/.
+npx ply-ui-cli init writes ply-ui.json, ply-ui.css, icon sprites, .cursor/rules/ply-ui.mdc, .vscode/ply-ui.code-snippets, and the UI design skill at .cursor/skills/ply-ui-design/ and .agents/skills/ply-ui-design/ (SKILL.md, reference.md, examples.md) when those files are missing. npx ply-ui-cli init --refresh-editor-kit replaces a kit that is already there. The skill tells the agent to reuse ply-button, ply-card, and ply-input-group, keep one accent, and include loading, error, empty, and data states. It does not install components. Published copy: https://ply-ui.com/docs/ai/skills/ply-ui-design/SKILL.md. Walkthrough: https://ply-ui.com/learn/ply-ui-design-skill/.
 
 **Do AI agents use fewer tokens with Ply?**  
 Usually, yes. With Ply the agent copies a finished component (CLI or MCP) and wires it, instead of generating a toolbar, selection model, sanitizer, and SSR guards from a blank file. Token use still depends on the prompt and the model. A reconstructed Claude/Grok session for the rich text editor is at https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/ — that is a teaching simulation, not a lab benchmark.

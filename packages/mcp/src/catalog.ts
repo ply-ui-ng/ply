@@ -6,6 +6,13 @@ import { searchComponents, searchComponentsInput } from './tools/search-componen
 import { PACKAGE_VERSION } from './version';
 import { CLI_NPX, MCP_SERVER_NAME } from './brand';
 
+/**
+ * One instructions string for every Ply server. Hosted catalog and local
+ * install share it. It is not a second llms.txt.
+ */
+export const SERVER_INSTRUCTIONS =
+  'Search the catalog before inventing a component name. The hosted catalog cannot write files. A local install is init_project, then add_components. When PLY_LICENSE_KEY is already set, leave it in the environment and out of the tool call.';
+
 /** ChatGPT treats tools as writes unless readOnlyHint is set. */
 const catalogAnnotations = {
   readOnlyHint: true,
@@ -16,10 +23,13 @@ const catalogAnnotations = {
 
 /** Catalog-only server: safe to bundle on Cloudflare Workers (no child_process). */
 export function createCatalogMcpServer(): McpServer {
-  const server = new McpServer({
-    name: MCP_SERVER_NAME,
-    version: PACKAGE_VERSION,
-  });
+  const server = new McpServer(
+    {
+      name: MCP_SERVER_NAME,
+      version: PACKAGE_VERSION,
+    },
+    { instructions: SERVER_INSTRUCTIONS },
+  );
 
   server.registerTool(
     'list_components',

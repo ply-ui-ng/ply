@@ -8,7 +8,7 @@ function printHelp(): void {
   console.log(`Usage: ${CLI_BIN} <command> [options]
 
 Commands:
-  init                 Initialize your project (ply-ui.json, styles, icons, Cursor rules, snippets)
+  init                 Initialize your project (ply-ui.json, styles, icons, editor kit)
   add [components...]  Add components; omit names to pick from the catalog
   list                 List all available components (free and pro)
   diff [components...] Show upstream changes for installed components since you added them
@@ -22,6 +22,7 @@ Options:
   -f, --force          On conflict, take the upstream version (update)
       --overwrite-local  On update, also revert files you edited that upstream did not change
       --merge            On conflict, 3-way merge using the installed snapshot as ancestor
+      --refresh-editor-kit  Replace the Cursor rule, snippets, and design skill (.cursor/skills and .agents/skills)
   -V, --version        Print version
   -h, --help           Show help
 
@@ -36,6 +37,7 @@ interface Flags {
   force: boolean;
   overwriteLocal: boolean;
   merge: boolean;
+  refreshEditorKit: boolean;
   help: boolean;
   version: boolean;
 }
@@ -47,6 +49,7 @@ function parseArgs(argv: string[]): { command: string | undefined; positionals: 
     force: false,
     overwriteLocal: false,
     merge: false,
+    refreshEditorKit: false,
     help: false,
     version: false,
   };
@@ -71,6 +74,9 @@ function parseArgs(argv: string[]): { command: string | undefined; positionals: 
         break;
       case '--merge':
         flags.merge = true;
+        break;
+      case '--refresh-editor-kit':
+        flags.refreshEditorKit = true;
         break;
       case '-h':
       case '--help':
@@ -108,7 +114,7 @@ async function main(): Promise<void> {
   switch (command) {
     case 'init': {
       const { init } = await import('./commands/init.js');
-      await init({ yes: flags.yes });
+      await init({ yes: flags.yes, refreshEditorKit: flags.refreshEditorKit });
       return;
     }
     case 'add': {

@@ -15,7 +15,7 @@
       ply-icon-button
       color="danger"
       size="sm"
-      aria-label="Stop generating"
+      [attr.aria-label]="i18n.stopGenerating"
       (click)="stop.emit()">
       <ply-icon name="stop" class="h-4 w-4 stroke-current"></ply-icon>
     </button>
@@ -25,7 +25,7 @@
       ply-icon-button
       color="primary"
       size="sm"
-      aria-label="Send message"
+      [attr.aria-label]="i18n.sendMessage"
       [disabled]="!canSend()"
       (click)="submit()">
       <ply-icon name="send" class="h-4 w-4 stroke-current"></ply-icon>

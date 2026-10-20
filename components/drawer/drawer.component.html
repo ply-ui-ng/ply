@@ -10,7 +10,7 @@
     <div class="relative w-full h-full">
       @if (close()) {
       <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
-        class="absolute! top-0 end-0 z-10" aria-label="Close drawer">
+        class="absolute! top-0 end-0 z-10" [attr.aria-label]="i18n.closeDrawer">
         <ply-icon name="close"></ply-icon>
       </button>
       }
@@ -30,7 +30,7 @@
     <div class="relative w-full h-full">
       @if (close()) {
       <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
-        class="absolute! top-0 end-0 z-10" aria-label="Close drawer">
+        class="absolute! top-0 end-0 z-10" [attr.aria-label]="i18n.closeDrawer">
         <ply-icon name="close"></ply-icon>
       </button>
       }
@@ -50,7 +50,7 @@
     <div class="relative w-full h-full">
       @if (close()) {
       <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
-        class="absolute! top-0 end-0 z-10" aria-label="Close drawer">
+        class="absolute! top-0 end-0 z-10" [attr.aria-label]="i18n.closeDrawer">
         <ply-icon name="close"></ply-icon>
       </button>
       }
@@ -70,7 +70,7 @@
     <div class="relative w-full h-full">
       @if (close()) {
       <button ply-icon-button color="transparent" size="sm" (click)="closed.emit()"
-        class="absolute! top-0 end-0 z-10" aria-label="Close drawer">
+        class="absolute! top-0 end-0 z-10" [attr.aria-label]="i18n.closeDrawer">
         <ply-icon name="close"></ply-icon>
       </button>
       }

@@ -8,6 +8,7 @@ import { CLI_NPX } from '../brand';
 import {
   CONFIG_FILE,
   CSS_FILE,
+  AGENTS_SKILL_DIR,
   CURSOR_RULE_REL,
   DESIGN_SKILL_DIR,
   DOCS_CURSOR_RULE,
@@ -201,8 +202,14 @@ async function downloadSprite(name: string, targetDir: string): Promise<boolean>
   }
 }
 
-function writeEditorFile(dest: string, content: string, label: string, docsPath = DOCS_CURSOR_RULE): void {
-  if (fs.existsSync(dest)) return;
+function writeEditorFile(
+  dest: string,
+  content: string,
+  label: string,
+  docsPath = DOCS_CURSOR_RULE,
+  refresh = false,
+): void {
+  if (fs.existsSync(dest) && !refresh) return;
   try {
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.writeFileSync(dest, content, 'utf8');
@@ -215,6 +222,38 @@ function writeEditorFile(dest: string, content: string, label: string, docsPath 
 
 export interface InitOptions {
   yes?: boolean;
+  /** Replace the Cursor rule, snippets, and both design-skill copies. */
+  refreshEditorKit?: boolean;
+}
+
+/** Write the rule, snippets, and design skill. Existing files stay unless `refresh` is set. */
+export function writeEditorKit(cwd: string, options: { refresh?: boolean } = {}): void {
+  const refresh = options.refresh === true;
+  writeEditorFile(
+    path.resolve(cwd, CURSOR_RULE_REL),
+    CURSOR_RULE,
+    CURSOR_RULE_REL,
+    DOCS_CURSOR_RULE,
+    refresh,
+  );
+  writeEditorFile(
+    path.resolve(cwd, SNIPPETS_REL),
+    CODE_SNIPPETS,
+    SNIPPETS_REL,
+    DOCS_SNIPPETS,
+    refresh,
+  );
+  for (const dir of [DESIGN_SKILL_DIR, AGENTS_SKILL_DIR]) {
+    for (const [name, content] of Object.entries(DESIGN_SKILL_FILES)) {
+      writeEditorFile(
+        path.resolve(cwd, dir, name),
+        content,
+        `${dir}/${name}`,
+        `${DOCS_DESIGN_SKILL}/${name}`,
+        refresh,
+      );
+    }
+  }
 }
 
 const INIT_DEFAULTS = {
@@ -486,27 +525,10 @@ export async function init(options: InitOptions = {}) {
     await downloadSprite(sprite, assetsDir);
   }
 
-  spinner.text = 'Writing editor rules, snippets, and the UI design skill...';
-  writeEditorFile(
-    path.resolve(process.cwd(), CURSOR_RULE_REL),
-    CURSOR_RULE,
-    CURSOR_RULE_REL,
-    DOCS_CURSOR_RULE,
-  );
-  writeEditorFile(
-    path.resolve(process.cwd(), SNIPPETS_REL),
-    CODE_SNIPPETS,
-    SNIPPETS_REL,
-    DOCS_SNIPPETS,
-  );
-  for (const [name, content] of Object.entries(DESIGN_SKILL_FILES)) {
-    writeEditorFile(
-      path.resolve(process.cwd(), DESIGN_SKILL_DIR, name),
-      content,
-      `${DESIGN_SKILL_DIR}/${name}`,
-      `${DOCS_DESIGN_SKILL}/${name}`,
-    );
-  }
+  spinner.text = options.refreshEditorKit
+    ? 'Refreshing editor rules, snippets, and the UI design skill...'
+    : 'Writing editor rules, snippets, and the UI design skill...';
+  writeEditorKit(process.cwd(), { refresh: options.refreshEditorKit });
 
   spinner.succeed(`Project initialized! Add your first component with "${CLI_NPX} add button".`);
 }

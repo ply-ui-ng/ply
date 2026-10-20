@@ -18,6 +18,7 @@ import { IconComponent } from '../icon/icon.component';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
 import { slideBottom } from '../animations/animations';
 import { cn } from '../tw-merge/tw-merge';
+import { BASE_UI_I18N } from '../i18n/i18n';
 import { BottomSheetHeight } from '../types';
 
 const DRAG_CLOSE_THRESHOLD = 120; // px dragged down before auto-close
@@ -47,6 +48,7 @@ const fade = trigger('fade', [
   animations: [slideBottom, fade],
 })
 export class BottomSheetComponent {
+  protected readonly i18n = inject(BASE_UI_I18N);
   readonly extraClass = input('', { alias: 'class' });
 
   /** Two-way bindable open state. */

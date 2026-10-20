@@ -8,11 +8,11 @@
     }
     <!-- Navigation arrows -->
     <div class="flex gap-2">
-      <button [disabled]="!canScrollPrev()" ply-icon-button (click)="scrollPrev()" aria-label="Previous items"
+      <button [disabled]="!canScrollPrev()" ply-icon-button (click)="scrollPrev()" [attr.aria-label]="i18n.previousItems"
         class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700">
         <ply-icon name="chevron-left"></ply-icon>
       </button>
-      <button [disabled]="!canScrollNext()" ply-icon-button (click)="scrollNext()" aria-label="Next items"
+      <button [disabled]="!canScrollNext()" ply-icon-button (click)="scrollNext()" [attr.aria-label]="i18n.nextItems"
         class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700">
         <ply-icon name="chevron-right"></ply-icon>
       </button>

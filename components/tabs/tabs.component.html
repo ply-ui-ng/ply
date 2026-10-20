@@ -2,7 +2,7 @@
   @if (showLeftArrow()) {
   <button type="button" ply-icon-button color="transparent" size="sm"
     class="absolute start-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-[2px_0_4px_-1px_rgba(0,0,0,0.1)]"
-    aria-label="Scroll to previous tabs"
+    [attr.aria-label]="i18n.scrollToPreviousTabs"
     (click)="scrollTabs('start')">
     <ply-icon name="chevron-left" aria-hidden="true"></ply-icon>
   </button>
@@ -39,7 +39,7 @@
   @if (showRightArrow()) {
   <button type="button" ply-icon-button color="transparent" size="sm"
     class="absolute end-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-[-2px_0_4px_-1px_rgba(0,0,0,0.1)]"
-    aria-label="Scroll to next tabs"
+    [attr.aria-label]="i18n.scrollToNextTabs"
     (click)="scrollTabs('end')">
     <ply-icon name="chevron-right" aria-hidden="true"></ply-icon>
   </button>

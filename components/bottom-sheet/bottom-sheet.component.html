@@ -27,7 +27,7 @@
 
   @if (showClose()) {
   <button ply-icon-button color="transparent" size="sm" (click)="close()"
-    class="absolute! top-3 end-3 z-10" aria-label="Close bottom sheet">
+    class="absolute! top-3 end-3 z-10" [attr.aria-label]="i18n.closeBottomSheet">
     <ply-icon name="close"></ply-icon>
   </button>
   }

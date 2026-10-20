@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { cn } from '../tw-merge/tw-merge';
 import { IconComponent } from '../icon/icon.component';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
+import { BASE_UI_I18N } from '../i18n/i18n';
 
 const PROMPT_MAX_ROWS = 10;
 
@@ -34,6 +35,7 @@ const PROMPT_MAX_ROWS = 10;
   host: { '[class]': 'hostCls()' },
 })
 export class ChatPromptComponent {
+  protected readonly i18n = inject(BASE_UI_I18N);
   /** Additional host classes. */
   readonly extraClass = input('', { alias: 'class' });
 

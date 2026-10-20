@@ -4,6 +4,7 @@ import { Component,
   input,
   output,
   computed,
+  inject,
   ChangeDetectionStrategy, booleanAttribute } from '@angular/core';
 import { resolveBoxEdge } from '../direction/direction';
 import { injectElementDirection } from '../direction/inject-direction';
@@ -18,6 +19,7 @@ import {
 } from '../animations/animations';
 import { IconComponent } from '../icon/icon.component';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
+import { BASE_UI_I18N } from '../i18n/i18n';
 import { DrawerPosition, DrawerSize } from '../types';
 
 /**
@@ -35,6 +37,7 @@ import { DrawerPosition, DrawerSize } from '../types';
   animations: [slideLeft, slideRight, slideTop, slideBottom]
 })
 export class DrawerComponent<T> implements DrawerPanel<T> {
+  protected readonly i18n = inject(BASE_UI_I18N);
   private readonly writingDirection = injectElementDirection();
 
   /** The size of the drawer. Defaults to 'md'. */

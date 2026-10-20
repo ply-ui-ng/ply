@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, computed, input, viewChild, ElementRef, signal,
+import { AfterViewInit, Component, OnDestroy, computed, inject, input, viewChild, ElementRef, signal,
   ChangeDetectionStrategy
 } from '@angular/core';
 import { inlineScrollState, scrollByInline } from '../direction/direction';
@@ -6,6 +6,7 @@ import { injectElementDirection } from '../direction/inject-direction';
 import { IconComponent } from '../icon/icon.component';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
 import { cn } from '../tw-merge/tw-merge';
+import { BASE_UI_I18N } from '../i18n/i18n';
 
 /**
  * A horizontally scrollable carousel with drag-to-scroll and touch swipe.
@@ -23,6 +24,7 @@ import { cn } from '../tw-merge/tw-merge';
   host: { '[class]': 'hostCls()' },
 })
 export class HorizontalCarouselComponent implements AfterViewInit, OnDestroy {
+  protected readonly i18n = inject(BASE_UI_I18N);
   private readonly writingDirection = injectElementDirection();
   readonly extraClass = input('', { alias: 'class' });
   readonly title      = input('');

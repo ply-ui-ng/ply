@@ -6,8 +6,13 @@ describe('provideBaseUiI18n', () => {
 
   it('defaults to English chrome strings', () => {
     TestBed.configureTestingModule({});
-    expect(TestBed.inject(BASE_UI_I18N).close).toBe('Close');
-    expect(TestBed.inject(BASE_UI_I18N).noDataAvailable).toBe(DEFAULT_BASE_UI_I18N.noDataAvailable);
+    const i18n = TestBed.inject(BASE_UI_I18N);
+    expect(i18n.close).toBe('Close');
+    expect(i18n.noDataAvailable).toBe(DEFAULT_BASE_UI_I18N.noDataAvailable);
+    expect(i18n.closeAlert).toBe('Close alert');
+    expect(i18n.commandPalette).toBe('Command palette');
+    expect(i18n.openTimePicker('Due')).toBe('Open time picker for Due');
+    expect(i18n.filesSelected(2)).toBe('2 file(s) selected');
   });
 
   it('merges overrides on top of English defaults', () => {
@@ -19,5 +24,7 @@ describe('provideBaseUiI18n', () => {
     expect(i18n.nextPage).toBe('Next page');
     expect(i18n.noResults).toBe('Aucun résultat');
     expect(i18n.selectRow(3)).toBe('Select row 3');
+    expect(i18n.closeDrawer).toBe('Close drawer');
+    expect(i18n.previousMonth).toBe('Previous month');
   });
 });

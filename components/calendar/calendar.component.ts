@@ -1,10 +1,11 @@
-import { Component, OnInit, input, output, model, computed, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, input, output, model, computed, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { inlineArrowDelta } from '../direction/direction';
 import { injectElementDirection } from '../direction/inject-direction';
 import { IconComponent } from '../icon/icon.component';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
 import { cn, FOCUS_RING_INSET } from '../tw-merge/tw-merge';
+import { BASE_UI_I18N } from '../i18n/i18n';
 
 let calendarIdCounter = 0;
 
@@ -36,6 +37,7 @@ export interface CalendarDate {
   host: { '[class]': 'hostClass()' }
 })
 export class CalendarComponent implements OnInit {
+  protected readonly i18n = inject(BASE_UI_I18N);
   private readonly writingDirection = injectElementDirection();
   /** Additional CSS classes to merge into the host element. */
   readonly extraClass = input('', { alias: "class" });

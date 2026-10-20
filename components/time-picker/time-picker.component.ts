@@ -24,6 +24,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { injectElementDirection } from '../direction/inject-direction';
 import { TimePickerHourCycle } from '../types';
 import { cn } from '../tw-merge/tw-merge';
+import { BASE_UI_I18N } from '../i18n/i18n';
 import { IconComponent } from '../icon/icon.component';
 import { BaseAddonEndDirective } from '../input-group/ply-addon-end.directive';
 import { BaseInputDirective } from '../input-group/ply-input.directive';
@@ -80,6 +81,7 @@ export function formatTimeValue(hours: number, minutes: number): string {
   ],
 })
 export class TimePickerComponent implements ControlValueAccessor, OnDestroy {
+  protected readonly i18n = inject(BASE_UI_I18N);
   private readonly writingDirection = injectElementDirection();
   /** Lifecycle owner for takeUntilDestroyed — see rxjs-interop. */
   private readonly destroyRef = inject(DestroyRef);

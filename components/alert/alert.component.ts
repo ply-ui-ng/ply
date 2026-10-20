@@ -7,11 +7,13 @@ import {
   output,
   signal,
   booleanAttribute,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { AlertColor, AlertVariant } from '../types';
 import { cn } from '../tw-merge/tw-merge';
+import { BASE_UI_I18N } from '../i18n/i18n';
 
 /**
  * A highly configurable alert component for displaying important messages.
@@ -32,6 +34,7 @@ import { cn } from '../tw-merge/tw-merge';
 }
 })
 export class AlertComponent implements OnInit, OnDestroy {
+  protected readonly i18n = inject(BASE_UI_I18N);
   readonly extraClass = input('', { alias: 'class' });
   readonly color      = input<AlertColor>('');
   readonly variant    = input<AlertVariant>('soft');

@@ -6,9 +6,17 @@ import {
   isSafeItemName,
   suggestNames,
 } from '../registry';
+import { addOutput, parseAddReport } from '../cli-report';
+import { resolveReplace, type ReplaceDecision } from '../elicit';
 import { failJson, okJson } from '../result';
 import { canonicalComponentName } from '../aliases';
 import { CLI_BIN, CLI_NPX } from '../brand';
+
+export { addOutput };
+
+export interface AddComponentsHooks {
+  confirmReplace?: (message: string) => Promise<ReplaceDecision>;
+}
 
 export const addComponentsInput = {
   names: z
@@ -38,12 +46,15 @@ export const addComponentsInput = {
  * Installs registry components via the CLI. Pro names require
  * `licenseKey` or `PLY_LICENSE_KEY` / `BASE_UI_LICENSE_KEY`.
  */
-export async function addComponents(args: {
-  names: string[];
-  cwd?: string;
-  overwrite?: boolean;
-  licenseKey?: string;
-}) {
+export async function addComponents(
+  args: {
+    names: string[];
+    cwd?: string;
+    overwrite?: boolean;
+    licenseKey?: string;
+  },
+  hooks: AddComponentsHooks = {},
+) {
   try {
     const cwd = resolveProjectCwd(args.cwd);
     const names = [
@@ -141,8 +152,13 @@ export async function addComponents(args: {
     }
 
     const toInstall = [...free, ...pro];
+    const replace = await resolveReplace(
+      Boolean(args.overwrite),
+      hooks.confirmReplace,
+      `Replace existing files for ${toInstall.join(', ')}? This overwrites the copies already in the project.`,
+    );
     const cliArgs = ['add', ...toInstall, '--yes'];
-    if (args.overwrite) cliArgs.push('--overwrite');
+    if (replace.apply) cliArgs.push('--overwrite');
 
     const result = await runCli(cliArgs, {
       cwd,
@@ -150,13 +166,26 @@ export async function addComponents(args: {
         ? { PLY_LICENSE_KEY: licenseKey, BASE_UI_LICENSE_KEY: licenseKey }
         : undefined,
     });
+    const stdout = result.stdout.trim();
+    const install = parseAddReport(stdout);
+    const note = [
+      `Files were written by ${CLI_BIN} (canonical installer). MCP does not replace the CLI.`,
+      replace.confirmation === 'declined'
+        ? 'Overwrite was not confirmed. Existing files were left in place.'
+        : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
     if (!result.ok) {
       return failJson(`${CLI_BIN} add failed.`, {
         cwd,
         names: toInstall,
         exitCode: result.code,
-        stdout: result.stdout.trim(),
+        stdout,
         stderr: result.stderr.trim(),
+        missingPackages: install.missingPackages,
+        ...(install.installCommand ? { installCommand: install.installCommand } : {}),
+        ...(replace.confirmation ? { confirmation: replace.confirmation } : {}),
         hint: `Ensure the project was initialized (${CLI_NPX} init --yes). CLI remains the canonical install path.`,
       });
     }
@@ -166,9 +195,12 @@ export async function addComponents(args: {
       cwd,
       installed: toInstall,
       cli: `${CLI_BIN} add --yes`,
-      stdout: result.stdout.trim(),
+      stdout,
       stderr: result.stderr.trim() || undefined,
-      note: `Files were written by ${CLI_BIN} (canonical installer). MCP does not replace the CLI.`,
+      missingPackages: install.missingPackages,
+      ...(install.installCommand ? { installCommand: install.installCommand } : {}),
+      ...(replace.confirmation ? { confirmation: replace.confirmation } : {}),
+      note,
     });
   } catch (err: any) {
     return failJson(err.message || String(err));

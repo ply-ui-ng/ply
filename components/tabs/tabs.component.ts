@@ -7,6 +7,7 @@ import { IconButtonDirective } from '../button/ply-icon-button.directive';
 import { inlineArrowDelta, inlineScrollState, scrollByInline } from '../direction/direction';
 import { injectElementDirection } from '../direction/inject-direction';
 import { cn, FOCUS_RING } from '../tw-merge/tw-merge';
+import { BASE_UI_I18N } from '../i18n/i18n';
 import { injectTimers } from '../safe-timer/safe-timer';
 
 /**
@@ -25,6 +26,7 @@ import { injectTimers } from '../safe-timer/safe-timer';
   host: { '[class]': 'hostCls()' }
 })
 export class TabsComponent implements OnChanges {
+  protected readonly i18n = inject(BASE_UI_I18N);
   /** Timers cancelled automatically on destroy — see utils/safe-timer. */
   private readonly timers = injectTimers();
   private readonly ssrDocument = inject(DOCUMENT);

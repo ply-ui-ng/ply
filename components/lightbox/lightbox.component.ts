@@ -23,6 +23,7 @@ import { inlineArrowDelta } from '../direction/direction';
 import { injectElementDirection } from '../direction/inject-direction';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
 import { cn } from '../tw-merge/tw-merge';
+import { BASE_UI_I18N } from '../i18n/i18n';
 import { IconComponent } from '../icon/icon.component';
 import { lightboxInitialsFromAlt } from './lightbox-initials';
 import { LightboxThumbDirective } from './lightbox-thumb.directive';
@@ -64,6 +65,7 @@ const fade = trigger('fade', [
   animations: [fade],
 })
 export class LightboxComponent {
+  protected readonly i18n = inject(BASE_UI_I18N);
   private readonly writingDirection = injectElementDirection();
   /**
    * Classes for the thumbs layout wrapper (e.g. `grid grid-cols-3 gap-2`).

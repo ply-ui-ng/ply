@@ -13,6 +13,7 @@ export const LEGACY_SNAPSHOT_ROOT = '.base-ui/snapshots';
 export const CURSOR_RULE_REL = '.cursor/rules/ply-ui.mdc';
 export const SNIPPETS_REL = '.vscode/ply-ui.code-snippets';
 export const DESIGN_SKILL_DIR = '.cursor/skills/ply-ui-design';
+export const AGENTS_SKILL_DIR = '.agents/skills/ply-ui-design';
 export const DOCS_CURSOR_RULE = 'docs/ai/ply-ui.mdc';
 export const DOCS_SNIPPETS = 'docs/ai/ply-ui.code-snippets';
 export const DOCS_DESIGN_SKILL = 'docs/ai/skills/ply-ui-design';
