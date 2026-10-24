@@ -11,6 +11,8 @@ describe('provideBaseUiI18n', () => {
     expect(i18n.noDataAvailable).toBe(DEFAULT_BASE_UI_I18N.noDataAvailable);
     expect(i18n.closeAlert).toBe('Close alert');
     expect(i18n.commandPalette).toBe('Command palette');
+    expect(i18n.chooseTimes).toBe('Choose times');
+    expect(i18n.apply).toBe('Apply');
     expect(i18n.openTimePicker('Due')).toBe('Open time picker for Due');
     expect(i18n.filesSelected(2)).toBe('2 file(s) selected');
   });

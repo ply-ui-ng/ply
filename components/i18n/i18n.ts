@@ -112,6 +112,13 @@ export interface BaseUiI18n {
   commands: string;
   navigate: string;
   select: string;
+  changeDate: string;
+  changeDates: string;
+  chooseTime: string;
+  chooseTimes: string;
+  apply: string;
+  startTime: string;
+  endTime: string;
 }
 
 /** English defaults used when `provideBaseUiI18n()` is omitted. */
@@ -218,6 +225,13 @@ export const DEFAULT_BASE_UI_I18N: BaseUiI18n = {
   commands: 'Commands',
   navigate: 'Navigate',
   select: 'Select',
+  changeDate: 'Change date',
+  changeDates: 'Change dates',
+  chooseTime: 'Choose time',
+  chooseTimes: 'Choose times',
+  apply: 'Apply',
+  startTime: 'Start',
+  endTime: 'End',
 };
 
 export const BASE_UI_I18N = new InjectionToken<BaseUiI18n>('BASE_UI_I18N', {

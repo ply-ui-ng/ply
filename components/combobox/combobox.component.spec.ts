@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComboboxComponent } from './combobox.component';
 import { ComboboxOptionDirective } from './combobox-option.directive';
 import { ComboboxOption } from '../types';
+import { DirectionRegistry } from '../direction/direction.service';
 
 describe('ComboboxComponent', () => {
   let component: ComboboxComponent;
@@ -23,6 +24,7 @@ describe('ComboboxComponent', () => {
   });
 
   afterEach(() => {
+    document.documentElement.removeAttribute('dir');
     fixture?.destroy();
     document.querySelectorAll('.cdk-overlay-container').forEach((el) => el.remove());
   });
@@ -58,6 +60,15 @@ describe('ComboboxComponent', () => {
     expect(component.isOpen()).toBe(true);
     expect(document.querySelector('.cdk-overlay-pane')).toBeTruthy();
     expect(document.getElementById(component.listboxId)).toBeTruthy();
+  });
+
+  it('opens the listbox overlay in the document direction', () => {
+    TestBed.inject(DirectionRegistry).setDocumentDirection('rtl');
+    component.openDropdown();
+    fixture.detectChanges();
+    const pane = document.querySelector('.cdk-overlay-pane') as HTMLElement;
+    const dir = pane.getAttribute('dir') ?? pane.closest('[dir]')?.getAttribute('dir');
+    expect(dir).toBe('rtl');
   });
 
   it('opens on ArrowDown and moves the active option', () => {

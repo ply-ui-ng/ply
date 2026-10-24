@@ -55,4 +55,28 @@ describe('ContextMenuDirective keyboard', () => {
     menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     expect(document.querySelector('[role="menu"]')).toBeNull();
   });
+
+  it('jumps with Home and End and matches typeahead', async () => {
+    const directive = fixture.debugElement.query(By.directive(ContextMenuDirective))
+      .injector.get(ContextMenuDirective);
+    directive.open({ x: 8, y: 8 });
+    fixture.detectChanges();
+
+    await vi.waitFor(() => {
+      const items = document.querySelectorAll<HTMLElement>('[role="menuitem"]');
+      expect(document.activeElement).toBe(items[0]);
+    });
+
+    const menu = document.querySelector('[role="menu"]') as HTMLElement;
+    const items = () => document.querySelectorAll<HTMLElement>('[role="menuitem"]');
+
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+    expect(document.activeElement).toBe(items()[1]);
+
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+    expect(document.activeElement).toBe(items()[0]);
+
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'd', bubbles: true }));
+    expect(document.activeElement).toBe(items()[1]);
+  });
 });

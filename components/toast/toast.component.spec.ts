@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ToastComponent } from './toast.component';
 import { ToastItem } from './toast.service';
+import { DirectionRegistry } from '../direction/direction.service';
 
 function makeToast(overrides: Partial<ToastItem> = {}): ToastItem {
   return {
@@ -47,6 +48,7 @@ describe('ToastComponent a11y', () => {
   });
 
   afterEach(() => {
+    document.documentElement.removeAttribute('dir');
     vi.useRealTimers();
     vi.unstubAllGlobals();
     fixture?.destroy();
@@ -72,6 +74,14 @@ describe('ToastComponent a11y', () => {
       'button[aria-label="Dismiss notification: Profile updated"]',
     );
     expect(dismiss).toBeTruthy();
+  });
+
+  it('places top-end on the left in RTL and keeps a physical right edge', () => {
+    TestBed.inject(DirectionRegistry).setDocumentDirection('rtl');
+    fixture.detectChanges();
+    expect(component.getContainerClasses('top-end')).toContain('left-6');
+    expect(component.getContainerClasses('top-end')).not.toContain('right-6');
+    expect(component.getContainerClasses('top-right')).toContain('right-6');
   });
 
   it('uses --ply-primary for primary toast chrome', () => {

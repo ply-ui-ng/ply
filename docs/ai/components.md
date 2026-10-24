@@ -1125,7 +1125,7 @@ Tag field bound to `string[]` via Angular Forms. Enter, comma, or Tab adds a tag
 **Selector:** `ply-time-picker`
 **Standalone:** true
 
-Overlay time picker bound to an `HH:mm` string via Angular Forms. Pair with `ply-datepicker showTime` for a full datetime. The dropdown is a CDK overlay with a transparent backdrop, aligned to the field’s start edge; it opens below the input and flips above when there is not enough space. `[inline]="true"` keeps the panel in-flow (used by the datepicker datetime overlay).
+Overlay time picker bound to an `HH:mm` string, paired with `ply-datepicker showTime` for one datetime or `ply-date-range-picker showTime` for a start and end. The dropdown is a CDK overlay with a transparent backdrop, aligned to the field’s start edge; it opens below the input and flips above when there is not enough space. `[inline]="true"` keeps the panel in-flow (used by the datepicker datetime overlay).
 
 **Inputs:**
 | Name | Type | Default | Description |
@@ -1319,7 +1319,7 @@ An individual radio option inside a `ply-radio-group`.
 **Selector:** `ply-datepicker`
 **Standalone:** true
 
-A standard date picker input field that opens an overlay calendar popup. Supports Angular Forms with `Date` objects.
+A date picker input that opens an overlay calendar, with optional showTime so the field binds a full datetime through Angular Forms.
 
 **Inputs:**
 | Name | Type | Default | Description |
@@ -1327,6 +1327,8 @@ A standard date picker input field that opens an overlay calendar popup. Support
 | placeholder | `string` | 'Select date' | The placeholder text shown when no date is selected. |
 | label | `string` | '' | An optional label text displayed above the input. |
 | disabled | `boolean` | false | Disables the input and prevents the calendar from opening. |
+| showTime | `boolean` | false | Two-step date then time flow. The field binds a full datetime. |
+| hourCycle | `'12' \| '24'` | '24' | Clock cycle used when `showTime` is true. |
 
 *No outputs.*
 
@@ -1336,7 +1338,7 @@ A standard date picker input field that opens an overlay calendar popup. Support
 **Selector:** `ply-date-range-picker`
 **Standalone:** true
 
-An input field that opens a calendar popup specifically for picking start and end date ranges.
+An input field that opens a calendar popup for start and end dates, with optional showTime so the field binds both datetimes. Fully integrates with Angular Forms using the DateRange interface.
 
 **Inputs:**
 | Name | Type | Default | Description |
@@ -1344,6 +1346,8 @@ An input field that opens a calendar popup specifically for picking start and en
 | placeholder | `string` | 'Select range' | The placeholder text shown when no date range is selected. |
 | label | `string` | '' | An optional label text displayed above the input. |
 | disabled | `boolean` | false | Disables the input and prevents the calendar from opening. |
+| showTime | `boolean` | false | Pick start and end days, then a time for each. The field binds both datetimes. |
+| hourCycle | `'12' \| '24'` | '24' | Clock cycle used when `showTime` is true. |
 
 *No outputs.*
 

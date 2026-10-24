@@ -4,7 +4,8 @@ import {
   OnDestroy,
   ViewContainerRef,
   inject,
-  input
+  input,
+  signal,
 } from '@angular/core';
 import { injectElementDirection } from '../direction/inject-direction';
 import { DrawerPanel } from './drawer-panel';
@@ -26,13 +27,24 @@ import { outputToObservable } from '@angular/core/rxjs-interop';
   host: {
     '(click)': 'toggleDrawer()',
     '(keydown.escape)': 'destroyDrawer()',
-    '[attr.aria-expanded]': 'isDrawerOpen',
+    '[attr.aria-expanded]': 'drawerOpen()',
     '[attr.aria-haspopup]': "'dialog'",
   },
 })
 export class DrawerDirective<T> implements OnDestroy {
   private readonly writingDirection = injectElementDirection();
-  isDrawerOpen = false;
+  /** Open state. A signal so zoneless hosts refresh aria-expanded when the overlay closes. */
+  private readonly drawerOpen = signal(false);
+
+  /**
+   * Whether the drawer overlay is currently open.
+   *
+   * @example
+   * if (trigger.isDrawerOpen) { … }
+   */
+  get isDrawerOpen(): boolean {
+    return this.drawerOpen();
+  }
   private overlayRef?: OverlayRef;
   private closingSubscription = Subscription.EMPTY;
 
@@ -47,14 +59,14 @@ export class DrawerDirective<T> implements OnDestroy {
   private elementRef = inject(ElementRef);
 
   toggleDrawer(): void {
-    this.isDrawerOpen ? this.destroyDrawer() : this.openDrawer();
+    this.drawerOpen() ? this.destroyDrawer() : this.openDrawer();
   }
 
   openDrawer(): void {
     const drawerPanel = this.drawerPanel();
     if (!drawerPanel) return;
 
-    this.isDrawerOpen = true;
+    this.drawerOpen.set(true);
     this.overlayRef = this.overlay.create({
       direction: this.writingDirection(),
       hasBackdrop: true,
@@ -77,12 +89,12 @@ export class DrawerDirective<T> implements OnDestroy {
   }
 
   destroyDrawer(): void {
-    if (!this.overlayRef || !this.isDrawerOpen) {
+    if (!this.overlayRef || !this.drawerOpen()) {
       return;
     }
 
     this.closingSubscription.unsubscribe();
-    this.isDrawerOpen = false;
+    this.drawerOpen.set(false);
     this.overlayRef.detach();
     // Return focus to the trigger, matching the other overlay components.
     this.elementRef.nativeElement.focus?.();

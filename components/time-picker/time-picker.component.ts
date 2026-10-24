@@ -51,7 +51,7 @@ export function formatTimeValue(hours: number, minutes: number): string {
 }
 
 /**
- * Overlay time picker bound to an `HH:mm` string via Angular Forms.
+ * Overlay time picker bound to an `HH:mm` string, paired with `ply-datepicker showTime` for one datetime or `ply-date-range-picker showTime` for a start and end.
  * The dropdown is a CDK overlay with a transparent backdrop; it opens below the
  * field and flips above when there is not enough space.
  *

@@ -1,7 +1,9 @@
 import { Component, PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { firstValueFrom } from 'rxjs';
 import { DialogService } from './dialog.service';
+import { DirectionRegistry } from '../direction/direction.service';
 
 @Component({
   template: '',
@@ -30,5 +32,27 @@ describe('DialogService SSR', () => {
     const result = await firstValueFrom(service.confirm({ title: 'Delete?' }));
     expect(result).toBe(false);
     expect(append).not.toHaveBeenCalled();
+  });
+});
+
+describe('DialogService direction', () => {
+  afterEach(() => {
+    document.documentElement.removeAttribute('dir');
+    document.querySelectorAll('.cdk-overlay-container').forEach((el) => el.remove());
+    TestBed.resetTestingModule();
+  });
+
+  it('opens the overlay in the document direction', () => {
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()],
+    });
+    TestBed.inject(DirectionRegistry).setDocumentDirection('rtl');
+    const service = TestBed.inject(DialogService);
+    service.open(DialogSsrStubComponent).subscribe();
+
+    const pane = document.querySelector('.cdk-overlay-pane') as HTMLElement | null;
+    expect(pane).toBeTruthy();
+    const dir = pane?.getAttribute('dir') ?? pane?.closest('[dir]')?.getAttribute('dir');
+    expect(dir).toBe('rtl');
   });
 });

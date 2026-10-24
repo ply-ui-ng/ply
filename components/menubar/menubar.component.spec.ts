@@ -5,6 +5,7 @@ import { MenubarMenuComponent } from './menubar-menu.component';
 import { DropdownMenuItemComponent } from '../dropdown-menu/dropdown-menu-item/dropdown-menu-item.component';
 import { DropdownMenuComponent } from '../dropdown-menu/dropdown-menu.component';
 import { DropdownMenuDirective } from '../dropdown/dropdown.directive';
+import { DirectionRegistry } from '../direction/direction.service';
 
 @Component({
   template: `
@@ -72,7 +73,10 @@ describe('MenubarComponent', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => fixture?.destroy());
+  afterEach(() => {
+    document.documentElement.removeAttribute('dir');
+    fixture?.destroy();
+  });
 
   it('renders a menubar with labeled triggers', () => {
     const bar = fixture.nativeElement.querySelector('[role="menubar"]') as HTMLElement;
@@ -109,6 +113,20 @@ describe('MenubarComponent', () => {
 
     expect(document.activeElement).not.toBe(triggers[1]);
     expect(fileTrigger.getAttribute('tabindex')).toBe('0');
+  });
+
+  it('moves to the next menu with ArrowLeft when the document is RTL', () => {
+    TestBed.inject(DirectionRegistry).setDocumentDirection('rtl');
+    const triggers = fixture.nativeElement.querySelectorAll(
+      'ply-menubar-menu > button[role="menuitem"]',
+    ) as NodeListOf<HTMLButtonElement>;
+    triggers[0].focus();
+    triggers[0].dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, cancelable: true }),
+    );
+    fixture.detectChanges();
+    expect(document.activeElement).toBe(triggers[1]);
+    expect(triggers[1].getAttribute('tabindex')).toBe('0');
   });
 
   it('moves between top-level menus with ArrowRight and ArrowLeft', () => {
