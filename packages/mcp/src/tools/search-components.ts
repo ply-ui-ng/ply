@@ -24,7 +24,14 @@ export const searchComponentsInput = {
     .default('all')
     .describe('Filter by license tier'),
   category: z.enum(CATEGORIES).optional().describe('Filter by registry category'),
-  limit: z.number().int().min(1).max(40).optional().default(12),
+  limit: z
+    .number()
+    .int()
+    .min(1)
+    .max(40)
+    .optional()
+    .default(12)
+    .describe('Maximum ranked matches to return (1-40). Defaults to 12.'),
 };
 
 function tokenize(query: string): string[] {

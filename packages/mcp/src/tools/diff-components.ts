@@ -1,8 +1,11 @@
 import { z } from 'zod';
 import { resolveProjectCwd, runCli } from '../cli';
+import { diffOutput, parseDiffFiles } from '../cli-report';
 import { isSafeItemName } from '../registry';
 import { failJson, okJson } from '../result';
 import { CLI_BIN } from '../brand';
+
+export { diffOutput };
 
 export const diffComponentsInput = {
   names: z
@@ -31,26 +34,25 @@ export async function diffComponents(args: { names?: string[]; cwd?: string } = 
 
     const cliArgs = names.length ? ['diff', ...names] : ['diff'];
     const result = await runCli(cliArgs, { cwd });
+    const stdout = result.stdout.trim();
+    const body = {
+      cwd,
+      names: names.length ? names : 'all-tracked',
+      cli: names.length ? `${CLI_BIN} diff ${names.join(' ')}` : `${CLI_BIN} diff`,
+      stdout,
+      stderr: result.stderr.trim() || undefined,
+      files: parseDiffFiles(stdout),
+      note: 'Writes nothing. update_components applies these upstream changes.',
+    };
     if (!result.ok) {
       return failJson(`${CLI_BIN} diff failed.`, {
-        cwd,
-        names,
+        ...body,
         exitCode: result.code,
-        stdout: result.stdout.trim(),
-        stderr: result.stderr.trim(),
         hint: 'Project must be initialized and components tracked in ply-ui-lock.json.',
       });
     }
 
-    return okJson({
-      ok: true,
-      cwd,
-      names: names.length ? names : 'all-tracked',
-      cli: names.length ? `${CLI_BIN} diff ${names.join(' ')}` : `${CLI_BIN} diff`,
-      stdout: result.stdout.trim(),
-      stderr: result.stderr.trim() || undefined,
-      note: 'Read-only. Use update_components to apply upstream changes.',
-    });
+    return okJson({ ok: true, ...body });
   } catch (err: any) {
     return failJson(err.message || String(err));
   }

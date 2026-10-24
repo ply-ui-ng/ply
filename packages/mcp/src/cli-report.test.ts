@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { addOutput, doctorOutput, parseAddReport, parseDoctorChecks, parseUpdateFiles, updateOutput } from './cli-report';
+import { addOutput, diffOutput, doctorOutput, parseAddReport, parseDiffFiles, parseDoctorChecks, parseUpdateFiles, updateOutput } from './cli-report';
 
 describe('CLI report parsers', () => {
   it('reads doctor check lines and skips the summary', () => {
@@ -44,5 +44,27 @@ describe('CLI report parsers', () => {
     expect(files[2].detail).toContain('reverted local edits');
     expect(files[3].path).toBe('tabs/tabs.component.ts');
     expect(updateOutput.safeParse({ ok: true, files, confirmation: 'declined', stderr: undefined }).success).toBe(true);
+  });
+
+  it('reads drifted diff files and skips patches and unchanged paths', () => {
+    const files = parseDiffFiles(`
+button
+  button/button.component.ts  —  updated upstream
+    + added line
+    - removed line
+  button/button.component.html  —  unchanged
+
+card  (pro)
+  card/card.component.ts  —  CONFLICT — both changed
+  card/missing.ts  —  upstream changed, but your local file is missing
+
+✔ Up to date: dialog
+`);
+    expect(files).toEqual([
+      { component: 'button', path: 'button/button.component.ts', status: 'upstream-changed' },
+      { component: 'card', path: 'card/card.component.ts', status: 'conflict' },
+      { component: 'card', path: 'card/missing.ts', status: 'missing-locally' },
+    ]);
+    expect(diffOutput.safeParse({ ok: true, files, stdout: 'kept' }).success).toBe(true);
   });
 });

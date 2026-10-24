@@ -70,6 +70,28 @@ describe('MCP Week 2 CLI tools', () => {
     expect(runCli).toHaveBeenCalledWith(['diff'], { cwd: '/tmp/app' });
   });
 
+  it('diff_components structuredContent lists drifted files and omits patches', async () => {
+    runCli.mockResolvedValue({
+      ok: true,
+      code: 0,
+      stdout: 'button\n  button/button.component.ts  —  locally modified (no upstream change)\n    + local only\n',
+      stderr: '',
+    });
+    const result = await diffComponents({ names: ['button'], cwd: '/apps/shop' });
+    expect(result.structuredContent).toMatchObject({
+      ok: true,
+      files: [
+        {
+          component: 'button',
+          path: 'button/button.component.ts',
+          status: 'locally-modified',
+        },
+      ],
+    });
+    expect(body(result).files[0]).not.toHaveProperty('patch');
+    expect(runCli).toHaveBeenCalledWith(['diff', 'button'], { cwd: '/apps/shop' });
+  });
+
   it('diff_components rejects unsafe names without spawning the CLI', async () => {
     const result = await diffComponents({ names: ['../evil'] });
     expect(result.isError).toBe(true);

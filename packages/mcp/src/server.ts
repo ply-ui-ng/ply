@@ -2,7 +2,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { createCatalogMcpServer } from './catalog';
 import { confirmReplace } from './elicit';
 import { addComponents, addComponentsInput, addOutput } from './tools/add-components';
-import { diffComponents, diffComponentsInput } from './tools/diff-components';
+import { diffComponents, diffComponentsInput, diffOutput } from './tools/diff-components';
 import { doctor, doctorInput, doctorOutput } from './tools/doctor';
 import { initProject, initProjectInput } from './tools/init-project';
 import { updateComponents, updateComponentsInput, updateOutput } from './tools/update-components';
@@ -38,7 +38,7 @@ export function createMcpServer(options: CreateMcpServerOptions = {}): McpServer
       {
         title: 'Add Ply components',
         description:
-          `Install registry components by shelling to \`${CLI_BIN} add --yes\`. --yes leaves an existing component in place; pass overwrite to replace it. Hosts that can ask confirm that overwrite first. Pro names require PLY_LICENSE_KEY (or licenseKey). Project must already have ply-ui.json. structuredContent includes missingPackages and installCommand.`,
+          `Install named registry components into a project that already has ply-ui.json (\`${CLI_BIN} add --yes\`). init_project creates that file; update_components refreshes tracked copies. --yes leaves an existing folder in place; pass overwrite to replace it. Hosts that can ask confirm that overwrite first. Pro names require PLY_LICENSE_KEY (or licenseKey). structuredContent includes missingPackages and installCommand.`,
         inputSchema: addComponentsInput,
         outputSchema: addOutput,
         annotations: writeAnnotations,
@@ -54,7 +54,7 @@ export function createMcpServer(options: CreateMcpServerOptions = {}): McpServer
       {
         title: 'Initialize Ply in a project',
         description:
-          `Run \`${CLI_BIN} init --yes\` in the target directory. Writes ply-ui.json, ply-ui.css, and icon sprites only when those files are missing, discovers the stylesheet already listed in angular.json, and inserts @source when it is absent. Writes the design skill to .cursor/skills and .agents/skills when those files are missing. Pass refreshEditorKit to replace an existing editor kit. Always non-interactive.`,
+          `Create missing Ply setup files (\`${CLI_BIN} init --yes\`): ply-ui.json, ply-ui.css, icon sprites, @source, and the design skill in .cursor/skills and .agents/skills, and only when those files are absent. Existing project files stay. refreshEditorKit is the only replacement: it overwrites an editor kit that is already there. add_components installs named components once ply-ui.json exists; update_components refreshes tracked copies. Always non-interactive.`,
         inputSchema: initProjectInput,
         annotations: writeAnnotations,
       },
@@ -66,7 +66,7 @@ export function createMcpServer(options: CreateMcpServerOptions = {}): McpServer
       {
         title: 'Verify Ply project setup',
         description:
-          `Run \`${CLI_BIN} doctor\` (read-only). structuredContent.checks lists each ✔/⚠/✖ line. Returns isError when the CLI exits non-zero.`,
+          `Check Ply project setup: ply-ui.json, Angular and CDK, Tailwind v4 and @source, ply-ui.css, and icon sprites. @source problems are warnings. File drift against the registry is diff_components, which writes nothing. Does not install or modify files. Returns isError when the CLI exits non-zero.`,
         inputSchema: doctorInput,
         outputSchema: doctorOutput,
         annotations: readOnlyAnnotations,
@@ -79,8 +79,9 @@ export function createMcpServer(options: CreateMcpServerOptions = {}): McpServer
       {
         title: 'Diff installed Ply components',
         description:
-          `Run \`${CLI_BIN} diff\` against tracked components. Read-only. Omit names to check everything in ply-ui-lock.json.`,
+          `Compare each tracked Ply component file with the registry and return drifted paths and statuses. Writes nothing. update_components applies those upstream changes. doctor checks project setup, not file contents.`,
         inputSchema: diffComponentsInput,
+        outputSchema: diffOutput,
         annotations: readOnlyAnnotations,
       },
       async (args) => diffComponents(args)
@@ -91,7 +92,7 @@ export function createMcpServer(options: CreateMcpServerOptions = {}): McpServer
       {
         title: 'Update installed Ply components',
         description:
-          `Run \`${CLI_BIN} update --yes\`. Untouched files take upstream. Conflicts stay local and the CLI exits non-zero unless force or merge. Local-only edits skip unless overwriteLocal. Hosts that can ask confirm force and overwriteLocal before those flags replace files. structuredContent.files is one result per file line.`,
+          `Apply upstream changes to tracked Ply component copies (\`${CLI_BIN} update --yes\`). diff_components reports the same drift and writes nothing. Untouched files take upstream. Conflicts stay local and the CLI exits non-zero unless force or merge. Local-only edits skip unless overwriteLocal. Hosts that can ask confirm force and overwriteLocal before those flags replace files. structuredContent.files is one result per file line.`,
         inputSchema: updateComponentsInput,
         outputSchema: updateOutput,
         annotations: writeAnnotations,

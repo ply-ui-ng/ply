@@ -11,7 +11,7 @@ import { CLI_NPX, MCP_SERVER_NAME } from './brand';
  * install share it. It is not a second llms.txt.
  */
 export const SERVER_INSTRUCTIONS =
-  'Search the catalog before inventing a component name. The hosted catalog cannot write files. A local install is init_project, then add_components. When PLY_LICENSE_KEY is already set, leave it in the environment and out of the tool call.';
+  'list_components browses the catalog by tier, category, or substring. search_components ranks a fuzzy match when the name is uncertain. get_component reads one known name. init_project creates missing project files. add_components installs named components into a project that already has ply-ui.json. update_components refreshes tracked copies. diff_components reports that drift and writes nothing. doctor checks setup. The hosted catalog cannot write files. When PLY_LICENSE_KEY is already set, leave it in the environment and out of the tool call.';
 
 /** ChatGPT treats tools as writes unless readOnlyHint is set. */
 const catalogAnnotations = {
@@ -36,7 +36,7 @@ export function createCatalogMcpServer(): McpServer {
     {
       title: 'List Ply components',
       description:
-        `List components from the Ply registry. Filter by tier (free|pro|all), category, or name substring. Does not install anything. To copy a component into a project, tell the user to run ${CLI_NPX} add <name>.`,
+        `List Ply registry components filtered by tier, category, or a case-insensitive substring, sorted by name. Not a fuzzy match: search_components ranks uncertain names, and get_component reads one known name. Does not install. To copy a component into a project, tell the user to run ${CLI_NPX} add <name>.`,
       inputSchema: listComponentsInput,
       annotations: catalogAnnotations,
     },
@@ -48,7 +48,7 @@ export function createCatalogMcpServer(): McpServer {
     {
       title: 'Get component details',
       description:
-        `Get registry metadata for one component (deps, category, file list). Free source only when includeSource=true. Pro source is never streamed via MCP. Does not install; returns installCommand (${CLI_NPX} add <name>).`,
+        `Get registry metadata for one known component (deps, category, file list). Use search_components when the name is uncertain. Free source only when includeSource=true. Pro source is never streamed via MCP. Does not install; returns installCommand (${CLI_NPX} add <name>).`,
       inputSchema: getComponentInput,
       annotations: catalogAnnotations,
     },
@@ -60,7 +60,7 @@ export function createCatalogMcpServer(): McpServer {
     {
       title: 'Search Ply components',
       description:
-        `Fuzzy / token search over registry component names (e.g. "dialog", "sheet", "carousel"). Does not install anything. Prefer this before guessing names, then give the user ${CLI_NPX} add <name> (or local stdio add_components).`,
+        `Rank Ply registry components by a fuzzy or token match when the name is uncertain (for example "dialog modal"). Not a category browse: list_components filters by tier, category, or substring, and get_component reads one known name. Does not install. To copy a match into a project, tell the user to run ${CLI_NPX} add <name> (or local stdio add_components).`,
       inputSchema: searchComponentsInput,
       annotations: catalogAnnotations,
     },
