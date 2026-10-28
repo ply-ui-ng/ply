@@ -60,9 +60,11 @@
   },
   "overrides": {
     "esbuild": "0.28.2",
-    "fast-uri": "3.1.8",
+    "fast-uri": "3.1.9",
     "proxy-addr": "2.0.8",
     "hono": "4.13.13",
-    "qs": "6.16.0"
+    "qs": "6.17.0",
+    "body-parser": "2.4.0",
+    "ip-address": "10.7.5"
   }
 }
