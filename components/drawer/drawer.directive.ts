@@ -34,7 +34,7 @@ import { outputToObservable } from '@angular/core/rxjs-interop';
 export class DrawerDirective<T> implements OnDestroy {
   private readonly writingDirection = injectElementDirection();
   /** Open state. A signal so zoneless hosts refresh aria-expanded when the overlay closes. */
-  private readonly drawerOpen = signal(false);
+  protected readonly drawerOpen = signal(false);
 
   /**
    * Whether the drawer overlay is currently open.

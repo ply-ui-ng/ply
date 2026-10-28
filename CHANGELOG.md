@@ -10,6 +10,7 @@ Also published at [https://ply-ui.com/changelog](https://ply-ui.com/changelog).
 
 ## October 2026
 
+- **Bug Fixes** — **drawer:** let the host binding read the open state
 - **Features** — **lightbox:** open video and PDF in the same gallery
 - **Features** — **mcp:** clarify tool boundaries and return structured diffs
 - **Features** — **date-range-picker:** bind a start and end datetime with showTime
