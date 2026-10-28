@@ -16,9 +16,12 @@
 
     <!-- Top bar -->
     <div class="relative z-10 flex shrink-0 items-center justify-between gap-2 px-3 py-3 sm:px-4">
-      <div class="min-w-0 text-sm text-slate-300">
+      <div class="min-w-0 truncate text-sm text-slate-300">
         @if (showCounter() && counterText()) {
           <span class="tabular-nums">{{ counterText() }}</span>
+        }
+        @if (activeAlt()) {
+          <span [class]="showCounter() && counterText() ? 'ms-2' : ''">{{ activeAlt() }}</span>
         }
       </div>
 
@@ -26,64 +29,66 @@
         <div
           class="flex max-w-full items-center gap-1 overflow-x-auto rounded-lg bg-slate-900/80 p-1 ring-1 ring-white/10"
           role="toolbar"
-          [attr.aria-label]="i18n.imageTools">
+          [attr.aria-label]="activeType() === 'image' ? i18n.imageTools : i18n.mediaTools">
+          @if (activeType() === 'image') {
+            <button
+              type="button"
+              ply-icon-button
+              color="transparent"
+              size="sm"
+              class="text-white! hover:bg-white/10!"
+              [attr.aria-label]="i18n.flipHorizontal"
+              (click)="flipHorizontal()">
+              <ply-icon name="flip-horizontal" class="h-4 w-4 stroke-white"></ply-icon>
+            </button>
+            <button
+              type="button"
+              ply-icon-button
+              color="transparent"
+              size="sm"
+              class="text-white! hover:bg-white/10!"
+              [attr.aria-label]="i18n.flipVertical"
+              (click)="flipVertical()">
+              <ply-icon name="flip-vertical" class="h-4 w-4 stroke-white"></ply-icon>
+            </button>
+            <button
+              type="button"
+              ply-icon-button
+              color="transparent"
+              size="sm"
+              class="text-white! hover:bg-white/10!"
+              [attr.aria-label]="i18n.rotate90Degrees"
+              (click)="rotate90()">
+              <ply-icon name="rotate-right" class="h-4 w-4 stroke-white"></ply-icon>
+            </button>
+            <button
+              type="button"
+              ply-icon-button
+              color="transparent"
+              size="sm"
+              class="text-white! hover:bg-white/10!"
+              [attr.aria-label]="i18n.zoomOut"
+              (click)="zoomOut()">
+              <ply-icon name="search-minus" class="h-4 w-4 stroke-white"></ply-icon>
+            </button>
+            <button
+              type="button"
+              ply-icon-button
+              color="transparent"
+              size="sm"
+              class="text-white! hover:bg-white/10!"
+              [attr.aria-label]="i18n.zoomIn"
+              (click)="zoomIn()">
+              <ply-icon name="search-plus" class="h-4 w-4 stroke-white"></ply-icon>
+            </button>
+          }
           <button
             type="button"
             ply-icon-button
             color="transparent"
             size="sm"
             class="text-white! hover:bg-white/10!"
-            [attr.aria-label]="i18n.flipHorizontal"
-            (click)="flipHorizontal()">
-            <ply-icon name="flip-horizontal" class="h-4 w-4 stroke-white"></ply-icon>
-          </button>
-          <button
-            type="button"
-            ply-icon-button
-            color="transparent"
-            size="sm"
-            class="text-white! hover:bg-white/10!"
-            [attr.aria-label]="i18n.flipVertical"
-            (click)="flipVertical()">
-            <ply-icon name="flip-vertical" class="h-4 w-4 stroke-white"></ply-icon>
-          </button>
-          <button
-            type="button"
-            ply-icon-button
-            color="transparent"
-            size="sm"
-            class="text-white! hover:bg-white/10!"
-            [attr.aria-label]="i18n.rotate90Degrees"
-            (click)="rotate90()">
-            <ply-icon name="rotate-right" class="h-4 w-4 stroke-white"></ply-icon>
-          </button>
-          <button
-            type="button"
-            ply-icon-button
-            color="transparent"
-            size="sm"
-            class="text-white! hover:bg-white/10!"
-            [attr.aria-label]="i18n.zoomOut"
-            (click)="zoomOut()">
-            <ply-icon name="search-minus" class="h-4 w-4 stroke-white"></ply-icon>
-          </button>
-          <button
-            type="button"
-            ply-icon-button
-            color="transparent"
-            size="sm"
-            class="text-white! hover:bg-white/10!"
-            [attr.aria-label]="i18n.zoomIn"
-            (click)="zoomIn()">
-            <ply-icon name="search-plus" class="h-4 w-4 stroke-white"></ply-icon>
-          </button>
-          <button
-            type="button"
-            ply-icon-button
-            color="transparent"
-            size="sm"
-            class="text-white! hover:bg-white/10!"
-            [attr.aria-label]="i18n.downloadImage"
+            [attr.aria-label]="activeType() === 'image' ? i18n.downloadImage : i18n.downloadFile"
             (click)="download()">
             <ply-icon name="download" class="h-4 w-4 stroke-white"></ply-icon>
           </button>
@@ -132,7 +137,7 @@
           color="transparent"
           size="lg"
           class="absolute! start-2 top-1/2 z-10 -translate-y-1/2! text-white! hover:bg-white/10! sm:start-4"
-          [attr.aria-label]="i18n.previousImage"
+          [attr.aria-label]="i18n.previousMedia"
           (click)="prev()">
           <ply-icon name="chevron-left" class="h-6 w-6 stroke-white"></ply-icon>
         </button>
@@ -142,13 +147,45 @@
           color="transparent"
           size="lg"
           class="absolute! end-2 top-1/2 z-10 -translate-y-1/2! text-white! hover:bg-white/10! sm:end-4"
-          [attr.aria-label]="i18n.nextImage"
+          [attr.aria-label]="i18n.nextMedia"
           (click)="next()">
           <ply-icon name="chevron-right" class="h-6 w-6 stroke-white"></ply-icon>
         </button>
       }
 
-      @if (showViewerInitials()) {
+      @if (activeType() === 'video') {
+        @if (activeSrc() && !viewerFailed()) {
+          <video
+            controls
+            playsinline
+            preload="metadata"
+            class="relative z-1 max-h-full max-w-full bg-black"
+            [src]="activeSrc()"
+            [attr.aria-label]="activeAlt()"
+            (error)="onViewerError()"
+            (click)="$event.stopPropagation()"></video>
+        } @else {
+          <div
+            role="status"
+            class="relative z-1 px-6 text-center text-sm text-slate-300"
+            (click)="$event.stopPropagation()">
+            {{ i18n.videoUnavailable }}
+          </div>
+        }
+      } @else if (activeType() === 'pdf') {
+        @if (pdfUrl(); as url) {
+          <div class="absolute inset-0 z-1 p-4 sm:p-16" (click)="$event.stopPropagation()">
+            <iframe class="h-full w-full border-0 bg-white" [src]="url" [title]="activeAlt() || 'PDF'"></iframe>
+          </div>
+        } @else {
+          <div
+            role="status"
+            class="relative z-1 px-6 text-center text-sm text-slate-300"
+            (click)="$event.stopPropagation()">
+            {{ i18n.pdfUnavailable }}
+          </div>
+        }
+      } @else if (showViewerInitials()) {
         <div role="presentation"
           class="relative z-1 flex h-48 w-48 max-h-[50vh] max-w-[50vw] select-none items-center justify-center rounded-2xl bg-slate-800 text-4xl font-semibold tracking-wide text-slate-100 transition-transform duration-200 ease-out sm:h-64 sm:w-64 sm:text-5xl"
           [style.transform]="imageTransform()"

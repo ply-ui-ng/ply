@@ -62,6 +62,16 @@ export interface BaseUiI18n {
   exitFullscreen: string;
   enterFullscreen: string;
   imageUnavailable: string;
+  mediaTools: string;
+  downloadFile: string;
+  previousMedia: string;
+  nextMedia: string;
+  videoUnavailable: string;
+  pdfUnavailable: string;
+  lightboxViewImage: string;
+  lightboxPlayVideo: string;
+  lightboxOpenPdf: string;
+  lightboxThumbNamed: (action: string, label: string) => string;
   formatting: string;
   undo: string;
   redo: string;
@@ -174,6 +184,16 @@ export const DEFAULT_BASE_UI_I18N: BaseUiI18n = {
   exitFullscreen: 'Exit fullscreen',
   enterFullscreen: 'Enter fullscreen',
   imageUnavailable: 'Image unavailable',
+  mediaTools: 'Media tools',
+  downloadFile: 'Download',
+  previousMedia: 'Previous',
+  nextMedia: 'Next',
+  videoUnavailable: 'Video unavailable',
+  pdfUnavailable: 'PDF unavailable',
+  lightboxViewImage: 'View image',
+  lightboxPlayVideo: 'Play video',
+  lightboxOpenPdf: 'Open PDF',
+  lightboxThumbNamed: (action, label) => `${action}: ${label}`,
   formatting: 'Formatting',
   undo: 'Undo',
   redo: 'Redo',

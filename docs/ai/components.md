@@ -1381,7 +1381,7 @@ A label element for use inside a `ply-input-group`.
 **Selector:** `ply-lightbox`
 **Standalone:** true
 
-Free lightbox gallery. Project one or more `[ply-lightbox-thumb]` images; thumb size and aspect ratio are controlled with Tailwind on each thumb (`class` on `ply-lightbox` lays out the thumbs wrapper — host itself is `contents`). Clicking a thumb opens a focus-trapped full-viewport overlay (`cdkTrapFocus`) with body scroll lock. Toolbar: flip horizontal/vertical, rotate 90°, zoom in/out (also mouse wheel), download, and browser fullscreen (`maximize`/`minimize`). Prev/next and a counter appear when there is more than one thumb. Keyboard: Esc closes, ←/→ navigate, +/− zoom. Transforms reset on index change and close. When a thumb or overlay image fails to load, initials from `alt` are shown (`"Jane Doe"` → `JD`) unless `initialsFallback` is false. Also exports `lightboxInitialsFromAlt()`. SSR-safe (`PLATFORM_ID` / injected `DOCUMENT`). Public methods: `open(index?)`, `close()`, `next()`, `prev()`.
+Free lightbox for images, video, and PDF, including a mix of those types in one gallery. Thumb size and aspect ratio are controlled with Tailwind on each thumb (`class` on `ply-lightbox` lays out the thumbs wrapper — host itself is `contents`). Clicking a thumb opens a focus-trapped full-viewport overlay (`cdkTrapFocus`) with body scroll lock. Images get flip, rotate, and zoom (also mouse wheel). Video plays with native controls and does not autoplay. PDF opens in an iframe for http(s), blob, and same-site URLs. Download and browser fullscreen stay available for every type. Prev/next and a counter appear when there is more than one thumb. Keyboard: Esc closes, ←/→ navigate, +/− zoom an image. Transforms reset on index change and close. When an image fails to load, initials from `alt` are shown (`"Jane Doe"` → `JD`) unless `initialsFallback` is false. Also exports `lightboxInitialsFromAlt()`. SSR-safe (`PLATFORM_ID` / injected `DOCUMENT`). Public methods: `open(index?)`, `close()`, `next()`, `prev()`.
 
 **Inputs:**
 | Name | Type | Default | Description |
@@ -1389,9 +1389,9 @@ Free lightbox gallery. Project one or more `[ply-lightbox-thumb]` images; thumb 
 | class | `string` | '' | Classes for the thumbs layout wrapper (e.g. `grid grid-cols-3 gap-2`). |
 | loop | `boolean` | true | Wrap prev/next at the ends (`booleanAttribute`). |
 | showToolbar | `boolean` | true | Show the transform / download toolbar (`booleanAttribute`). |
-| showCounter | `boolean` | true | Show `n / total` when there is more than one image (`booleanAttribute`). |
+| showCounter | `boolean` | true | Show `n / total` when there is more than one item (`booleanAttribute`). |
 | closeOnBackdrop | `boolean` | true | Close when the backdrop is clicked (`booleanAttribute`). |
-| dialogLabel | `string` | 'Image lightbox' | Accessible name for the dialog. |
+| dialogLabel | `string` | 'Media lightbox' | Accessible name for the dialog. |
 | initialsFallback | `boolean` | true | Show alt-derived initials in the overlay when the image is missing/broken (`booleanAttribute`). |
 
 **Outputs:**
@@ -1407,12 +1407,13 @@ Free lightbox gallery. Project one or more `[ply-lightbox-thumb]` images; thumb 
 **Selector:** `[ply-lightbox-thumb]`
 **Standalone:** true
 
-Marks a projected image (or other host with a resolvable URL) as a lightbox thumbnail. Click or Enter/Space opens the parent `ply-lightbox` at this thumb's index. Size and aspect ratio are entirely Tailwind on the host element. On `<img>`, use native `src` / `alt` so the thumbnail paints — do not bind directive inputs that shadow those attributes. On load error (or empty `src`), replaces the broken thumb with an initials placeholder from `alt` when `initialsFallback` is true.
+Marks a projected image, video, or other host as a lightbox thumbnail. Image, video, and PDF thumbs can share one gallery. Click or Enter/Space opens the parent `ply-lightbox` at this thumb's index. Size and aspect ratio are entirely Tailwind on the host element. On `<img>`, use native `src` / `alt` so the thumbnail paints — do not bind directive inputs that shadow those attributes. Set `mediaType`, or leave it empty to infer video from `.mp4` `.webm` `.ogv` `.mov` `.m4v` and PDF from `.pdf` on the viewer URL (`fullSrc` first). A `<video>` host is always video unless `mediaType` is set. On image load error (or empty `src`), replaces the broken thumb with an initials placeholder from `alt` when `initialsFallback` is true.
 
 **Inputs:**
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| fullSrc | `string` | '' | Full-resolution URL for the overlay; falls back to native `src` / `imageSrc`. |
+| mediaType | `'image' \| 'video' \| 'pdf' \| ''` | '' | Overlay kind. Empty infers from the viewer URL or a `<video>` host. |
+| fullSrc | `string` | '' | Viewer URL for the overlay; falls back to native `src` / `imageSrc`. A poster `src` plus a video or PDF here keeps the thumb an image. |
 | imageSrc | `string` | '' | URL for non-`<img>` hosts only. |
 | imageAlt | `string` | '' | Alt/label override for non-`<img>` hosts; on `<img>` use native `alt`. |
 | downloadName | `string` | '' | Suggested filename for the download action. |

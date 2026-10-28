@@ -1,5 +1,6 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -40,20 +41,16 @@ const fade = trigger('fade', [
 ]);
 
 /**
- * Lightbox gallery. Project one or more `[ply-lightbox-thumb]` images — size
- * and aspect ratio are controlled with Tailwind on each thumb. Clicking a thumb
- * opens a focus-trapped overlay with flip, rotate, zoom, download, and
- * browser-fullscreen toolbar actions.
+ * Lightbox for images, video, and PDF. Thumbs in one gallery can mix those types.
+ * Size and aspect ratio stay on each thumb. Clicking a thumb opens a focus-trapped
+ * overlay. Images get flip, rotate, and zoom. Video plays with controls. PDF opens
+ * in a viewer. Download and fullscreen stay available for every type.
  *
  * @example
  * <ply-lightbox class="grid grid-cols-3 gap-2">
- *   <img
- *     ply-lightbox-thumb
- *     src="thumb.jpg"
- *     fullSrc="full.jpg"
- *     alt="Coast"
- *     class="aspect-square w-full cursor-pointer rounded-lg object-cover"
- *   />
+ *   <img ply-lightbox-thumb src="thumb.jpg" alt="Coast" class="aspect-square w-full object-cover" />
+ *   <img ply-lightbox-thumb src="poster.jpg" fullSrc="clip.mp4" alt="Clip" class="aspect-square w-full object-cover" />
+ *   <button type="button" ply-lightbox-thumb mediaType="pdf" fullSrc="note.pdf" imageAlt="Notes">PDF</button>
  * </ply-lightbox>
  */
 @Component({
@@ -66,6 +63,7 @@ const fade = trigger('fade', [
 })
 export class LightboxComponent {
   protected readonly i18n = inject(BASE_UI_I18N);
+  private readonly sanitizer = inject(DomSanitizer);
   private readonly writingDirection = injectElementDirection();
   /**
    * Classes for the thumbs layout wrapper (e.g. `grid grid-cols-3 gap-2`).
@@ -112,9 +110,9 @@ export class LightboxComponent {
    * Accessible name for the lightbox dialog.
    *
    * @example
-   * <ply-lightbox dialogLabel="Photo gallery">…</ply-lightbox>
+   * <ply-lightbox dialogLabel="Project files">…</ply-lightbox>
    */
-  readonly dialogLabel = input('Image lightbox');
+  readonly dialogLabel = input('Media lightbox');
 
   /**
    * When true (default), a broken or missing viewer image shows initials from
@@ -177,14 +175,23 @@ export class LightboxComponent {
 
   protected readonly activeSrc = computed(() => this.activeThumb()?.resolveSrc() ?? '');
   protected readonly activeAlt = computed(() => this.activeThumb()?.resolveAlt() ?? '');
+  protected readonly activeType = computed(() => this.activeThumb()?.resolveMediaType() ?? 'image');
   protected readonly activeInitials = computed(() =>
     lightboxInitialsFromAlt(this.activeAlt()),
   );
   protected readonly showViewerInitials = computed(
     () =>
+      this.activeType() === 'image' &&
       this.initialsFallback() &&
       (this.viewerFailed() || !this.activeSrc() || !!this.activeThumb()?.failed()),
   );
+  /** PDF iframe URL. Only http(s), blob, and site-relative URLs are allowed. */
+  protected readonly pdfUrl = computed(() => {
+    if (this.activeType() !== 'pdf') return null;
+    const src = this.activeSrc().trim();
+    if (!isSafeMediaUrl(src)) return null;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(src);
+  });
 
   protected readonly imageTransform = computed(() => {
     const sx = this.flipX() ? -1 : 1;
@@ -255,7 +262,7 @@ export class LightboxComponent {
   }
 
   /**
-   * Show the next image (respects `loop`).
+   * Show the next item (respects `loop`).
    *
    * @example
    * lightbox.next();
@@ -273,7 +280,7 @@ export class LightboxComponent {
   }
 
   /**
-   * Show the previous image (respects `loop`).
+   * Show the previous item (respects `loop`).
    *
    * @example
    * lightbox.prev();
@@ -291,22 +298,27 @@ export class LightboxComponent {
   }
 
   protected flipHorizontal() {
+    if (this.activeType() !== 'image') return;
     this.flipX.update((v) => !v);
   }
 
   protected flipVertical() {
+    if (this.activeType() !== 'image') return;
     this.flipY.update((v) => !v);
   }
 
   protected rotate90() {
+    if (this.activeType() !== 'image') return;
     this.rotation.update((r) => (r + 90) % 360);
   }
 
   protected zoomIn() {
+    if (this.activeType() !== 'image') return;
     this.zoom.update((z) => Math.min(ZOOM_MAX, +(z + ZOOM_STEP).toFixed(2)));
   }
 
   protected zoomOut() {
+    if (this.activeType() !== 'image') return;
     this.zoom.update((z) => Math.max(ZOOM_MIN, +(z - ZOOM_STEP).toFixed(2)));
   }
 
@@ -352,7 +364,7 @@ export class LightboxComponent {
   }
 
   protected onWheel(event: WheelEvent) {
-    if (!this.isOpen()) return;
+    if (!this.isOpen() || this.activeType() !== 'image') return;
     event.preventDefault();
     if (event.deltaY < 0) this.zoomIn();
     else this.zoomOut();
@@ -376,11 +388,13 @@ export class LightboxComponent {
       }
       case '+':
       case '=':
+        if (this.activeType() !== 'image') break;
         event.preventDefault();
         this.zoomIn();
         break;
       case '-':
       case '_':
+        if (this.activeType() !== 'image') break;
         event.preventDefault();
         this.zoomOut();
         break;
@@ -434,4 +448,10 @@ export class LightboxComponent {
     a.click();
     a.remove();
   }
+}
+
+/** http(s), blob, site-relative, and extensionless relative paths. Rejects javascript: and protocol-relative URLs. */
+function isSafeMediaUrl(src: string): boolean {
+  if (/^[a-z][a-z0-9+.-]*:/i.test(src)) return /^(https?:|blob:)/i.test(src);
+  return src.length > 0 && !src.startsWith('//');
 }

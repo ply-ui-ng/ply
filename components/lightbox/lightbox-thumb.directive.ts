@@ -10,13 +10,17 @@ import {
   signal,
 } from '@angular/core';
 
+import { BASE_UI_I18N } from '../i18n/i18n';
 import { lightboxInitialsFromAlt } from './lightbox-initials';
 
+/** What the overlay shows for this thumb. */
+export type LightboxMediaType = 'image' | 'video' | 'pdf';
+
 /**
- * Marks a projected `<img>` (or other element with a resolvable image URL) as a
- * lightbox thumbnail. Clicking it opens the parent `ply-lightbox` at this
- * thumb's index. Size and aspect ratio are controlled entirely by Tailwind
- * classes on the host element.
+ * Marks a projected image, video, or other element as a lightbox thumbnail.
+ * Clicking it opens the parent `ply-lightbox` at this thumb's index. Size and
+ * aspect ratio are controlled entirely by Tailwind classes on the host element.
+ * Image, video, and PDF thumbs can share one gallery.
  *
  * Prefer native `<img src>` / `alt` attributes so the thumb paints in the page.
  * Use `imageSrc` / `imageAlt` only for non-`<img>` hosts.
@@ -26,13 +30,9 @@ import { lightboxInitialsFromAlt } from './lightbox-initials';
  *
  * @example
  * <ply-lightbox class="grid grid-cols-3 gap-2">
- *   <img
- *     ply-lightbox-thumb
- *     src="thumb.jpg"
- *     fullSrc="full.jpg"
- *     alt="Coast"
- *     class="aspect-square w-full cursor-pointer rounded-lg object-cover"
- *   />
+ *   <img ply-lightbox-thumb src="thumb.jpg" alt="Coast" class="aspect-square w-full object-cover" />
+ *   <img ply-lightbox-thumb src="poster.jpg" fullSrc="clip.mp4" alt="Clip" class="aspect-square w-full object-cover" />
+ *   <button type="button" ply-lightbox-thumb mediaType="pdf" fullSrc="note.pdf" imageAlt="Notes">PDF</button>
  * </ply-lightbox>
  */
 @Directive({
@@ -47,10 +47,22 @@ export class LightboxThumbDirective {
   private readonly el = inject(ElementRef<HTMLElement>);
   private readonly renderer = inject(Renderer2);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly i18n = inject(BASE_UI_I18N);
+
+  /**
+   * Overlay kind. Leave empty to infer it from the viewer URL (`.mp4`, `.webm`,
+   * `.pdf`) or from a `<video>` host. Image, video, and PDF thumbs can share
+   * one gallery.
+   *
+   * @example
+   * <img ply-lightbox-thumb mediaType="video" src="poster.jpg" fullSrc="clip.mp4" alt="Clip" />
+   */
+  readonly mediaType = input<LightboxMediaType | ''>('');
 
   /**
    * Optional full-resolution URL shown in the overlay. Falls back to the
-   * element's native `src` (or `imageSrc`) when omitted.
+   * element's native `src` (or `imageSrc`) when omitted. A poster `src` plus
+   * a video or PDF `fullSrc` keeps the thumb an image.
    *
    * @example
    * <img ply-lightbox-thumb src="thumb.jpg" fullSrc="full.jpg" alt="Coast" />
@@ -115,7 +127,25 @@ export class LightboxThumbDirective {
     if (explicit) return explicit;
     const host = this.el.nativeElement;
     if (host instanceof HTMLImageElement && host.src) return host.currentSrc || host.src;
-    return host.getAttribute('src') || '';
+    if (host instanceof HTMLVideoElement) {
+      const nested = host.querySelector('source')?.getAttribute('src') || '';
+      return host.currentSrc || host.src || nested;
+    }
+    if (host instanceof HTMLAnchorElement && host.href) return host.href;
+    return host.getAttribute('src') || host.getAttribute('href') || '';
+  }
+
+  /**
+   * Image, video, or PDF. An explicit `mediaType` wins. Otherwise the viewer
+   * URL extension (or a `<video>` host) decides, so a poster image can open a clip.
+   */
+  resolveMediaType(): LightboxMediaType {
+    const explicit = this.mediaType();
+    if (explicit === 'image' || explicit === 'video' || explicit === 'pdf') return explicit;
+    const host = this.el.nativeElement;
+    if (host instanceof HTMLVideoElement) return 'video';
+    const fromUrl = mediaTypeFromUrl(this.fullSrc()) || mediaTypeFromUrl(this.imageSrc()) || mediaTypeFromUrl(this.resolveSrc());
+    return fromUrl ?? 'image';
   }
 
   /** Resolved alt / accessible name. */
@@ -124,7 +154,7 @@ export class LightboxThumbDirective {
     if (override) return override;
     const host = this.el.nativeElement;
     if (host instanceof HTMLImageElement) return host.alt || '';
-    return host.getAttribute('alt') || '';
+    return host.getAttribute('alt') || host.getAttribute('title') || '';
   }
 
   /** Initials derived from the resolved alt text. */
@@ -144,17 +174,25 @@ export class LightboxThumbDirective {
     } catch {
       /* ignore */
     }
+    const kind = this.resolveMediaType();
+    if (kind === 'pdf') return 'document.pdf';
+    if (kind === 'video') return 'video';
     return 'image';
   }
 
   protected ariaLabel(): string {
-    const a = this.resolveAlt();
-    return a ? `View image: ${a}` : 'View image';
+    const label = this.resolveAlt();
+    const kind = this.resolveMediaType();
+    const action =
+      kind === 'video' ? this.i18n.lightboxPlayVideo : kind === 'pdf' ? this.i18n.lightboxOpenPdf : this.i18n.lightboxViewImage;
+    return label ? this.i18n.lightboxThumbNamed(action, label) : action;
   }
 
   @HostListener('click', ['$event'])
   onClick(event: Event) {
     event.preventDefault();
+    const host = this.el.nativeElement;
+    if (host instanceof HTMLVideoElement) host.pause();
     this.openHandler?.(this);
   }
 
@@ -228,4 +266,11 @@ export class LightboxThumbDirective {
     }
     this.placeholder = undefined;
   }
+}
+
+function mediaTypeFromUrl(url: string): LightboxMediaType | null {
+  const path = url.trim().split(/[?#]/)[0].toLowerCase();
+  if (/\.(mp4|webm|ogv|mov|m4v)$/.test(path)) return 'video';
+  if (path.endsWith('.pdf')) return 'pdf';
+  return null;
 }

@@ -46,10 +46,25 @@ class SingleHostComponent {}
 })
 class BrokenHostComponent {}
 
+@Component({
+  standalone: true,
+  imports: [LightboxComponent, LightboxThumbDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <ply-lightbox>
+      <img ply-lightbox-thumb src="https://example.com/a.jpg" alt="Coast" />
+      <img ply-lightbox-thumb src="https://example.com/poster.jpg" fullSrc="https://example.com/clip.mp4" alt="Clip" />
+      <button type="button" ply-lightbox-thumb mediaType="pdf" fullSrc="/note.pdf" imageAlt="Note">PDF</button>
+      <video ply-lightbox-thumb src="https://example.com/reel.webm" title="Reel"></video>
+    </ply-lightbox>
+  `,
+})
+class MixedHostComponent {}
+
 describe('LightboxComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MultiHostComponent, SingleHostComponent, BrokenHostComponent, NoopAnimationsModule],
+      imports: [MultiHostComponent, SingleHostComponent, BrokenHostComponent, MixedHostComponent, NoopAnimationsModule],
     }).compileComponents();
   });
 
@@ -110,7 +125,7 @@ describe('LightboxComponent', () => {
 
     expect(lightbox.isOpen()).toBe(true);
     expect(lightbox.thumbs().length).toBe(1);
-    expect(fixture.nativeElement.querySelector('[aria-label="Previous image"]')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[aria-label="Previous"]')).toBeNull();
   });
 
   it('should close on Escape', () => {
@@ -142,5 +157,39 @@ describe('LightboxComponent', () => {
       fixture.nativeElement.querySelectorAll('[role="button"]') as NodeListOf<HTMLElement>,
     ).find((el) => el.tagName === 'DIV' && el.textContent?.trim() === 'JD');
     expect(placeholder).toBeTruthy();
+  });
+
+  it('should open image, video, and PDF thumbs from one gallery', () => {
+    const fixture = TestBed.createComponent(MixedHostComponent);
+    fixture.detectChanges();
+    const lightbox = fixture.debugElement.children[0].componentInstance as LightboxComponent;
+    const thumbs = fixture.nativeElement.querySelectorAll('[ply-lightbox-thumb]') as NodeListOf<HTMLElement>;
+
+    expect(thumbs.length).toBe(4);
+    expect(thumbs[1].getAttribute('aria-label')).toBe('Play video: Clip');
+    expect(thumbs[2].getAttribute('aria-label')).toBe('Open PDF: Note');
+    expect(thumbs[3].getAttribute('aria-label')).toBe('Play video: Reel');
+
+    lightbox.open(0);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[role="dialog"] img')?.getAttribute('src')).toContain('a.jpg');
+    expect(fixture.nativeElement.querySelector('[aria-label="Rotate 90 degrees"]')).toBeTruthy();
+
+    lightbox.next();
+    fixture.detectChanges();
+    const video = fixture.nativeElement.querySelector('[role="dialog"] video') as HTMLVideoElement | null;
+    expect(video?.getAttribute('src')).toContain('clip.mp4');
+    expect(fixture.nativeElement.querySelector('[aria-label="Rotate 90 degrees"]')).toBeNull();
+
+    lightbox.next();
+    fixture.detectChanges();
+    const frame = fixture.nativeElement.querySelector('[role="dialog"] iframe') as HTMLIFrameElement | null;
+    expect(frame?.getAttribute('title')).toBe('Note');
+    expect(frame?.getAttribute('src')).toContain('/note.pdf');
+    expect(fixture.nativeElement.querySelector('[aria-label="Rotate 90 degrees"]')).toBeNull();
+
+    lightbox.next();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[role="dialog"] video')?.getAttribute('src')).toContain('reel.webm');
   });
 });
