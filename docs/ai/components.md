@@ -2240,13 +2240,14 @@ Use via `ToastService` (documented under Services): `show(message, { color, dura
 **Selector:** `ply-responsive-nav`
 **Standalone:** true
 
-Progressive (priority+) horizontal navigation. Project `ply-responsive-nav-item` children; as many as fit stay visible and the rest spill into a "More" dropdown from the right. Leftmost items have the highest priority.
+Progressive (priority+) horizontal bar. Project `ply-responsive-nav-item` children; as many as fit stay visible and the rest spill into a "More" dropdown from the right. Leftmost items have the highest priority. A projected button (no `routerLink` or `href`) runs from that menu. `ng-template plyResponsiveNavMenu` replaces that row with custom menu items. `decorative` items, such as dividers, are measured, hidden with the overflow, and omitted from the menu.
 
 **Inputs:**
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | linkClass | `string` | (styled default) | Tailwind classes applied to each item link. |
 | moreLabel | `string` | `'More navigation links'` | Accessible label for the overflow trigger. |
+| strokedMore | `boolean` | `false` | Draw the overflow trigger as a stroked icon button. |
 | class | `string` | `''` | Extra host classes merged via `cn()`. |
 
 **Example:**
@@ -2276,6 +2277,7 @@ Projected nav link for `ply-responsive-nav`. Put the label and optional icon in 
 | href | `string` | — | External or hash URL when not using `routerLink`. |
 | target | `string` | — | Optional `target` for `href` (e.g. `_blank`). |
 | menuLabel | `string` | — | Overflow menu text; defaults to projected text. |
+| decorative | `boolean` | `false` | Measured in the bar and omitted from the More menu. |
 | class | `string` | `''` | Extra classes merged onto the inner link. |
 
 ---
@@ -3537,7 +3539,7 @@ A stylized blockquote component for displaying testimonials, reviews, or pull qu
 **Selector:** `ply-rich-text-editor`
 **Standalone:** true
 
-Lightweight WYSIWYG editor with a themed toolbar (`ply-stroked-icon-button`, tooltips, dropdown, divider) and a `contenteditable` body. Implements `ControlValueAccessor` — value is an HTML string. Toolbar: undo/redo, block style (p/h1–h3), bold/italic/underline/strike, bullet/numbered lists, alignment, link, clear formatting. Pro tier (`npx ply-ui-cli add rich-text-editor`).
+Lightweight WYSIWYG editor with a themed toolbar (`ply-stroked-icon-button`, tooltips, dropdown, divider, `ply-responsive-nav`) and a `contenteditable` body. Implements `ControlValueAccessor` — value is an HTML string. Toolbar: undo/redo, block style (p/h1–h3), bold/italic/underline/strike, bullet/numbered lists, alignment, link, clear formatting. The toolbar stays on one row; actions that do not fit move into the responsive-nav More menu. Pro tier (`npx ply-ui-cli add rich-text-editor`).
 
 **Inputs:**
 | Name | Type | Default | Description |

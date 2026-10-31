@@ -2,7 +2,20 @@
   <ng-content></ng-content>
 </div>
 
-@if (overflowItems().length) {
+@if (menuItems().length) {
+@if (strokedMore()) {
+<button
+  ply-stroked-icon-button
+  color="default"
+  size="sm"
+  type="button"
+  class="shrink-0"
+  [ply-dropdown-menu-trigger]="moreMenu"
+  [attr.aria-label]="moreLabel()"
+  (mousedown)="$event.preventDefault()">
+  <ply-icon name="chevron-down" class="h-4 w-4"></ply-icon>
+</button>
+} @else {
 <button
   ply-icon-button
   color="transparent"
@@ -10,12 +23,16 @@
   type="button"
   class="shrink-0"
   [ply-dropdown-menu-trigger]="moreMenu"
-  [attr.aria-label]="moreLabel()">
+  [attr.aria-label]="moreLabel()"
+  (mousedown)="$event.preventDefault()">
   <ply-icon name="chevron-down" class="h-4 w-4 stroke-slate-600 dark:stroke-slate-300"></ply-icon>
 </button>
+}
 <ply-dropdown-menu #moreMenu>
-  @for (item of overflowItems(); track $index) {
-  @if (item.routerLink() !== undefined) {
+  @for (item of menuItems(); track item) {
+  @if (item.menuTemplate(); as menu) {
+  <ng-container [ngTemplateOutlet]="menu" />
+  } @else if (item.routerLink() !== undefined) {
   <a ply-dropdown-menu-item [routerLink]="item.routerLink()">{{ item.menuText() }}</a>
   } @else if (item.href()) {
   <a
@@ -23,6 +40,13 @@
     [href]="item.href()"
     [attr.target]="item.target() || null"
     [attr.rel]="item.target() === '_blank' ? 'noopener noreferrer' : null">{{ item.menuText() }}</a>
+  } @else if (item.hasProjectedControl()) {
+  <button
+    type="button"
+    ply-dropdown-menu-item
+    [disabled]="item.projectedControlDisabled()"
+    (mousedown)="$event.preventDefault()"
+    (click)="item.activateProjected()">{{ item.menuText() }}</button>
   } @else {
   <span ply-dropdown-menu-item>{{ item.menuText() }}</span>
   }
@@ -31,6 +55,19 @@
 }
 
 <!-- Offscreen More button used only for width measurement -->
+@if (strokedMore()) {
+<button
+  ply-stroked-icon-button
+  color="default"
+  size="sm"
+  type="button"
+  tabindex="-1"
+  aria-hidden="true"
+  class="pointer-events-none absolute start-[-9999px] top-0 opacity-0"
+  #moreMeasure>
+  <ply-icon name="chevron-down" class="h-4 w-4"></ply-icon>
+</button>
+} @else {
 <button
   ply-icon-button
   color="transparent"
@@ -42,3 +79,4 @@
   #moreMeasure>
   <ply-icon name="chevron-down" class="h-4 w-4"></ply-icon>
 </button>
+}

@@ -73,6 +73,7 @@ export interface BaseUiI18n {
   lightboxOpenPdf: string;
   lightboxThumbNamed: (action: string, label: string) => string;
   formatting: string;
+  moreFormatting: string;
   undo: string;
   redo: string;
   paragraphStyle: string;
@@ -195,6 +196,7 @@ export const DEFAULT_BASE_UI_I18N: BaseUiI18n = {
   lightboxOpenPdf: 'Open PDF',
   lightboxThumbNamed: (action, label) => `${action}: ${label}`,
   formatting: 'Formatting',
+  moreFormatting: 'More formatting',
   undo: 'Undo',
   redo: 'Redo',
   paragraphStyle: 'Paragraph style',

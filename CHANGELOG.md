@@ -10,6 +10,7 @@ Also published at [https://ply-ui.com/changelog](https://ply-ui.com/changelog).
 
 ## October 2026
 
+- **Features** — **rich-text-editor:** keep the toolbar on one row
 - **Bug Fixes** — **drawer:** let the host binding read the open state
 - **Features** — **lightbox:** open video and PDF in the same gallery
 - **Features** — **mcp:** clarify tool boundaries and return structured diffs

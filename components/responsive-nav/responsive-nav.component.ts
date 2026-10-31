@@ -1,5 +1,6 @@
 import {
   afterNextRender,
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -12,10 +13,12 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { cn } from '../tw-merge/tw-merge';
 import { BaseDropdownMenuItemDirective } from '../ply-dropdown-menu-item/ply-dropdown-menu-item.directive';
 import { IconButtonDirective } from '../button/ply-icon-button.directive';
+import { IconStrokedButtonDirective } from '../button/ply-icon-stroked-button.directive';
 import { DropdownMenuDirective } from '../dropdown/dropdown.directive';
 import { DropdownMenuComponent } from '../dropdown-menu/dropdown-menu.component';
 import { IconComponent } from '../icon/icon.component';
@@ -56,9 +59,11 @@ const GAP_PX = 4;
     },
   ],
   imports: [
+    NgTemplateOutlet,
     RouterLink,
     IconComponent,
     IconButtonDirective,
+    IconStrokedButtonDirective,
     DropdownMenuComponent,
     DropdownMenuDirective,
     BaseDropdownMenuItemDirective,
@@ -92,6 +97,14 @@ export class ResponsiveNavComponent implements ResponsiveNavConfig {
    */
   readonly moreLabel = input('More navigation links');
 
+  /**
+   * Draw the overflow trigger as a stroked icon button, matching toolbar buttons.
+   *
+   * @example
+   * <ply-responsive-nav strokedMore moreLabel="More formatting"></ply-responsive-nav>
+   */
+  readonly strokedMore = input(false, { transform: booleanAttribute });
+
   private readonly moreMeasure = viewChild<ElementRef<HTMLElement>>('moreMeasure');
 
   /** Projected nav items in document order (left = highest priority). */
@@ -101,7 +114,7 @@ export class ResponsiveNavComponent implements ResponsiveNavConfig {
   private readonly overflowCount = signal(0);
 
   protected readonly hostCls = computed(() =>
-    cn('relative flex min-w-0 flex-1 items-center', this.extraClass()),
+    cn('relative flex min-w-0 flex-1 items-center gap-1', this.extraClass()),
   );
 
   protected readonly overflowItems = computed(() => {
@@ -109,6 +122,11 @@ export class ResponsiveNavComponent implements ResponsiveNavConfig {
     const n = this.overflowCount();
     return n > 0 ? all.slice(all.length - n) : [];
   });
+
+  /** Overflow rows that belong in the More menu. Dividers stay out of it. */
+  protected readonly menuItems = computed(() =>
+    this.overflowItems().filter((item) => !item.decorative()),
+  );
 
   constructor() {
     afterNextRender(() => {
@@ -125,7 +143,10 @@ export class ResponsiveNavComponent implements ResponsiveNavConfig {
 
     effect(() => {
       // Re-run when items are added/removed or their measured widths change.
-      this.items().forEach((item) => item.measuredWidth());
+      this.items().forEach((item) => {
+        item.measuredWidth();
+        item.decorative();
+      });
       this.recompute();
     });
   }
@@ -135,6 +156,7 @@ export class ResponsiveNavComponent implements ResponsiveNavConfig {
     const total = all.length;
     if (total === 0) {
       this.overflowCount.set(0);
+      this.syncOverflow(all, 0);
       return;
     }
 
@@ -156,41 +178,41 @@ export class ResponsiveNavComponent implements ResponsiveNavConfig {
       return;
     }
 
-    let used = 0;
-    let fitsAll = true;
-    for (let i = 0; i < total; i++) {
-      used += widths[i] + (i > 0 ? GAP_PX : 0);
-      if (used > containerWidth) {
-        fitsAll = false;
-        break;
+    const contentWidth = (count: number) => {
+      let width = 0;
+      for (let i = 0; i < count; i++) {
+        width += widths[i] + (i > 0 ? GAP_PX : 0);
       }
-    }
+      return width;
+    };
 
-    let nextOverflow = 0;
-    if (!fitsAll) {
-      nextOverflow = total;
-      for (let overflow = 1; overflow <= total; overflow++) {
-        const visible = total - overflow;
-        let width = moreWidth;
-        if (visible > 0) {
-          for (let i = 0; i < visible; i++) {
-            width += widths[i] + GAP_PX;
-          }
+    let visibleEnd = total;
+    if (contentWidth(total) > containerWidth) {
+      visibleEnd = 0;
+      for (let keep = total - 1; keep >= 0; keep--) {
+        let end = keep;
+        while (end > 0 && all[end - 1].decorative()) {
+          end--;
         }
+        const width = end > 0 ? moreWidth + GAP_PX + contentWidth(end) : moreWidth;
         if (width <= containerWidth) {
-          nextOverflow = overflow;
+          visibleEnd = end;
           break;
         }
       }
     }
 
+    const nextOverflow = total - visibleEnd;
     if (this.overflowCount() !== nextOverflow) {
       this.overflowCount.set(nextOverflow);
     }
+    this.syncOverflow(all, visibleEnd);
+  }
 
-    const overflowStart = total - nextOverflow;
+  /** Hide the tail, including a divider that would otherwise sit against More. */
+  private syncOverflow(all: readonly ResponsiveNavItemComponent[], visibleEnd: number): void {
     all.forEach((item, index) => {
-      const shouldOverflow = index >= overflowStart && nextOverflow > 0;
+      const shouldOverflow = index >= visibleEnd && visibleEnd < all.length;
       if (item.overflow() !== shouldOverflow) {
         item.overflow.set(shouldOverflow);
       }

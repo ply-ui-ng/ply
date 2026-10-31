@@ -42,3 +42,37 @@ describe('ResponsiveNavComponent', () => {
     expect(text).toContain('Blog');
   });
 });
+
+@Component({
+  selector: 'ply-responsive-nav-action-host',
+  imports: [ResponsiveNavComponent, ResponsiveNavItemComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <ply-responsive-nav>
+      <ply-responsive-nav-item menuLabel="Save">
+        <button type="button" (click)="saved = true">Save</button>
+      </ply-responsive-nav-item>
+    </ply-responsive-nav>
+  `,
+})
+class ResponsiveNavActionHostComponent {
+  saved = false;
+}
+
+describe('ResponsiveNavItemComponent actions', () => {
+  it('runs the projected button from the overflow action', () => {
+    TestBed.configureTestingModule({
+      imports: [ResponsiveNavActionHostComponent],
+      providers: [provideRouter([])],
+    });
+    const fixture = TestBed.createComponent(ResponsiveNavActionHostComponent);
+    fixture.detectChanges();
+
+    const item = fixture.debugElement.query(
+      (node) => node.componentInstance instanceof ResponsiveNavItemComponent,
+    ).componentInstance as ResponsiveNavItemComponent;
+
+    item.activateProjected();
+    expect(fixture.componentInstance.saved).toBe(true);
+  });
+});

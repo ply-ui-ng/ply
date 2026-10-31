@@ -1,13 +1,17 @@
 import {
   afterNextRender,
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  contentChild,
   computed,
   DestroyRef,
+  Directive,
   ElementRef,
   inject,
   input,
   signal,
+  TemplateRef,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -16,6 +20,25 @@ import {
   RESPONSIVE_NAV,
   RESPONSIVE_NAV_DEFAULT_LINK_CLASS,
 } from './responsive-nav-tokens';
+
+/**
+ * Custom rows for the overflow menu. Use this when a single label click is
+ * not enough, for example a heading picker that should list each style.
+ *
+ * @example
+ * <ply-responsive-nav-item menuLabel="Style">
+ *   <button type="button">Style</button>
+ *   <ng-template plyResponsiveNavMenu>
+ *     <button type="button" ply-dropdown-menu-item>Paragraph</button>
+ *   </ng-template>
+ * </ply-responsive-nav-item>
+ */
+@Directive({
+  selector: 'ng-template[plyResponsiveNavMenu]',
+})
+export class ResponsiveNavMenuDirective {
+  readonly template = inject(TemplateRef<void>);
+}
 
 /**
  * A projected link inside `ply-responsive-nav`. Put the label (and optional
@@ -30,6 +53,11 @@ import {
  * @example
  * <ply-responsive-nav-item href="https://github.com" target="_blank">
  *   GitHub
+ * </ply-responsive-nav-item>
+ *
+ * @example
+ * <ply-responsive-nav-item menuLabel="Bold">
+ *   <button type="button" (click)="bold()">B</button>
  * </ply-responsive-nav-item>
  */
 @Component({
@@ -91,6 +119,19 @@ export class ResponsiveNavItemComponent {
    */
   readonly menuLabel = input<string | undefined>(undefined);
 
+  /**
+   * Measured in the bar, then hidden with the overflow, and left out of the
+   * More menu. Use for dividers between groups.
+   *
+   * @example
+   * <ply-responsive-nav-item decorative>
+   *   <ply-divider [vertical]="true" class="mx-1 h-6"></ply-divider>
+   * </ply-responsive-nav-item>
+   */
+  readonly decorative = input(false, { transform: booleanAttribute });
+
+  private readonly menuSlot = contentChild(ResponsiveNavMenuDirective);
+
   /** Cached width while visible — used by the parent priority+ algorithm. */
   readonly measuredWidth = signal(0);
 
@@ -130,5 +171,30 @@ export class ResponsiveNavItemComponent {
       return explicit;
     }
     return (this.host.nativeElement.textContent ?? '').replace(/\s+/g, ' ').trim();
+  }
+
+  /** Custom overflow rows, when the item projects `plyResponsiveNavMenu`. */
+  menuTemplate(): TemplateRef<void> | undefined {
+    return this.menuSlot()?.template;
+  }
+
+  /** True when the bar control is a button the More menu can run. */
+  hasProjectedControl(): boolean {
+    return this.projectedControl() !== null;
+  }
+
+  /** Disabled state of the projected button, so the More row can match it. */
+  projectedControlDisabled(): boolean {
+    return this.projectedControl()?.disabled ?? false;
+  }
+
+  /** Run the projected button. Links use their own overflow row instead. */
+  activateProjected(): void {
+    this.projectedControl()?.click();
+  }
+
+  private projectedControl(): HTMLButtonElement | null {
+    const control = this.host.nativeElement.querySelector('button');
+    return control instanceof HTMLButtonElement ? control : null;
   }
 }
