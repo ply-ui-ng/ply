@@ -96,6 +96,27 @@ describe('ComboboxComponent', () => {
     expect(component.isOpen()).toBe(false);
   });
 
+  it('closes when clicking the overlay beside a narrower list', () => {
+    component.openDropdown();
+    fixture.detectChanges();
+    const pane = document.querySelector('.cdk-overlay-pane') as HTMLElement;
+    expect(pane.style.pointerEvents).toBe('none');
+
+    pane.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    fixture.detectChanges();
+    expect(component.isOpen()).toBe(false);
+  });
+
+  it('keeps the list open when clicking inside the panel', () => {
+    component.openDropdown();
+    fixture.detectChanges();
+    const panel = document.querySelector('[data-ply-combobox-panel]') as HTMLElement;
+
+    panel.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    fixture.detectChanges();
+    expect(component.isOpen()).toBe(true);
+  });
+
   it('closes the listbox on Escape', () => {
     const input = fixture.nativeElement.querySelector('[role="combobox"]') as HTMLInputElement;
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));

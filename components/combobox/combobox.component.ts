@@ -33,6 +33,7 @@ let comboboxIdCounter = 0;
 /**
  * Searchable combobox with keyboard navigation, optional create, Angular Forms CVA,
  * and an optional `plyComboboxOption` option template.
+ * The list sizes to its content. A click outside that list closes it.
  *
  * @example
  * <ply-combobox [(ngModel)]="userId" [options]="users" placeholder="Search users…">
@@ -369,9 +370,13 @@ export class ComboboxComponent implements ControlValueAccessor, OnDestroy {
   }
 
   handleClickOutside(e: Event): void {
-    const target = e.target as Node;
+    const target = e.target as Node | null;
+    if (!target) return;
     if (this.el.nativeElement.contains(target)) return;
-    if (this.overlayRef?.overlayElement.contains(target)) return;
+    // The pane is as wide as the field, while the list shrinks to its content.
+    // Clicks on the empty pane, beside the list, are outside.
+    const panel = this.overlayRef?.overlayElement.querySelector('[data-ply-combobox-panel]');
+    if (panel?.contains(target)) return;
     this.closeDropdown();
   }
 
@@ -445,6 +450,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnDestroy {
       maxHeight: 240,
     });
     this.overlayRef.attach(new TemplatePortal(template, this.viewContainerRef));
+    // Let clicks on the unused width of the pane reach the page and close the list.
+    this.overlayRef.overlayElement.style.pointerEvents = 'none';
     window.addEventListener('resize', this.syncOverlaySize);
   }
 

@@ -8,6 +8,10 @@ Demo-site, SEO, analytics, and AI-doc tooling commits are omitted.
 
 Also published at [https://ply-ui.com/changelog](https://ply-ui.com/changelog).
 
+## November 2026
+
+- **Bug Fixes** — **combobox:** close when clicking beside a narrower list
+
 ## October 2026
 
 - **Features** — **rich-text-editor:** keep the toolbar on one row

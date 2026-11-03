@@ -1068,7 +1068,7 @@ A highly customizable dropdown select component. Allows mapping arrays of object
 **Selector:** `ply-combobox`
 **Standalone:** true
 
-Searchable single-select with keyboard navigation, optional create, local or async filtering, and Angular Forms (`string | null`). The results panel is a CDK overlay attached to the viewport (not `position: absolute` inside the field), aligned to the trigger’s start edge, so it is not clipped by a parent `overflow: hidden`. Use `filterMode="none"` with `(queryChange)` for server search. Override listbox rows with `<ng-template plyComboboxOption let-option>` (import `ComboboxOptionDirective`).
+Searchable single-select with keyboard navigation, optional create, local or async filtering, and Angular Forms (`string | null`). The results panel is a CDK overlay attached to the viewport (not `position: absolute` inside the field), aligned to the trigger’s start edge, so it is not clipped by a parent `overflow: hidden`. The list sizes to its content and can be narrower than the field; a click outside that list closes it. Use `filterMode="none"` with `(queryChange)` for server search. Override listbox rows with `<ng-template plyComboboxOption let-option>` (import `ComboboxOptionDirective`).
 
 **Inputs:**
 | Name | Type | Default | Description |

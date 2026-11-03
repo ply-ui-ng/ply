@@ -55,7 +55,8 @@
 
 <ng-template #panelTemplate>
   <div
-    class="not-prose max-h-60 overflow-auto rounded-[var(--ply-radius)] border border-[var(--ply-border)] bg-[var(--ply-background)] shadow-lg focus:outline-none">
+    data-ply-combobox-panel
+    class="pointer-events-auto not-prose max-h-60 w-max min-w-0 max-w-full overflow-auto rounded-[var(--ply-radius)] border border-[var(--ply-border)] bg-[var(--ply-background)] shadow-lg focus:outline-none">
     <ul
       [id]="listboxId"
       role="listbox"
