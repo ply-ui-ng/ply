@@ -33,6 +33,8 @@ export interface BaseUiI18n {
   openOptions: string;
   closeOptions: string;
   selection: string;
+  expand: string;
+  collapse: string;
   selectRow: (id: unknown) => string;
   clear: (what: string) => string;
   remove: (label: string) => string;
@@ -156,6 +158,8 @@ export const DEFAULT_BASE_UI_I18N: BaseUiI18n = {
   openOptions: 'Open options',
   closeOptions: 'Close options',
   selection: 'selection',
+  expand: 'Expand',
+  collapse: 'Collapse',
   selectRow: (id) => `Select row ${id}`,
   clear: (what) => `Clear ${what}`,
   remove: (label) => `Remove ${label}`,

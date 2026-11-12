@@ -10,6 +10,7 @@ Also published at [https://ply-ui.com/changelog](https://ply-ui.com/changelog).
 
 ## November 2026
 
+- **Features** — add a tree table, a cascade select, and more chart types
 - **Bug Fixes** — **combobox:** close when clicking beside a narrower list
 
 ## October 2026

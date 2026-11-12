@@ -280,14 +280,34 @@ export type CookieConsent = 'accepted' | 'rejected';
 export type ChartColor = SliderColor;
 
 /** Supported chart visualizations in {@link ChartComponent}. */
-export type ChartType = 'line' | 'bar' | 'donut' | 'sparkline';
+export type ChartType =
+  | 'line'
+  | 'bar'
+  | 'horizontal-bar'
+  | 'stacked-bar'
+  | 'area'
+  | 'donut'
+  | 'pie'
+  | 'sparkline';
+
+/** One slice of a stacked bar in {@link ChartDataPoint.segments}. */
+export interface ChartSegment {
+  /** Series name shown in the legend and tooltip. */
+  label: string;
+  /** Numeric value of this slice. */
+  value: number;
+  /** Optional color. Falls back to the chart palette. */
+  color?: ChartColor;
+}
 
 /** A single data point for {@link ChartComponent}. */
 export interface ChartDataPoint {
   /** Category label (x-axis, legend, or tooltip). */
   label: string;
-  /** Numeric value. */
+  /** Numeric value. Ignored for stacked bars that set `segments`. */
   value: number;
   /** Optional per-point color override. */
   color?: ChartColor;
+  /** Stacked-bar slices. When set, the bar height is their sum. */
+  segments?: ChartSegment[];
 }

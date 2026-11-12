@@ -9,13 +9,30 @@
 
 Read these before composing components into pages — they prevent the most common integration mistakes.
 
-### Utility-class conflicts with component base classes
+### Directive-owned styles
 
-Button directives (`ply-button`, `ply-stroked-button`, `ply-icon-button`, `ply-stroked-icon-button`) and `ply-input` / `ply-textarea` merge extra `class` values with `cn()`. Conflicting Tailwind utilities in `class` win over defaults:
+`ply-button` is an attribute directive on `<button>` or `<a>`, not a component tag. There is no `<ply-button>` template. The directive's host `[class]` binding replaces the element's class list, so a parent stylesheet (`button { … }`, `ply-button { }`, `::ng-deep`) does not restyle it. Do not edit the copied directive for one screen.
+
+Pass overrides through the directive. `class` is an input merged last by `cn()`:
 
 ```html
-<button ply-icon-button color="white" class="absolute right-3 top-3 rounded-full">…</button>
+<button ply-button color="primary" class="w-full">Save</button>
+<button ply-icon-button color="white" class="absolute end-3 top-3 rounded-full">…</button>
+<input ply-input class="text-end" />
 ```
+
+Button text color is important (`text-white!`, `text-[var(--ply-primary-foreground)]!`). A plain `text-slate-900` loses; pass `class="text-slate-900!"`.
+
+| Directive | Host | Restyle |
+|---|---|---|
+| `ply-button`, `ply-stroked-button` | `<button>`, `<a>` | `color`, `size`, `width`, merged `class`. Text color needs `!` |
+| `ply-icon-button`, `ply-stroked-icon-button` | `<button>`, `<a>` | `color`, `size`, merged `class`. No `width` input. `size` also sets `min-w-*` and `max-w-*` |
+| `ply-input`, `ply-textarea` | `<input>`, `<textarea>` | merged `class`. Border, radius, and focus ring stay on `ply-input-group` |
+| `plyTypography`, `plyHeadingText` | any element | variant, then merged `class` |
+| `ply-table`, `ply-table-header`, `ply-table-body`, `ply-table-footer`, `ply-table-row`, `ply-table-head`, `ply-table-cell`, `ply-table-caption` | native table parts | merged `class` |
+| `ply-link`, `ply-group-button` | `<a>`, `<button>` | `color`, `size`, `width` only. `class` is discarded. `ply-group-button` also replaces the inner `ply-icon` class |
+| `ply-dropdown-menu-item`, `ply-context-menu-item`, `ply-navigation-menu-link`, `ply-list-item`, `ply-addon-start`, `ply-addon-end`, `[code]`, `[container]`, `[badge-icon]` | host element | directive classes are added and still paint the control |
+| `ply-badge-addon`, `plyTabIcon` | wrapper / tab icon | paint the inner `<button>` or `<ply-icon>`, not the host class |
 
 `color="primary"` / `"danger"` read `--ply-primary` and `--ply-destructive` from `ply-ui.css`. Buttons use `FOCUS_RING`. Field chrome uses `FOCUS_RING_WITHIN` on `ply-input-group` (`--ply-border`, `--ply-background`, `--ply-ring`) so addons stay inside the halo. Tabs (folder, underline, pills), custom-select, combobox, primary toast, accordion focus, and command palette also read `--ply-*`. `ply-ui.css` aliases `--color-blue-*` to `--ply-primary` (or `--ply-scale-*` from a Theme Studio export), so `blue-*` widgets follow the same palette.
 
@@ -702,9 +719,41 @@ Static 640px-wide dialog opened from the landing page's "Watch Demo" buttons. Re
 **Standalone:** true
 **Tier:** Pro
 
-SVG chart. `type` is `'line' | 'bar' | 'donut' | 'sparkline'`.
+SVG chart with line, area, bar, horizontal bar, stacked bar, donut, pie, and sparkline types.
 
-**Inputs:** `type` (default `bar`), `data`, `color`, `height`, `showLabels`, `showGrid`, `showLegend`, `fillArea`, `centerLabel`, `centerValue`, `ariaLabel`, `class`.
+**Inputs:** `type` (default `bar`), `data` (`label`, `value`, optional `color`, optional `segments` for `stacked-bar`), `color`, `height`, `showLabels`, `showGrid`, `showLegend`, `fillArea`, `centerLabel`, `centerValue`, `ariaLabel`, `class`.
+
+`area` fills under the line. `horizontal-bar` draws categories down the side. `stacked-bar` uses `segments` on each point. `pie` is a donut with no hole, so the center caption stays hidden. Install: `npx ply-ui-cli add chart`.
+
+---
+
+### TreeTableComponent
+**Selector:** `ply-tree-table`
+**Standalone:** true
+**Tier:** Pro
+
+Table whose rows expand into child rows. The first column is the tree. A flat sortable grid stays `ply-data-table`.
+
+**Inputs:** `columns` (`TableColumn[]`), `nodes` (`{ data, children?, expanded? }[]`), `emptyMessage`, `class`.
+
+**Outputs:** `rowClick` with the activated node. The disclosure button does not emit it.
+
+Arrow right expands or moves into the child row. Arrow left collapses or moves to the parent. Install: `npx ply-ui-cli add tree-table`.
+
+---
+
+### CascadeSelectComponent
+**Selector:** `ply-cascade-select`
+**Standalone:** true
+**Tier:** Pro
+
+Select that opens the next column of options when a parent is chosen. The form value is the path of `value` strings. `ply-select-tree` is one expandable list and one selected node.
+
+**Inputs:** `options` (`{ label, value, children?, disabled? }[]`), `placeholder`, `changeOnSelect`, `clearable`, `disabled`, `class`.
+
+**Outputs:** `selectionChange` with `string[] | null`.
+
+`changeOnSelect` writes a parent path and keeps the panel open. A leaf always writes the full path and closes. Install: `npx ply-ui-cli add cascade-select`.
 
 ---
 
