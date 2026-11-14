@@ -141,7 +141,12 @@ export class SidenavComponent implements AfterViewInit {
         filter((event) => event instanceof NavigationEnd),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe(() => this.updateSelectedLabel());
+      .subscribe(() => {
+        // A chosen page should collapse the mobile drawer. Desktop keeps the
+        // rail via `lg:ms-0` inside navRailClass.
+        this.navBarOpen.set(false);
+        this.updateSelectedLabel();
+      });
 
     effect(() => {
       // Collapse the drawer when entering forced mobile preview.

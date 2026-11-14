@@ -56,6 +56,29 @@ describe('ContextMenuDirective keyboard', () => {
     expect(document.querySelector('[role="menu"]')).toBeNull();
   });
 
+  it('runs the highlighted item on Enter and closes the menu', async () => {
+    const directive = fixture.debugElement.query(By.directive(ContextMenuDirective))
+      .injector.get(ContextMenuDirective);
+    directive.open({ x: 8, y: 8 });
+    fixture.detectChanges();
+
+    await vi.waitFor(() => {
+      const items = document.querySelectorAll<HTMLElement>('[role="menuitem"]');
+      expect(document.activeElement).toBe(items[0]);
+    });
+
+    const menu = document.querySelector('[role="menu"]') as HTMLElement;
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    const items = document.querySelectorAll<HTMLElement>('[role="menuitem"]');
+    const clicked = vi.fn();
+    items[1].addEventListener('click', clicked);
+
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+
+    expect(clicked).toHaveBeenCalledOnce();
+    expect(document.querySelector('[role="menu"]')).toBeNull();
+  });
+
   it('jumps with Home and End and matches typeahead', async () => {
     const directive = fixture.debugElement.query(By.directive(ContextMenuDirective))
       .injector.get(ContextMenuDirective);

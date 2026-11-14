@@ -154,16 +154,20 @@ export class ContextMenuDirective<T> implements OnDestroy {
       panel.focusFirstItem();
     }
 
-    const itemClicks$ = fromEvent<MouseEvent>(this.overlayRef.overlayElement, 'click').pipe(
-      filter((e) => !!(e.target as HTMLElement | null)?.closest('[role="menuitem"]'))
-    );
+    // Capture so a menuitem can stop the click (button + routerLink returns false)
+    // and we still dismiss. Defer one turn so that handler navigates first.
+    const itemClicks$ = fromEvent<MouseEvent>(this.overlayRef.overlayElement, 'click', {
+      capture: true,
+    }).pipe(filter((e) => !!this.menuItemTarget(e)));
 
     this.closingSubscription = merge(
       this.overlayRef.backdropClick(),
       this.overlayRef.detachments(),
       outputToObservable(panel.closed),
-      itemClicks$
     ).subscribe(() => this.destroyMenu(true));
+    this.closingSubscription.add(
+      itemClicks$.subscribe(() => queueMicrotask(() => this.destroyMenu(true))),
+    );
   }
 
   private getPositions(): ConnectedPosition[] {
@@ -179,8 +183,15 @@ export class ContextMenuDirective<T> implements OnDestroy {
    * Close the menu. Overlay teardown is immediate; `aria-expanded` + focus restore
    * are deferred so they don't collide with the click CD that closed the menu (NG0100).
    */
+  private menuItemTarget(event: MouseEvent): HTMLElement | null {
+    const item = (event.target as HTMLElement | null)?.closest('[role^="menuitem"]');
+    if (!(item instanceof HTMLElement)) return null;
+    if (item.hasAttribute('disabled') || item.getAttribute('aria-disabled') === 'true') return null;
+    return item;
+  }
+
   private destroyMenu(restoreFocus = false): void {
-    if (!this.overlayRef && !this.isOpen()) {
+    if (!this.overlayRef) {
       return;
     }
 

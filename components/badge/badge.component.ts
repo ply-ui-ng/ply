@@ -30,7 +30,7 @@ export class BadgeComponent {
 
   readonly badgeClasses = computed(() => {
     const classes = [
-      'h-6', 'flex', 'gap-1', 'border', 'border-transparent',
+      'inline-flex', 'w-fit', 'h-6', 'gap-1', 'border', 'border-transparent',
       'justify-center', 'items-center', 'px-3', 'text-xs!',
       'whitespace-nowrap', 'text-white', 'bg-slate-400'
     ];

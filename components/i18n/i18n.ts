@@ -35,6 +35,12 @@ export interface BaseUiI18n {
   selection: string;
   expand: string;
   collapse: string;
+  edit: string;
+  done: string;
+  moveUp: string;
+  moveDown: string;
+  command: string;
+  commandNotFound: string;
   selectRow: (id: unknown) => string;
   clear: (what: string) => string;
   remove: (label: string) => string;
@@ -160,6 +166,12 @@ export const DEFAULT_BASE_UI_I18N: BaseUiI18n = {
   selection: 'selection',
   expand: 'Expand',
   collapse: 'Collapse',
+  edit: 'Edit',
+  done: 'Done',
+  moveUp: 'Move up',
+  moveDown: 'Move down',
+  command: 'Command',
+  commandNotFound: 'Command not found',
   selectRow: (id) => `Select row ${id}`,
   clear: (what) => `Clear ${what}`,
   remove: (label) => `Remove ${label}`,

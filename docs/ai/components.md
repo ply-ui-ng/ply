@@ -757,6 +757,131 @@ Select that opens the next column of options when a parent is chosen. The form v
 
 ---
 
+### ListboxComponent
+**Selector:** `ply-listbox`
+**Standalone:** true
+**Tier:** Pro
+
+A list that selects one value or many. The form value is the option `value`, or a `string[]` when `multiple` is set.
+
+**Inputs:** `options` (`{ label, value, disabled? }[]`), `multiple`, `aria-label`, `emptyMessage`, `class`.
+
+Arrow keys move the focused row. Enter or Space selects it. Install: `npx ply-ui-cli add listbox`.
+
+---
+
+### SplitButtonComponent
+**Selector:** `ply-split-button`
+**Standalone:** true
+**Tier:** Pro
+
+A primary action with a menu of related actions.
+
+**Inputs:** `label`, `items` (`{ label, value, disabled? }[]`), `menuLabel`, `class`.
+
+**Outputs:** `action` for the main button. `itemSelect` for a menu item.
+
+Install: `npx ply-ui-cli add split-button`.
+
+---
+
+### FieldsetComponent
+**Selector:** `ply-fieldset`
+**Standalone:** true
+**Tier:** Pro
+
+A labelled group of fields. `toggleable` lets the legend hide the body.
+
+**Inputs:** `legend`, `toggleable`, `collapsed` (two-way), `class`.
+
+Install: `npx ply-ui-cli add fieldset`.
+
+---
+
+### InplaceComponent
+**Selector:** `ply-inplace`
+**Standalone:** true
+**Tier:** Pro
+
+Shows the `[inplace-display]` slot until it is activated, then projects the editor.
+
+**Inputs:** `active` (two-way), `class`.
+
+Install: `npx ply-ui-cli add inplace`.
+
+---
+
+### OrderListComponent
+**Selector:** `ply-order-list`
+**Standalone:** true
+**Tier:** Pro
+
+One list whose rows move up and down. `ply-pick-list` is the two-pane control.
+
+**Inputs:** `items` (`{ label, value, disabled? }[]`), `aria-label`, `class`.
+
+**Outputs:** `orderChange` with the values in the new order. The form value is that `string[]`.
+
+Install: `npx ply-ui-cli add order-list`.
+
+---
+
+### ImageCompareComponent
+**Selector:** `ply-image-compare`
+**Standalone:** true
+**Tier:** Pro
+
+A before and after image with a handle on the divider. The leading image is clipped to that line.
+
+**Inputs:** `beforeSrc`, `afterSrc`, `beforeAlt`, `afterAlt`, `beforeLabel`, `afterLabel`, `position` (two-way, 0–100), `aria-label`, `class`.
+
+Install: `npx ply-ui-cli add image-compare`.
+
+---
+
+### OrgChartComponent
+**Selector:** `ply-org-chart`
+**Standalone:** true
+**Tier:** Pro
+
+A top-down organization chart. Each node has a label, an optional meta line, and optional children.
+
+**Inputs:** `nodes` (`{ label, meta?, children? }[]`), `aria-label`, `class`.
+
+Install: `npx ply-ui-cli add org-chart`.
+
+---
+
+### DockComponent
+**Selector:** `ply-dock`
+**Standalone:** true
+**Tier:** Pro
+
+A frosted bar of app tiles in the shape of the iOS dock. `size` is `sm`, `md`, or `lg`. `magnify` follows the pointer and eases neighboring tiles apart.
+
+**Inputs:** `items` (`{ label, value?, icon?, tone? }[]`), `size` (`sm | md | lg`, default `md`), `magnify`, `aria-label`, `class`.
+
+**Outputs:** `itemSelect` with the chosen item.
+
+Install: `npx ply-ui-cli add dock`.
+
+---
+
+### TerminalComponent
+**Selector:** `ply-terminal`
+**Standalone:** true
+**Tier:** Pro
+
+A local command prompt that prints mapped replies. It does not run a shell. Known replies come from `responses`. `clear` empties the log.
+
+**Inputs:** `welcome`, `prompt`, `responses`, `aria-label`, `class`.
+
+**Outputs:** `submitted` with the submitted text.
+
+Install: `npx ply-ui-cli add terminal`.
+
+---
+
 ### VirtualScrollComponent
 **Selector:** `ply-virtual-scroll`
 **Standalone:** true

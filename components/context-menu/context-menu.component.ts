@@ -101,6 +101,11 @@ export class ContextMenuComponent<T> implements ContextMenuPanel<T> {
         event.preventDefault();
         this.closed.emit();
         break;
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        this.activateHighlighted(root, active);
+        break;
       case 'Tab':
         this.closed.emit();
         break;
@@ -112,5 +117,19 @@ export class ContextMenuComponent<T> implements ContextMenuPanel<T> {
         }
         break;
     }
+  }
+
+  /** Enter/Space runs the focused item, or the hovered one when focus is still on the menu. */
+  private activateHighlighted(root: HTMLElement, active: HTMLElement | null): void {
+    const focused = active?.closest('[role^="menuitem"]');
+    const item =
+      focused instanceof HTMLElement && root.contains(focused)
+        ? focused
+        : root.querySelector<HTMLElement>('[role^="menuitem"]:hover');
+    if (!item || item.hasAttribute('disabled') || item.getAttribute('aria-disabled') === 'true') return;
+    item.click();
+    // RouterLink on a button stops the click, so the overlay never sees it.
+    // Close here after the item's own handler has run.
+    this.closed.emit();
   }
 }

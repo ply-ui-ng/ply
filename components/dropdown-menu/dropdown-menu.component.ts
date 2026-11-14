@@ -98,6 +98,11 @@ export class DropdownMenuComponent<T> implements DropdownPanel<T> {
         event.preventDefault();
         this.closed.emit();
         break;
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        this.activateHighlighted(root, active);
+        break;
       case 'ArrowRight':
       case 'ArrowLeft': {
         const dir = this.writingDirection();
@@ -145,17 +150,31 @@ export class DropdownMenuComponent<T> implements DropdownPanel<T> {
   /**
    * Leaf item clicks dismiss the whole cascade. Submenu triggers
    * (`aria-haspopup="menu"`) and selectable / `stayOpen` items keep the parent open.
+   * Bubble phase runs after the item's own click handler, including `routerLink`.
    *
    * @example
    * // Bound on the menu root `(click)`
    */
-  onMenuClick(event: MouseEvent): void {
+  onMenuClick(event: Event): void {
     const item = this.closestMenuItem(event.target);
     if (!item) return;
 
     if (item.getAttribute('aria-haspopup') === 'menu') return;
     if (this.keepsMenuOpen(item)) return;
 
+    this.menuStack.closeAll(true);
+  }
+
+  /** Enter/Space runs the focused item, or the hovered one when focus is still on the menu. */
+  private activateHighlighted(root: HTMLElement, active: HTMLElement | null): void {
+    const focused = active?.closest('[role^="menuitem"]');
+    const item =
+      focused instanceof HTMLElement && root.contains(focused)
+        ? focused
+        : root.querySelector<HTMLElement>('[role^="menuitem"]:hover');
+    if (!item || item.hasAttribute('disabled') || item.getAttribute('aria-disabled') === 'true') return;
+    item.click();
+    if (item.getAttribute('aria-haspopup') === 'menu' || this.keepsMenuOpen(item)) return;
     this.menuStack.closeAll(true);
   }
 

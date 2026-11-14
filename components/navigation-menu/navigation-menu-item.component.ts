@@ -69,6 +69,14 @@ export class NavigationMenuItemComponent implements OnDestroy {
     this.open.set(false);
   }
 
+  /** A link or button inside the panel navigates; dismiss after its handler runs. */
+  protected onPanelClick(event: Event): void {
+    const control = (event.target as HTMLElement | null)?.closest('a, button');
+    if (!control) return;
+    // Bubble is after routerLink. Defer dispose so this click can finish.
+    queueMicrotask(() => this.close());
+  }
+
   private attach(): void {
     if (this.overlayRef) return;
     this.overlayRef = this.overlay.create({
@@ -84,6 +92,7 @@ export class NavigationMenuItemComponent implements OnDestroy {
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
     });
     this.overlayRef.attach(new TemplatePortal(this.panelTpl(), this.vcr));
+    this.overlayRef.overlayElement.addEventListener('click', (event) => this.onPanelClick(event));
     this.overlayRef.backdropClick().subscribe(() => this.close());
     this.overlayRef.keydownEvents().subscribe((e) => {
       if (e.key === 'Escape') this.close();

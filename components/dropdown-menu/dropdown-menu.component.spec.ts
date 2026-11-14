@@ -70,6 +70,18 @@ describe('DropdownMenuComponent a11y', () => {
     expect(document.activeElement).toBe(items[0]);
   });
 
+  it('clicks the focused item on Enter', () => {
+    const root = document.querySelector('[role="menu"]') as HTMLElement;
+    const items = root.querySelectorAll('[role="menuitem"]');
+    const clicked = vi.fn();
+    items[1].addEventListener('click', clicked);
+    (items[1] as HTMLElement).focus();
+
+    menu.onMenuKeydown(new KeyboardEvent('keydown', { key: 'Enter', cancelable: true }));
+
+    expect(clicked).toHaveBeenCalledOnce();
+  });
+
   it('typeahead focuses the item starting with that letter', () => {
     const root = document.querySelector('[role="menu"]') as HTMLElement;
     const items = root.querySelectorAll('[role="menuitem"]');

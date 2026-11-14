@@ -19,7 +19,11 @@
   </div>
 }
 <div class="relative flex h-full w-full flex-1 overflow-hidden">
-  <div tabindex="0" [class]="navRailClass()" (click)="onNavClick()" (keydown.enter)="onNavClick()">
+  <div
+    tabindex="0"
+    [class]="navRailClass()"
+    (click)="onNavClick()"
+    (keydown.enter)="onNavClick()">
     <ng-content select="ply-sidenav-nav"></ng-content>
   </div>
 
