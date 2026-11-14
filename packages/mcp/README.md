@@ -10,6 +10,8 @@ The old npm name `base-ui-ng-mcp` is **deprecated** (name collision with [MUI Ba
 
 Docs: [Getting started — AI agents](https://ply-ui.com/getting-started/#ai-agents-mcp) · [token walkthrough](https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/) · [design skill on init](https://ply-ui.com/learn/ply-ui-design-skill/)
 
+Recent Pro widgets in the catalog: listbox, split button, fieldset, inplace, order list, image compare, org chart, dock, terminal, tree table, cascade select, and chart.
+
 ## Setup (stdio)
 
 Cursor, Windsurf, Claude Desktop, Antigravity, and most other local hosts read this `mcpServers` block:

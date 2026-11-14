@@ -93,7 +93,7 @@ export class AppComponent {}
 
 ## 💎 Ply Pro
 
-Pro components are the pre-built blocks — blog and article cards, ecommerce blocks, media and social widgets, 18 full page layouts — plus advanced widgets (data table, date pickers, command palette, mega menu, file upload, multi-select, rich text editor, crop image, product gallery, tree, mention input, splitter).
+Pro components are the pre-built blocks — blog and article cards, ecommerce blocks, media and social widgets, 18 full page layouts — plus advanced widgets (data table, date pickers, command palette, mega menu, file upload, multi-select, rich text editor, crop image, product gallery, tree, tree table, cascade select, chart, listbox, split button, fieldset, inplace, order list, image compare, org chart, dock, terminal, mention input, splitter).
 
 After purchasing a license at [ply-ui.com](https://ply-ui.com), set your license key once and add pro components with the same CLI:
 
@@ -121,12 +121,12 @@ Templates are complete, production-grade applications built on Pro — every rou
 
 | Category | Free | Pro |
 | --- | --- | --- |
-| **UI primitives** | 50+ (buttons, inputs, dialogs, hover cards, menubars, currency, kbd, tabs, calendar, stacked toasts, …) | data table, date pickers, command palette, mega menu, file upload, multi-select, rich text editor, crop image, product gallery, tree, mention input, splitter |
+| **UI primitives** | 50+ (buttons, inputs, dialogs, hover cards, menubars, currency, kbd, tabs, calendar, stacked toasts, …) | data table, date pickers, command palette, mega menu, file upload, multi-select, rich text editor, crop image, product gallery, tree, tree table, cascade select, chart, listbox, split button, fieldset, inplace, order list, image compare, org chart, dock, terminal, mention input, splitter |
 | **Form blocks** | all 19 (login, signup, checkout, billing, wizard, …) | — |
 | **Blocks & widgets** | — | blog/article cards, ecommerce blocks, media + social widgets |
 | **Page layouts** | — | 18 (dashboard, kanban, inbox, docs, admin table, …) |
 | **Directives, services, utils** | all | — |
-| **Icons** | 390 SVG sprite icons | — |
+| **Icons** | 392 outline icons (filled: star and heart) | — |
 | **Templates** | — | [Motif](https://ply-ui.com/templates/motif) storefront, [Motif Admin](https://ply-ui.com/templates/motif-admin) dashboard, [Relay](https://ply-ui.com/templates/relay) workspace ($149 each, or Motif Suite $169) |
 
 ---

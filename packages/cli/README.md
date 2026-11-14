@@ -17,6 +17,7 @@ The old npm name `base-ui-cli` is **deprecated** (name collision with [MUI Base 
 
 ## What's new
 
+- **Pro widgets** — listbox, split button, fieldset, inplace, order list, image compare, org chart, dock, terminal, tree table, cascade select, and chart.
 - **3-way merge** — `npx ply-ui-cli update --merge` (or the interactive Merge choice) uses `git merge-file` with the install snapshot under `.ply-ui/snapshots`. Aliases: `sheet` → `drawer`, `gallery` → `slider`. `carousel` installs the horizontal scroller.
 - **add picker** — `npx ply-ui-cli add` with no names opens a catalog filter + type-to-select. `--yes` still requires explicit names.
 - **doctor** — `npx ply-ui-cli doctor` checks `ply-ui.json`, Tailwind v4 `@source` paths, `ply-ui.css`, CDK, and icon sprites. Read-only.
@@ -154,7 +155,7 @@ Run it after `init` or whenever components seem to be missing styles or icons.
 
 The free tier covers all primitives (buttons, inputs, dialogs, tabs, selects, stacked toasts, and many more) plus every form block — production-ready with no account or license.
 
-Pro components (pre-built blocks: blog cards, ecommerce blocks, media and social widgets, full page layouts, and advanced widgets like the data table, rich text editor, and file upload) require a license. After purchase, set your license key once:
+Pro components (pre-built blocks: blog cards, ecommerce blocks, media and social widgets, full page layouts, and advanced widgets like the data table, listbox, chart, dock, terminal, rich text editor, and file upload) require a license. After purchase, set your license key once:
 
 ```bash
 export PLY_LICENSE_KEY=your-license-key
