@@ -5,6 +5,9 @@ import { AvatarComponent } from '../avatar/avatar.component';
 import { BadgeComponent } from '../badge/badge.component';
 import { IconComponent } from '../icon/icon.component';
 import { SpinnerComponent } from '../spinner/spinner.component';
+import { ChatAttachmentComponent } from './chat-attachment.component';
+import { ChatBubbleComponent } from './chat-bubble.component';
+import { ChatMarkerComponent } from './chat-marker.component';
 
 /**
  * A single chat turn — user, assistant, system, or tool call.
@@ -15,7 +18,7 @@ import { SpinnerComponent } from '../spinner/spinner.component';
 @Component({
   selector: 'ply-chat-message',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AvatarComponent, BadgeComponent, IconComponent, SpinnerComponent],
+  imports: [AvatarComponent, BadgeComponent, IconComponent, SpinnerComponent, ChatAttachmentComponent, ChatBubbleComponent, ChatMarkerComponent],
   templateUrl: './chat-message.component.html',
   host: { '[class]': 'hostCls()' },
 })

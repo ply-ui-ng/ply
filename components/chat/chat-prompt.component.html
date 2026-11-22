@@ -1,12 +1,13 @@
-<div class="flex items-end gap-2 rounded-xl border border-slate-200 bg-white p-2 dark:border-slate-700 dark:bg-slate-900">
+<div class="flex items-end gap-2 rounded-2xl border border-slate-200 bg-slate-100/90 px-3 py-1.5 transition-colors duration-200 focus-within:border-[var(--ply-primary)] focus-within:bg-white dark:border-slate-700 dark:bg-slate-800 dark:focus-within:bg-slate-800">
   <textarea
     #composer
     rows="1"
-    class="min-h-9 w-full resize-none appearance-none overflow-hidden bg-transparent px-2 py-2 text-sm leading-5 text-slate-800 outline-none placeholder:text-slate-400 dark:text-slate-100"
+    class="block h-8 min-h-8 w-full resize-none appearance-none overflow-hidden border-0 bg-transparent py-1.5 text-[13px] leading-5 text-slate-900 outline-none placeholder:text-slate-400 dark:text-white"
     [placeholder]="placeholder()"
     [disabled]="disabled()"
     [ngModel]="draft()"
     (ngModelChange)="draft.set($event)"
+    (input)="resizeComposer()"
     (keydown)="onKeydown($event)"
     [attr.aria-label]="placeholder()"></textarea>
   @if (streaming()) {
@@ -15,9 +16,10 @@
       ply-icon-button
       color="danger"
       size="sm"
+      class="rounded-full! shrink-0"
       [attr.aria-label]="i18n.stopGenerating"
       (click)="stop.emit()">
-      <ply-icon name="stop" class="h-4 w-4 stroke-current"></ply-icon>
+      <ply-icon name="stop" class="h-3.5 w-3.5 stroke-current"></ply-icon>
     </button>
   } @else {
     <button
@@ -25,10 +27,11 @@
       ply-icon-button
       color="primary"
       size="sm"
+      class="rounded-full! shrink-0"
       [attr.aria-label]="i18n.sendMessage"
       [disabled]="!canSend()"
       (click)="submit()">
-      <ply-icon name="send" class="h-4 w-4 stroke-current"></ply-icon>
+      <ply-icon name="arrow-right" class="h-3.5 w-3.5 stroke-current"></ply-icon>
     </button>
   }
 </div>

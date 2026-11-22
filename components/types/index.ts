@@ -185,15 +185,25 @@ export type ChatRole = 'user' | 'assistant' | 'system' | 'tool';
 export type ChatToolStatus = 'pending' | 'running' | 'done' | 'error';
 
 /** A single turn in {@link ChatComponent}. */
+/** A file chip under a chat bubble. */
+export interface ChatAttachment {
+  name: string;
+  /** Size or kind, such as "24 KB". */
+  detail?: string;
+}
+
 export interface ChatMessage {
   id: string;
   role: ChatRole;
   content: string;
   name?: string;
   avatarUrl?: string;
+  /** Optional short time string shown below the bubble (e.g. "2:45 PM"). */
+  timestamp?: string;
   streaming?: boolean;
   toolName?: string;
   toolStatus?: ChatToolStatus;
+  attachments?: ChatAttachment[];
 }
 
 export type SliderColor = 'primary' | 'success' | 'danger' | 'warning' | 'accent';

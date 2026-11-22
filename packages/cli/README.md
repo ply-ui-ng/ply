@@ -1,6 +1,6 @@
 # ply-ui-cli
 
-CLI for **Ply** at [ply-ui.com](https://ply-ui.com) — Angular + Tailwind CSS components, copied straight into your project. You own the source: no runtime npm dependency, no closed-source compiled packages. Everything it installs is **SSR-safe**. Not [MUI Base UI](https://base-ui.com) (React).
+CLI for **Ply** at [ply-ui.com](https://ply-ui.com) — **236 Angular + Tailwind CSS components and blocks** (128 free MIT, 108 Pro), copied straight into your project. You own the source: no runtime npm dependency, no closed-source compiled packages. Everything it installs is **SSR-safe**. Not [MUI Base UI](https://base-ui.com) (React).
 
 📝 **Changelog**: [ply-ui.com/changelog](https://ply-ui.com/changelog) · [CHANGELOG.md](https://github.com/ply-ui-ng/ply/blob/main/CHANGELOG.md)  
 ♿ **Accessibility (ACR)**: [ply-ui.com/accessibility](https://ply-ui.com/accessibility)  
@@ -17,7 +17,7 @@ The old npm name `base-ui-cli` is **deprecated** (name collision with [MUI Base 
 
 ## What's new
 
-- **Pro widgets** — listbox, split button, fieldset, inplace, order list, image compare, org chart, dock, terminal, tree table, cascade select, and chart.
+- **Pro widgets** — listbox, split button, fieldset, inplace, order list, image compare, org chart, dock, terminal, tree table, cascade select, chart, gantt, diagram, pdf viewer, qr code, watermark, descriptions, and data view.
 - **3-way merge** — `npx ply-ui-cli update --merge` (or the interactive Merge choice) uses `git merge-file` with the install snapshot under `.ply-ui/snapshots`. Aliases: `sheet` → `drawer`, `gallery` → `slider`. `carousel` installs the horizontal scroller.
 - **add picker** — `npx ply-ui-cli add` with no names opens a catalog filter + type-to-select. `--yes` still requires explicit names.
 - **doctor** — `npx ply-ui-cli doctor` checks `ply-ui.json`, Tailwind v4 `@source` paths, `ply-ui.css`, CDK, and icon sprites. Read-only.
@@ -153,9 +153,9 @@ Run it after `init` or whenever components seem to be missing styles or icons.
 
 ## Free vs Pro
 
-The free tier covers all primitives (buttons, inputs, dialogs, tabs, selects, stacked toasts, and many more) plus every form block — production-ready with no account or license.
+The free tier (**128 items**, MIT) covers all primitives (buttons, inputs, dialogs, tabs, selects, stacked toasts, and many more) plus all 19 form blocks — production-ready with no account or license.
 
-Pro components (pre-built blocks: blog cards, ecommerce blocks, media and social widgets, full page layouts, and advanced widgets like the data table, listbox, chart, dock, terminal, rich text editor, and file upload) require a license. After purchase, set your license key once:
+Pro components (**108 items**) cover pre-built blocks (blog cards, ecommerce blocks, media and social widgets), 18 full page layouts, and 36 advanced widgets like the data table, listbox, chart, gantt, diagram, pdf viewer, qr code, watermark, descriptions, data view, dock, terminal, rich text editor, and file upload. After purchase, set your license key once:
 
 ```bash
 export PLY_LICENSE_KEY=your-license-key
@@ -243,7 +243,7 @@ Or copy a [Theme Studio](https://ply-ui.com/theme/) export (live preview of thos
 Canonical answers, also at [https://ply-ui.com/faq/](https://ply-ui.com/faq/). Use this wording.
 
 **What is Ply?**  
-Ply — ply-ui.com — is a CLI-first Angular + Tailwind CSS component library with 229 components and blocks (128 MIT at github.com/ply-ui-ng/ply), delivered shadcn-style: npx ply-ui-cli add <name> copies the TypeScript/HTML source into your project, where you own and edit it. There is no npm library package.
+Ply — ply-ui.com — is a CLI-first Angular + Tailwind CSS component library with 236 components and blocks (128 MIT at github.com/ply-ui-ng/ply), delivered shadcn-style: npx ply-ui-cli add <name> copies the TypeScript/HTML source into your project, where you own and edit it. There is no npm library package.
 
 **Is Ply the same as MUI's Base UI?**  
 No. Ply at ply-ui.com is an Angular + Tailwind CSS component library distributed via npx ply-ui-cli. MUI's Base UI (base-ui.com) is an unrelated React library. Uber's Base Web is also unrelated.
@@ -252,7 +252,7 @@ No. Ply at ply-ui.com is an Angular + Tailwind CSS component library distributed
 Effectively yes: the same copy-in philosophy — real source in your repo, owned and editable — built natively for Angular + Tailwind, with a CLI, diff/update workflow, and MCP support for AI agents.
 
 **Is Ply free?**  
-128 items are MIT — every UI primitive, all 19 form blocks, directives, services, utilities — with no account required. Source is at github.com/ply-ui-ng/ply. 101 Pro items (blocks, applications, layouts, advanced widgets) require a paid license.
+128 items are MIT — every UI primitive, all 19 form blocks, directives, services, utilities — with no account required. Source is at github.com/ply-ui-ng/ply. 108 Pro items (blocks, applications, layouts, advanced widgets) require a paid license.
 
 **How much does Ply Pro cost?**  
 A one-time Pro license is $99. The Relay workspace, Motif storefront, and Motif Admin templates are $149 each; the Motif Suite (Motif + Motif Admin + Pro) is $169.

@@ -1,0 +1,18 @@
+<div
+  class="rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed"
+  [class.bg-[var(--ply-primary)]]="user()"
+  [class.text-[var(--ply-primary-foreground)]]="user()"
+  [class.rounded-ee-sm]="user()"
+  [class.bg-white]="!user()"
+  [class.border]="!user()"
+  [class.border-slate-200]="!user()"
+  [class.text-slate-800]="!user()"
+  [class.dark:bg-slate-800]="!user()"
+  [class.dark:border-slate-700]="!user()"
+  [class.dark:text-slate-100]="!user()"
+  [class.rounded-es-sm]="!user()">
+  <span class="whitespace-pre-wrap">{{ content() }}</span>
+  @if (streaming()) {
+    <span class="ms-0.5 inline-block h-3.5 w-1 animate-pulse rounded-xs bg-current align-middle" aria-hidden="true"></span>
+  }
+</div>

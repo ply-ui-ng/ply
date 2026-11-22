@@ -1,48 +1,67 @@
 @if (isSystem()) {
-  <p class="w-full text-center text-xs text-slate-500 dark:text-slate-400">{{ message().content }}</p>
+  <ply-chat-marker class="w-full" [label]="message().content"></ply-chat-marker>
+} @else if (isUser()) {
+  <div class="flex w-full items-end justify-end gap-2">
+    <div class="flex max-w-[85%] flex-col items-end gap-1">
+      <ply-chat-bubble [role]="message().role" [content]="message().content" [streaming]="!!message().streaming"></ply-chat-bubble>
+      @if (message().attachments?.length) {
+        <div class="mt-1 flex flex-wrap justify-end gap-2">
+          @for (file of message().attachments; track file.name) {
+            <ply-chat-attachment [name]="file.name" [detail]="file.detail ?? ''"></ply-chat-attachment>
+          }
+        </div>
+      }
+      @if (message().timestamp) {
+        <span class="me-1 inline-flex items-center gap-1 text-[10px] font-semibold tabular-nums text-[var(--ply-primary)]">
+          <ply-icon name="check" class="h-3 w-3 stroke-current"></ply-icon>
+          {{ message().timestamp }}
+        </span>
+      }
+    </div>
+  </div>
 } @else {
-  <div class="flex w-full gap-3" [class.flex-row-reverse]="isUser()">
+  <div class="flex w-full items-end gap-2.5">
     <ply-avatar
-      size="sm"
+      size="xs"
       shape="circle"
       [avatarUrl]="message().avatarUrl ?? ''"
       [initials]="initials()"
-      class="mt-0.5 shrink-0"></ply-avatar>
-    <div class="min-w-0 max-w-[80%]" [class.ms-auto]="isUser()">
+      class="shrink-0"></ply-avatar>
+    <div class="flex min-w-0 max-w-[85%] flex-col gap-1">
       @if (isTool()) {
-        <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/60">
+        <div class="rounded-2xl rounded-es-sm border border-slate-200 bg-white px-3.5 py-2.5 dark:border-slate-700 dark:bg-slate-800">
           <div class="mb-1 flex items-center gap-2">
-            <ply-icon name="sparkles" class="h-3.5 w-3.5 stroke-slate-500 dark:stroke-slate-400"></ply-icon>
-            <span class="text-xs font-semibold text-slate-700 dark:text-slate-200">
-              {{ message().toolName || 'Tool' }}
+            <span class="flex h-5 w-5 items-center justify-center rounded-md bg-[var(--ply-primary-soft)] text-[var(--ply-primary)]">
+              <ply-icon name="terminal" class="h-3 w-3 stroke-current"></ply-icon>
+            </span>
+            <span class="font-mono text-xs font-semibold text-slate-800 dark:text-slate-100">
+              {{ message().toolName || 'tool' }}
             </span>
             @if (message().toolStatus) {
-              <ply-badge [color]="toolBadgeColor()" size="sm" shape="rectangular">{{ message().toolStatus }}</ply-badge>
+              <ply-badge [color]="toolBadgeColor()" size="sm" shape="rounded">{{ message().toolStatus }}</ply-badge>
             }
             @if (message().toolStatus === 'running') {
               <ply-spinner size="sm"></ply-spinner>
             }
           </div>
           @if (message().content) {
-            <p class="m-0! whitespace-pre-wrap text-sm text-slate-600 dark:text-slate-300">{{ message().content }}</p>
+            <p class="m-0! whitespace-pre-wrap text-[13px] leading-relaxed text-slate-600 dark:text-slate-300">{{ message().content }}</p>
           }
         </div>
       } @else {
-        <div
-          class="rounded-2xl px-3.5 py-2 text-sm leading-relaxed"
-          [class.bg-blue-500]="isUser()"
-          [class.text-white]="isUser()"
-          [class.rounded-ee-md]="isUser()"
-          [class.bg-slate-100]="!isUser()"
-          [class.text-slate-800]="!isUser()"
-          [class.dark:bg-slate-800]="!isUser()"
-          [class.dark:text-slate-100]="!isUser()"
-          [class.rounded-es-md]="!isUser()">
-          <span class="whitespace-pre-wrap">{{ message().content }}</span>
-          @if (message().streaming) {
-            <span class="ms-0.5 inline-block h-3 w-1 animate-pulse bg-current align-middle" aria-hidden="true"></span>
-          }
-        </div>
+        <ply-chat-bubble [role]="message().role" [content]="message().content" [streaming]="!!message().streaming"></ply-chat-bubble>
+        @if (message().attachments?.length) {
+          <div class="mt-1 flex flex-wrap gap-2">
+            @for (file of message().attachments; track file.name) {
+              <ply-chat-attachment [name]="file.name" [detail]="file.detail ?? ''"></ply-chat-attachment>
+            }
+          </div>
+        }
+      }
+      @if (message().timestamp) {
+        <span class="ms-1 text-[10px] font-semibold tabular-nums text-slate-400 dark:text-slate-500">
+          {{ message().timestamp }}
+        </span>
       }
     </div>
   </div>

@@ -1,4 +1,33 @@
-<div class="flex min-h-0 flex-1 flex-col overflow-y-auto p-4" role="log" aria-live="polite" aria-relevant="additions">
+@if (title()) {
+  <div class="z-10 flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
+    <div class="flex items-center gap-3">
+      <div class="relative">
+        <ply-avatar size="sm" shape="circle" [avatarUrl]="avatarUrl()" [initials]="headerInitials()"></ply-avatar>
+        @if (online()) {
+          <span
+            class="absolute bottom-0 end-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500 dark:border-slate-900"
+            aria-hidden="true"></span>
+        }
+      </div>
+      <div class="min-w-0">
+        <p class="m-0! truncate text-sm font-bold leading-tight text-slate-900 dark:text-white">{{ title() }}</p>
+        @if (subtitle()) {
+          <span
+            class="block text-[10px] font-bold uppercase tracking-wider"
+            [class.text-emerald-600]="online()"
+            [class.dark:text-emerald-400]="online()"
+            [class.text-slate-500]="!online()"
+            [class.dark:text-slate-400]="!online()">
+            {{ subtitle() }}
+          </span>
+        }
+      </div>
+    </div>
+    <ng-content select="[chat-header-actions]" />
+  </div>
+}
+
+<ply-chat-scroller class="min-h-0 flex-1 bg-slate-50 dark:bg-slate-900/50" [pin]="messages().length" role="log" aria-live="polite" aria-relevant="additions">
   @if (messages().length === 0) {
     <div class="flex flex-1 items-center justify-center">
       <ply-empty-state [title]="emptyTitle()" [description]="emptyDescription()" iconName="sparkles"></ply-empty-state>
@@ -10,13 +39,14 @@
       }
     </div>
   }
-</div>
-<div class="border-t border-slate-200 p-3 dark:border-slate-700">
+</ply-chat-scroller>
+
+<div class="shrink-0 border-t border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
   <ply-chat-prompt
     [placeholder]="placeholder()"
     [streaming]="streaming()"
     [disabled]="disabled()"
     (send)="send.emit($event)"
     (stop)="stop.emit()"></ply-chat-prompt>
-  <p class="mb-0! mt-2 text-center text-[11px] text-slate-400">Enter to send · Shift+Enter for a new line</p>
+  <p class="mb-0! mt-1.5 text-center text-[11px] text-slate-400 dark:text-slate-500">Enter to send · Shift+Enter for a new line</p>
 </div>

@@ -10,6 +10,7 @@ Also published at [https://ply-ui.com/changelog](https://ply-ui.com/changelog).
 
 ## November 2026
 
+- **Features** — Add Pro gantt, diagram, pdf viewer, qr code, watermark, descriptions, and data view. Chat gains attachment, bubble, marker, and scroller parts. Catalog is 236 items (128 free, 108 Pro).
 - **Features** — add the Pro dock, terminal, and form suite
 - **Bug Fixes** — **cascade-select:** clear the library lint errors
 - **Features** — add a tree table, a cascade select, and more chart types

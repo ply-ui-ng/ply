@@ -138,6 +138,13 @@ export interface BaseUiI18n {
   apply: string;
   startTime: string;
   endTime: string;
+  today: string;
+  listView: string;
+  gridView: string;
+  noTasks: string;
+  noDiagram: string;
+  noDocument: string;
+  qrTooLong: string;
 }
 
 /** English defaults used when `provideBaseUiI18n()` is omitted. */
@@ -270,6 +277,13 @@ export const DEFAULT_BASE_UI_I18N: BaseUiI18n = {
   apply: 'Apply',
   startTime: 'Start',
   endTime: 'End',
+  today: 'Today',
+  listView: 'List',
+  gridView: 'Grid',
+  noTasks: 'No tasks',
+  noDiagram: 'No diagram',
+  noDocument: 'No document',
+  qrTooLong: 'That text is too long for this code',
 };
 
 export const BASE_UI_I18N = new InjectionToken<BaseUiI18n>('BASE_UI_I18N', {
