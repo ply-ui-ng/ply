@@ -7,6 +7,7 @@
 [![npm](https://img.shields.io/npm/v/ply-ui-cli.svg)](https://www.npmjs.com/package/ply-ui-cli)
 [![npm downloads](https://img.shields.io/npm/dw/ply-ui-cli.svg)](https://www.npmjs.com/package/ply-ui-cli)
 [![GitHub stars](https://img.shields.io/github/stars/ply-ui-ng/ply?style=social)](https://github.com/ply-ui-ng/ply)
+[![ply-ui-ng/ply MCP server](https://glama.ai/mcp/servers/ply-ui-ng/ply/badges/score.svg)](https://glama.ai/mcp/servers/ply-ui-ng/ply)
 
 **Ply** (formerly Base UI (Angular)) — [ply-ui.com](https://ply-ui.com) — is a CLI-first Angular + Tailwind CSS component library: **236 components and blocks** (128 free, 108 Pro), **392 outline icons** (filled: star and heart), and 18 full page layouts — standalone, zoneless, signal-based and **SSR-safe**, delivered shadcn-style: `npx ply-ui-cli add` copies the source into your project and it's yours. Not [MUI Base UI](https://base-ui.com) (React).
 

@@ -8,7 +8,7 @@ The CLI remains the installer: `npx ply-ui-cli`. This server wraps that CLI and 
 
 The old npm name `base-ui-ng-mcp` is **deprecated** (name collision with [MUI Base UI](https://base-ui.com)). Use `npx -y ply-ui-mcp`.
 
-Docs: [Getting started — AI agents](https://ply-ui.com/getting-started/#ai-agents-mcp) · [token walkthrough](https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/) · [design skill on init](https://ply-ui.com/learn/ply-ui-design-skill/)
+Docs: [Getting started — AI agents](https://ply-ui.com/getting-started/#ai-agents-mcp) · [Glama listing](https://glama.ai/mcp/servers/ply-ui-ng/ply) · [token walkthrough](https://ply-ui.com/learn/ai-agent-tokens-rich-text-editor/) · [design skill on init](https://ply-ui.com/learn/ply-ui-design-skill/)
 
 Recent Pro widgets in the catalog: listbox, split button, fieldset, inplace, order list, image compare, org chart, dock, terminal, tree table, cascade select, chart, gantt, diagram, pdf viewer, qr code, watermark, descriptions, and data view.
 
